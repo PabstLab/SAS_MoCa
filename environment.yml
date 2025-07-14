@@ -1,0 +1,14 @@
+name: SAS-MoCa
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - yaml
+  - scipy
+  - math
+  - numpy
+  - tqdm
+  - pandas
+  - python
+  - matplotlib
+  - multiprocess

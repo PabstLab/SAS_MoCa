@@ -1,0 +1,47 @@
+config:
+   datafile: "/folderpath/datafilename.dat" # --> Datafile name and path 
+   save-folder: "MYsample_01" # --> Data label for saving results (e.g. short description of the sample)
+   qrange: [0.005,0.6] # --> Min. and max. q-value for plotting and fitting
+   model: IPLUV_Stk_SDP_POPCbase_RecBuf # --> Scattering model (choose among the available ones in Model_list.py)
+   temperature-init: 400 # --> Initial temperature (e.g. ~100 times min. X2)
+   temperature-gain: 50 # --> Adjust temperature change rate (the higher the faster)
+   target-X2: 2.5 # --> Target X^2 value
+   data-binning: 10 # --> Evenly reduce the number of data point by n 
+   error-scale: 1 # --> Scale factor for y-errorbars
+   iterations: 42 # --> Number of repetitions for statistics
+   processes: 24 # --> Number of processes for parallel computation
+   plot-only: off # --> only plotting (on) or data fitting (off)
+   state: monomer # --> assume either 'monomer' or 'dimer' state of OmpLA
+
+# Parameter-name:	[ initialization, fixed=off / free=on, prior (relative standard deviation), low hard-boundary, high hard-boundary ]
+parameters:
+    #	Vesicle's parameters
+    Norm: [0.01, off, Null, 0.0001, 1] # Normalization
+    nv: [2.3, on, Null, 0.8, 4.8] # Vesicle concencentration x10^5 (AA^-3)
+    Rv: [390, on, Null, 290, 490] # Vesicle radius (AA)
+    Z: [5.1, off, Null, 5.1, 18] # Vesicle poldispersity (Shulz pdf width parameter)
+    x: [0.62, on, 0.04, Null, Null] #	Protein to lipid mole fraction x10^-2
+    #	Head-group Positions & Widths
+    d_Chol: [2.7, on, 0.02, Null, Null] # CholCH3 relative position (AA)			
+    s_Chol: [3.0, on, 0.02, Null, Null] # CholCH3 sigma (AA)			
+    d_PCN: [4.1, on, 0.08, Null, Null] # PCN relative position (AA)		
+    s_PCN: [2.5, on, 0.20, Null, Null] # PCN sigma (AA)	
+    d_CG: [0.8, on, 0.08, Null, Null] # CG relative position (AA)		
+    s_CG: [2.5, on, 0.20, Null, Null] # CG sigma (AA)	
+    #	Acyl chain Positions & Widths
+    dD_C: [28.2, on, 0.03, Null, Null] # Hydrocarbon thickness 2Dc (AA)
+    r_D_C: [0.15, on, Null, 0.055, 0.2] #	relative Dc std
+    s_CH2: [2.5, on, 0.02, Null, Null] # HC sigma (AA)
+    d_CH: [9.0, off, Null, 8, 10] # CH position (AA)
+    s_CH: [3.05, off, 0.02, Null, Null] #	CH sigma (AA)
+    s_CH3: [3.40, on, 0.05, Null, Null] #	CH3 sigma (AA)
+    #	Area & Volumes
+    r_PCN: [0.29, on, 0.02, Null, Null] # V_PCN/V_H				
+    r_CG: [0.45, on, 0.02, Null, Null] # V_GG/V_H					
+    r12: [0.81, off, Null, 0.73, 0.89] # V_CH/V_CH2
+    r32: [2.09, on, 0.02, Null, Null] #	V_CH3/V_CH2					
+    T: [37, off, Null, 32, 52] # Temperature (°C) 
+    V_H: [324, on, 0.02, Null, Null] # Lipid-head volume (AA³)
+    V_BW: [28.6, on, 0.01, 28.6, 30.2] # Bound-water volume (AA³)
+    #
+    Con: [200, on, Null, 180, 290] # Constant (AA⁻¹)
