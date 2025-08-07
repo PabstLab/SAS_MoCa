@@ -14,13 +14,15 @@ Current supported model:
 The package works without installation. Just download the entire folder and run the scripts *Fit_TSA.py* or *Fit_TSA_mp.py* as described in the documentation.<br>
 
 It is necessary to have Python installed on your computer in order to run the scripts, along with the modules:
-- yaml
-- numpy
-- scipy
-- pandas
-- matplotlib
-- tqdm
-- multiprocess
+  - yaml
+  - scipy
+  - math
+  - numpy
+  - tqdm
+  - pandas
+  - python
+  - matplotlib
+  - multiprocess
 
 #### Recommended: use conda environment
 

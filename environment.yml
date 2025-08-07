@@ -3,12 +3,11 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - yaml
-  - scipy
-  - math
-  - numpy
-  - tqdm
-  - pandas
-  - python
+  - python=3.12
   - matplotlib
-  - multiprocess
+  - tqdm
+  - numpy
+  - pandas
+  - pyyaml
+  - multiprocess=0.70
+  - scipy

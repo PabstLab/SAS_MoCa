@@ -71,7 +71,7 @@ class Load_input:
 		file_exists(ARGV[1], "\n-- Parameters File")
 
 		# Reading cofigurations from the YAML file
-		with open(ARGV[1], 'r') as file:
+		with open(ARGV[1], 'r', encoding='utf8') as file:
 			par_file = yaml.safe_load(file)
 
 		self.cfg = par_file['config']
