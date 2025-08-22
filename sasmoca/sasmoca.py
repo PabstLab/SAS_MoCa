@@ -11,9 +11,8 @@ from tqdm import tqdm
 from in_out import (Load_input, Load_data,
 					PlotData, PlotStat)
 
-from Model_list import ChooseFunction
-import TSA_algorithm
-
+from models.models_list import ChooseFunction
+from moca.TSA_algorithm import SimAnnealing
 
 ############################################################
 ############################################################
@@ -92,7 +91,7 @@ if __name__ == "__main__":
 								parameters['name'].to_list(), parameters['value'].to_list(), parameters['free'].to_list(), parameters['prior'].to_list(), parameters['low_l'].to_list(), parameters['high_l'].to_list(),
 								function, config['temperature-init'], config['temperature-gain'], config['target-X2'], config['state'], prt_progress]	
 				# Run the minimization routine		
-				(par_res, X2_min) = TSA_algorithm.SimAnnealing( fit_inputs )	
+				(par_res, X2_min) = SimAnnealing( fit_inputs )	
 
 				# Collect stored results
 				collection.append(par_res)	
@@ -134,7 +133,7 @@ if __name__ == "__main__":
 					results_list.append(result)
 					pbar.update()
 				# Use imap to get run the minimization routine asynchronously and update progress
-				results = pool.imap_unordered(TSA_algorithm.SimAnnealing, fit_inputs * config['iterations'])
+				results = pool.imap_unordered(SimAnnealing, fit_inputs * config['iterations'])
 				for result in results:
 					update_progress(result)
 
