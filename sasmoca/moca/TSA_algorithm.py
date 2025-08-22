@@ -11,7 +11,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
-import FitTools
+from moca import FitTools
 
 #suppress warnings
 import warnings
