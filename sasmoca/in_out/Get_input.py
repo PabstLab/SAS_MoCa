@@ -64,7 +64,7 @@ class Load_input:
 		elif len(ARGV)==1:
 			sys.exit("--- Specify the parameters file")
 
-		print("\n-----------------------------------------------------")
+		print("-----------------------------------------------------")
 		localtime = time.asctime( time.localtime(time.time()) )
 		print(localtime)
 

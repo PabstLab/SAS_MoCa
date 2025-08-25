@@ -13,6 +13,7 @@ from in_out import (Load_input, Load_data,
 
 from models.models_list import ChooseFunction
 from moca.TSA_algorithm import SimAnnealing
+from version import __version__
 
 ############################################################
 ############################################################
@@ -29,6 +30,8 @@ def X2function(Q,IDATA,I,ERR,N):
 
 # Protect entry point for multiprocessing
 if __name__ == "__main__":
+
+	print("\n--- SAS_MoCa Version", __version__)
 
 	# Set the start method for new processes
 	multiprocessing.set_start_method('spawn')
