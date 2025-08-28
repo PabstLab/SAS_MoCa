@@ -62,8 +62,8 @@ def Beta_t_np(q, R, t) :
 
 #####################################################################################################################
 
-def dummy(q, dR, dH, t, R_base, V_ompla, rho_sol) :
-	"""Normalized scattering amplitude of OmpLA dummy model
+def virtual(q, dR, dH, t, R_base, V_ompla, rho_sol) :
+	"""Normalized scattering amplitude of OmpLA virtual model
 	
 	SLDs of the single disks are not included (assuming homogeneous SLD)
 	"""
@@ -84,22 +84,22 @@ def dummy(q, dR, dH, t, R_base, V_ompla, rho_sol) :
 	crs = np.ones([Nst,q.shape[0],t.shape[0]])
 	crs[1:] = 2 * np.cos( q[None,:,None]*t[None,None,:] * dist[1:,None,None] )
 	# Assembling OmpLA scattering amplitude
-	A_dummy = np.zeros([q.shape[0],t.shape[0]])
-	A_dummy = np.sum(B*L*crs,axis=0)
-	A_dummy*= rho_ompla-rho_sol
+	A_virtual = np.zeros([q.shape[0],t.shape[0]])
+	A_virtual = np.sum(B*L*crs,axis=0)
+	A_virtual*= rho_ompla-rho_sol
 	# Normalising by disks' volumes
-	V = np.pi*(R[0]**2*H[0]+2*np.sum(R[1:]**2*H[1:]))
-	A_dummy/=V
-	A_dummy*=V_ompla
+	V_disks = np.pi*(R[0]**2*H[0]+2*np.sum(R[1:]**2*H[1:]))
+	A_virtual/=V_disks
+	A_virtual*=V_ompla
 	
 	# Add top and bottom bound-water layers
 	B_W = Beta_t_np(q[:,None], R_base, t[None,:])
 	L_W = Lambda_t_np(q[:,None], d_shl, t[None,:])   	
 	dist_W = H_ompla/2 + d_shl/2 #distance from center along z
 	crs_W = 2 * np.cos( q[:,None]*t[None,:] * dist_W )
-	A_dummy+= ((b_HW/V_PW)-rho_sol) * B_W*L_W*crs_W
+	A_virtual+= ((b_HW/V_PW)-rho_sol) * B_W*L_W*crs_W
 
-	return A_dummy
+	return A_virtual
 
 #####################################################################################################################
 

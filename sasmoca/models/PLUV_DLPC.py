@@ -8,7 +8,7 @@ from models.shared import (mu0, mu2, mu4,
                            PDF_normal,
                            FTreal_erf, FTreal_gauss,
                            Slab, Gauss,
-                           Beta_t_np, dummy,
+                           Beta_t_np, virtual,
                            Water_volume, RecBuf_mol_ratio)
 
 from models.constants import *
@@ -96,7 +96,7 @@ def SLDs_DLPC(T, xtris, xEDTA, V_Chol, V_PCN, V_CG, V_PG2, V_PG1, V_CH2, V_CH3, 
 ###############################		DESCRIBED BY SYMMETRIC STACKS OF DISKS			############################### 
 ##################################################################################################################
 
-class IPLUV_Stk_SDP_DLPCbase_RecBuf:
+class pLUV_DLPC_OmpLA_RecBuf:
 	  
 ##################
 	def __init__(self, q, PAR, ompla_state) :
@@ -111,14 +111,14 @@ class IPLUV_Stk_SDP_DLPCbase_RecBuf:
 		self.T, self.V_H, self.V_BW, 
 		self.Con] = PAR
 
-		# load either monomer or dimer dummy parameters
+		# load either monomer or dimer virtual parameters
 		if ompla_state == 'monomer':
-			R_om, H_om = np.load(str(os.path.dirname(os.path.realpath(__file__)))+"/ompla_dummy_parameters_monomer.npy")
+			R_om, H_om = np.load(str(os.path.dirname(os.path.realpath(__file__)))+"/ompla_virtual_parameters_monomer.npy")
 			R_ompla		= R_ompla_monomer
 			V_ompla		= V_ompla_monomer
 
 		elif ompla_state == 'dimer':
-			R_om, H_om = np.load(str(os.path.dirname(os.path.realpath(__file__)))+"/ompla_dummy_parameters_dimer.npy")
+			R_om, H_om = np.load(str(os.path.dirname(os.path.realpath(__file__)))+"/ompla_virtual_parameters_dimer.npy")
 			R_ompla		= R_ompla_dimer
 			V_ompla		= V_ompla_dimer
 
@@ -203,16 +203,16 @@ class IPLUV_Stk_SDP_DLPCbase_RecBuf:
 			Np = self.xp*N_L
 
 			# Getting OmpLA scattering amplitude, scaled by OmpLA volume and SLD
-			A_dummy = dummy(q, R_om, H_om, t, R_ompla, V_ompla, rho_sol)
+			A_virtual = virtual(q, R_om, H_om, t, R_ompla, V_ompla, rho_sol)
 
 			# Calculating the "carrot" scattering amplitude
 			Bcrt	= Beta_t_np(self.q[:,None], R_crt, t[None,:])  	
 
 			A_crt	= Bcrt[:,None,:]*Am	
 			# Effective OmpLA amplitude
-			A_ompla = A_dummy[:,None,:] - A_crt
+			A_ompla = A_virtual[:,None,:] - A_crt
 			# Effective OmpLA intensity
-			I_ompla = A_dummy[:,None,:]**2 + A_crt**2 - 2*A_dummy[:,None,:]*A_crt
+			I_ompla = A_virtual[:,None,:]**2 + A_crt**2 - 2*A_virtual[:,None,:]*A_crt
 			
 			# Calculating beta-factor
 			beta = ( np.trapz(A_ompla, t, 1/(Nt-1), axis=2) )**2

@@ -2,12 +2,11 @@
 
 import sys
 
-from models import (IPLUV_Stk_SDP_POPCbase_RecBuf, 
-					IPLUV_Stk_SDP_DLPCbase_RecBuf)
+from models import (pLUV_POPC_OmpLA_RecBuf, 
+					pLUV_DLPC_OmpLA_RecBuf)
 
-from models.Dummy_barrel import (Stacked_9disks, 
-                                 Stacked_disks_singleSLD,
-                                 Stacked_disks_singleSLD_dimer)
+from models.virtual_barrel import (Stacked_disks_singleSLD,
+								   Stacked_disks_singleSLD_dimer)
 
 
 ###########################################################################################
@@ -19,13 +18,11 @@ def ChooseFunction (function ):
 
 ######################
 
-	if function=="IPLUV_Stk_SDP_POPCbase_RecBuf":
-		intensity	= IPLUV_Stk_SDP_POPCbase_RecBuf
-	elif function=="IPLUV_Stk_SDP_DLPCbase_RecBuf":
-		intensity	= IPLUV_Stk_SDP_DLPCbase_RecBuf
+	if function=="pLUV_POPC_OmpLA_RecBuf":
+		intensity	= pLUV_POPC_OmpLA_RecBuf
+	elif function=="pLUV_DLPC_OmpLA_RecBuf":
+		intensity	= pLUV_DLPC_OmpLA_RecBuf
 
-	elif function=="Stacked_9disks":
-		intensity	= Stacked_9disks
 	elif function=="Stacked_disks_singleSLD":
 		intensity	= Stacked_disks_singleSLD		
 	elif function=="Stacked_disks_singleSLD_dimer":
