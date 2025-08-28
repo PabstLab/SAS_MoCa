@@ -26,7 +26,7 @@ config:
    datafile: "/filepath/filename.dat" 
    save-folder: "MySample"
    qrange: [0.005,0.6] 
-   model: IPLUV_Stk_SDP_POPCbase_RecBuf 
+   model: pLUV_POPC_OmpLA_RecBuf 
    temperature-init: 400
    temperature-gain: 50 
    target-X2: 12.0
@@ -147,9 +147,9 @@ The available scattering models are listed in *Model_list.py* and the relative s
 
 The curretly tested modules are:
 * **PLUV_POPC.py** classes:  
-    * *IPLUV_Stk_SDP_POPCbase_RecBuf* : scattering model for LUVs including homogeneously distributed OmpLA monomers or dimers, suspended in buffer consisiting of 20 mM TRIS and 2 mM EDTA. The fuction makes use of a SDP $^{2,3}$ modelling for 95:5 mol/mol POPC/POPG $^{4,5}$ bilayer combined with separated form-factor model $^6$ including polydispersity.
+    * *pLUV_POPC_OmpLA_RecBuf* : scattering model for LUVs including homogeneously distributed OmpLA monomers or dimers, suspended in buffer consisiting of 20 mM TRIS and 2 mM EDTA. The fuction makes use of a SDP $^{2,3}$ modelling for 95:5 mol/mol POPC/POPG $^{4,5}$ bilayer combined with separated form-factor model $^6$ including polydispersity.
 * **PLUV_DLPC.py** classes:  
-    * *IPLUV_Stk_SDP_DLPCbase_RecBuf* : scattering model for LUVs including homogeneously distributed OmpLA monomers or dimers, suspended in buffer consisiting of 20 mM TRIS and 2 mM EDTA. The fuction makes use of a SDP $^{2,3}$ modelling for 95:5 mol/mol DLPC/DLPG $^{4,5}$ bilayer combined with separated form-factor model $^6$ including polydispersity.    
+    * *pLUV_DLPC_OmpLA_RecBuf* : scattering model for LUVs including homogeneously distributed OmpLA monomers or dimers, suspended in buffer consisiting of 20 mM TRIS and 2 mM EDTA. The fuction makes use of a SDP $^{2,3}$ modelling for 95:5 mol/mol DLPC/DLPG $^{4,5}$ bilayer combined with separated form-factor model $^6$ including polydispersity.    
 
 
 ## For details about the scattering models and the minimization algorithm check:
