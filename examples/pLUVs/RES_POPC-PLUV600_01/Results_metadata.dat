@@ -1,0 +1,13 @@
+datafile	./data_pLUVs_POPC_OmpLA_PL600.dat
+save-folder	RES_POPC-PLUV600_01
+qrange	[0.005, 0.6]
+model	pLUV_POPC_OmpLA_RecBuf
+temperature-init	400
+temperature-gain	50
+target-X2	5.0
+data-binning	10
+error-scale	1
+iterations	42
+processes	24
+plot-only	False
+state	monomer

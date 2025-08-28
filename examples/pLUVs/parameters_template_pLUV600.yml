@@ -1,0 +1,47 @@
+config:
+   datafile: "./data_pLUVs_POPC_OmpLA_PL600.dat"  # POPC-OmpLA pLUV dataset; Nominal x_p=1/600; see [Semeraro et al., in submission]
+   save-folder: "POPC-PLUV600_01"
+   qrange: [0.005,0.6] 
+   model: pLUV_DLPC_OmpLA_RecBuf 
+   temperature-init: 400
+   temperature-gain: 50 
+   target-X2: 5.0
+   data-binning: 10
+   error-scale: 1
+   iterations: 42
+   processes: 24
+   plot-only: off 
+   state: monomer
+
+# Name:	[ initialization, fixed=off / free=on, prior->relative standard deviation, low & high limits ]
+parameters:
+    #	Vesicle's parameters
+    Norm: [0.01, off, Null, 0.0001, 1] # Normalization
+    nv: [2.3, on, Null, 0.8, 4.8] # Vesicle concencentration x10^7 (AA^-3)
+    Rv: [390, on, Null, 290, 490] # Vesicle radius (AA)
+    Z: [5.1, off, Null, 5.1, 18] # Vesicle poldispersity
+    x: [0.45, on, 0.04, Null, Null] #	Protein to lipid fraction
+    #	Head-group Positions & Widths
+    d_Chol: [2.7, on, 0.02, Null, Null] # CholCH3 position (AA)			
+    s_Chol: [3.0, on, 0.02, Null, Null] # CholCH3 width (AA)			
+    d_PCN: [4.1, on, 0.08, Null, Null] # PCN position (AA)			
+    s_PCN: [2.5, on, 0.20, Null, Null] # PCN width (AA)	
+    d_CG: [0.8, on, 0.08, Null, Null] # CG position (AA)			
+    s_CG: [2.5, on, 0.20, Null, Null] # CG width (AA)	
+    #	Acyl chain Positions & Widths
+    dD_C: [28.2, on, 0.03, Null, Null] # Hydrocarbon thickness 2Dc (AA)
+    r_D_C: [0.15, on, Null, 0.055, 0.2] #	relative Dc std
+    s_CH2: [2.5, on, 0.02, Null, Null] # HC smearing (AA)
+    d_CH: [9.0, off, Null, 8, 10] # CH position (AA)
+    s_CH: [3.05, off, 0.02, Null, Null] #	CH width (AA)
+    s_CH3: [3.40, on, 0.05, Null, Null] #	CH3 width (AA)
+    #	Area & Volumes
+    r_PCN: [0.29, on, 0.02, Null, Null] # V_PCN/V_H				
+    r_CG: [0.45, on, 0.02, Null, Null] # V_GG/V_H					
+    r12: [0.81, off, Null, 0.73, 0.89] # V_CH/V_CH2
+    r32: [2.09, on, 0.02, Null, Null] #	V_CH3/V_CH2					
+    T: [37, off, Null, 32, 52] # Temperature (°C) 
+    V_H: [324, on, 0.02, Null, Null] # Lipid-head volume (AA³)
+    V_BW: [28.9, on, 0.01, 28.9, 30.2] # Bound-water volume (AA³)
+    #
+    Con: [180, on, Null, 150, 210] # Constant (AA⁻¹)

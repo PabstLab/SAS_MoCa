@@ -2,7 +2,7 @@ config:
    datafile: "/folderpath/datafilename.dat" # --> Datafile name and path 
    save-folder: "MYsample_01" # --> Data label for saving results (e.g. short description of the sample)
    qrange: [0.005,0.6] # --> Min. and max. q-value for plotting and fitting
-   model: IPLUV_Stk_SDP_POPCbase_RecBuf # --> Scattering model (choose among the available ones in Model_list.py)
+   model: pLUV_POPC_OmpLA_RecBuf # --> Scattering model (choose among the available ones in Model_list.py)
    temperature-init: 400 # --> Initial temperature (e.g. ~100 times min. X2)
    temperature-gain: 50 # --> Adjust temperature change rate (the higher the faster)
    target-X2: 2.5 # --> Target X^2 value
