@@ -8,7 +8,7 @@ Recent updates for bound-water molecules and thickness fluctuaions are included.
 The proteoliposome (pLUV) multisacle model is also based on SDP-SFF combination. $^4$
 
 * **Large unilamellar vesicles (LUVs)**: 
-    * 
+     
 * **Proteoliposomes (pLUVs)**: 
     * **pLUV_POPC_OmpLA_RecBuf** -> _Hosting LUVs_: POPC/POPG 95:5 mol/mol; _protein_: Outer membrane phospholipase A (OmpLA)
  monomer/dimer; suspension in 20 mM TRIS, 2mM EDTA
@@ -109,7 +109,7 @@ In the second block there is the list of the parameters required by a given scat
     * **low and high hard-boundaries** <br> Set the lower and higher boundaries accessible to the adjustable parameters. The _Null_ option is only valid if the prior information is not _Null_, as the lower and higher boundaries are automatically set to $\pm5\times\sigma_{prioir}$.
 
 > [!NOTE]
-> To simplify the creation of the fisrt input file, the repository contains a template file *Template_parameter-file.yml*.
+> To simplify the the initial use of _SAS_MoCa_ see the _examples_ folder for working examples and templates.
 
 ### Run the fitting routine
 
@@ -118,9 +118,6 @@ To fit data o preview the outcome of the chosen scattering model, open a command
 ```
 >python <path-to-SAS_MoCa>/sasmoca/sasmoca.py ./input_parameter-file.yml
 ```
-
-See the _examples_ folder for working examples and templates.
-<br>
 
 
 ### Output
