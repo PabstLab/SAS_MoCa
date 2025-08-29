@@ -145,7 +145,8 @@ The fitting results (or preview) are saved in the configured folder. Here the li
 
 ## If you use _SAS_MoCa_ repository please cite:
 
-Semeraro E. F., et al., in preparation 
+* Semeraro, E. F., & Pabst, G. SAS_MoCa (Version 1.0.1) [Computer software]. https://github.com/PabstLab/SAS_MoCa
+* Semeraro E. F., et al., in preparation 
 
 ## References
 
