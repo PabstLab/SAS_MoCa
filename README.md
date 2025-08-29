@@ -1,13 +1,22 @@
-# SAS_MoCa_Proteo
-Multiscale scattering model and analysis tool for large unilamellar proteoliposomes (pLUVs)
+# _SAS_MoCa_
 
-## Small-angle scattering analysis for proteoliposomes
+## A stochastic analysis tool for studying the structure of lipid membrane systems using small-angle scattering (SAS).
 
-Current supported model:
-* _Lipids_: POPC and DLPC
-* _Protein_: Outer membrane phospholipase A (OmpLA)
+#### Currently supported models
+Currently supported models of Large unilamellar vesicles (LUVs) are based on the combination of scattering density profile (SDP) $^1$ and separated form factor (SFF) $^2$ scattering models.
+Recent updates for bound-water molecules and thickness fluctuaions are included. $^3$ </br>
+The proteoliposome (pLUV) multisacle model is also based on SDP-SFF combination. $^4$
+
+* **Large unilamellar vesicles (LUVs)**: 
+    * 
+* **Proteoliposomes (pLUVs)**: 
+    * **pLUV_POPC_OmpLA_RecBuf** -> _Hosting LUVs_: POPC/POPG 95:5 mol/mol; _protein_: Outer membrane phospholipase A (OmpLA)
+ monomer/dimer; suspension in 20 mM TRIS, 2mM EDTA
+    * **pLUV_DLPC_OmpLA_RecBuf** -> _Hosting LUV_: DLPC/DLPG 95:5 mol/mol; _protein_: Outer membrane phospholipase A (OmpLA)
+ monomer/dimer; suspension in 20 mM TRIS, 2mM EDTA
  
-### Minimization algorithm: Adaptive Thermodynamic Simulated Annealing $^1$
+#### Minimization algorithm: 
+* Adaptive **Thermodynamic Simulated Annealing** (TSA) $^5$
 
 ## Installation
 
@@ -107,15 +116,12 @@ In the second block there is the list of the parameters required by a given scat
 To fit data o preview the outcome of the chosen scattering model, open a command-line terminal (idealyl on Linux Ubuntu), create and/or move to the folder where you want to save the results and type:
 
 ```
->python <path to SAS-MoCa_proteo>/Fit_TSA_mp.py ./input_parameter-file.yml
+>python <path-to-SAS_MoCa>/sasmoca/sasmoca.py ./input_parameter-file.yml
 ```
 
-In this example *input_parameter-file.yml* is located in the same working folder.
+See the _examples_ folder for working examples and templates.
 <br>
 
-> [!WARNING]
-> The script *Fit_TSA_mp.py* requires the python modules **multiprocessing** and **tqdm**. If multiple processing causes problems, serial computation can be used by either setting *processes=1* or running the script *Fit_TSA.py*.<br>
-> The current version of *Fit_TSA_mp.py* was not tested on MAC OS.
 
 ### Output
 
@@ -139,39 +145,15 @@ The fitting results (or preview) are saved in the configured folder. Here the li
 
 * **Results_X2_mean.dat** <br> Single $\chi^2$-value retrieved from the calculated mean results.
 
-### Scattering models
 
-The available scattering models are listed in *Model_list.py* and the relative scripts are in the subfolder *models*.
+## If you use _SAS_MoCa_ repository please cite:
 
-<br>
-
-The curretly tested modules are:
-* **PLUV_POPC.py** classes:  
-    * *pLUV_POPC_OmpLA_RecBuf* : scattering model for LUVs including homogeneously distributed OmpLA monomers or dimers, suspended in buffer consisiting of 20 mM TRIS and 2 mM EDTA. The fuction makes use of a SDP $^{2,3}$ modelling for 95:5 mol/mol POPC/POPG $^{4,5}$ bilayer combined with separated form-factor model $^6$ including polydispersity.
-* **PLUV_DLPC.py** classes:  
-    * *pLUV_DLPC_OmpLA_RecBuf* : scattering model for LUVs including homogeneously distributed OmpLA monomers or dimers, suspended in buffer consisiting of 20 mM TRIS and 2 mM EDTA. The fuction makes use of a SDP $^{2,3}$ modelling for 95:5 mol/mol DLPC/DLPG $^{4,5}$ bilayer combined with separated form-factor model $^6$ including polydispersity.    
-
-
-## For details about the scattering models and the minimization algorithm check:
-
-Ref
-
+Semeraro E. F., et al., in preparation 
 
 ## References
 
-
-1. de Vicente, J., Lanchares, J., & Hermida, R. (2003). Placement by thermodynamic simulated annealing. Physics Letters A, 317(5–6), 415–423. https://doi.org/10.1016/j.physleta.2003.08.070
-2. Kučerka, N., Nagle, J. F., Sachs, J. N., Feller, S. E., Pencer, J., Jackson, A., & Katsaras, J. (2008). Lipid Bilayer Structure Determined by the Simultaneous Analysis of Neutron and X-Ray Scattering Data. Biophysical Journal, 95(5), 2356–2367. https://doi.org/10.1529/biophysj.108.132662
+1. Kučerka, N., Nagle, J. F., Sachs, J. N., Feller, S. E., Pencer, J., Jackson, A., & Katsaras, J. (2008). Lipid Bilayer Structure Determined by the Simultaneous Analysis of Neutron and X-Ray Scattering Data. Biophysical Journal, 95(5), 2356–2367. https://doi.org/10.1529/biophysj.108.132662
+2. Pencer, J., Krueger, S., Adams, C. P., & Katsaras, J. (2006). Method of separated form factors for polydisperse vesicles. Journal of Applied Crystallography, 39(3), 293–303. https://doi.org/10.1107/S0021889806005255
 3. Frewein, M. P. K., Doktorova, M., Heberle, F. A., Scott, H. L., Semeraro, E. F., Porcar, L., & Pabst, G. (2021). Structure and Interdigitation of Chain-Asymmetric Phosphatidylcholines and Milk Sphingomyelin in the Fluid Phase. Symmetry, 13(8), 1441. https://doi.org/10.3390/sym13081441
-4. Kučerka, N., Nieh, M.-P., & Katsaras, J. (2011). Fluid phase lipid areas and bilayer thicknesses of commonly used phosphatidylcholines as a function of temperature. Biochimica et Biophysica Acta (BBA) - Biomembranes, 1808(11), 2761–2771. https://doi.org/10.1016/j.bbamem.2011.07.022
-5. Pan, J., Heberle, F. A., Tristram-Nagle, S., Szymanski, M., Koepfinger, M., Katsaras, J., & Kučerka, N. (2012). Molecular structures of fluid phase phosphatidylglycerol bilayers as determined by small angle neutron and X-ray scattering. Biochimica et Biophysica Acta (BBA) - Biomembranes, 1818(9), 2135–2148. https://doi.org/10.1016/j.bbamem.2012.05.007
-6. Pencer, J., Krueger, S., Adams, C. P., & Katsaras, J. (2006). Method of separated form factors for polydisperse vesicles. Journal of Applied Crystallography, 39(3), 293–303. https://doi.org/10.1107/S0021889806005255
-
-
-**For details about the scattering models and the minimization algorithm check:**
-
-Ref
-
-## If you use _SAS-MoCa_proteo_ repository please cite:
-
-Ref 
+4. Semeraro E. F., et al., in preparation
+5. de Vicente, J., Lanchares, J., & Hermida, R. (2003). Placement by thermodynamic simulated annealing. Physics Letters A, 317(5–6), 415–423. https://doi.org/10.1016/j.physleta.2003.08.070
