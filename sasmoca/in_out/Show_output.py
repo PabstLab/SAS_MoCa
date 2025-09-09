@@ -90,12 +90,8 @@ class PlotData:
 			self.axes[g].legend()
 		self.fig1.tight_layout()
 
-		#plt.savefig(self.save_folder, transparent=False, dpi=150, format='eps',
-        #metadata={'Creator': "SAS-MoCa_proteo"}, 
-		#bbox_inches='tight', facecolor='auto', edgecolor='auto')
-
 		plt.savefig(self.save_folder2, transparent=False, dpi=150, format='png',
-        metadata={'Creator': "SAS-MoCa_proteo"}, 
+        metadata={'Creator': "SAS_MoCa"}, 
 		bbox_inches='tight', facecolor='auto', edgecolor='auto')
 
 		#plt.show()
@@ -200,7 +196,7 @@ class PlotStat:
 		fig.tight_layout()
 
 		plt.savefig(self.save, transparent=False, dpi=100, format='png',
-       				metadata={'Creator': "SAS-MoCa_proteo"}, 
+       				metadata={'Creator': "SAS_MoCa"}, 
 					bbox_inches='tight', facecolor='auto', edgecolor='auto')
 
 		#plt.show()
@@ -242,7 +238,7 @@ class PlotStat:
 		fig.tight_layout()
 
 		plt.savefig(self.save, transparent=False, dpi=150, format='png',
-      				metadata={'Creator': "SAS-MoCa_proteo"}, 
+      				metadata={'Creator': "SAS_MoCa"}, 
 					bbox_inches='tight', facecolor='auto', edgecolor='auto')
 
 		#plt.show()

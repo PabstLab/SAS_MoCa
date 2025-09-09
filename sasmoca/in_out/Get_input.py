@@ -114,10 +114,14 @@ class Load_input:
 		else:
 			raise Exception(self.cfg['plot-only'], "must be Boolean")
 
-		if self.cfg['state']=="monomer" or self.cfg['state']=="dimer":
-				pass
+		# Check if 'state' parameter (for pLUVs) exists 
+		if 'state' in self.cfg:
+			if self.cfg['state']=="monomer" or self.cfg['state']=="dimer":
+					pass
+			else:
+				raise Exception(self.cfg['state'], "must be either (monomer) or (dimer)")
 		else:
-			raise Exception(self.cfg['state'], "must be either (monomer) or (dimer)")
+			pass
 		
 		# print configuration recap
 		lmax = max(len(key) for key, value in self.cfg.items())

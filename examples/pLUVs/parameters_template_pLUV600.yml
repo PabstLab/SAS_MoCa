@@ -2,7 +2,7 @@ config:
    datafile: "./data_pLUVs_POPC_OmpLA_PL600.dat"  # POPC-OmpLA pLUV dataset; Nominal x_p=1/600; see [Semeraro et al., in submission]
    save-folder: "POPC-PLUV600_01"
    qrange: [0.005,0.6] 
-   model: pLUV_DLPC_OmpLA_RecBuf 
+   model: pLUV_POPC_OmpLA_RecBuf 
    temperature-init: 400
    temperature-gain: 50 
    target-X2: 5.0

@@ -76,8 +76,8 @@ def SimAnnealing ( input_list ):
 	# set number of free parameters
 	N_Free = 0
 	for v in range(len(par_dict['value'])):
-		if par_dict['value'][v]: N_Free+=1
-
+		if par_dict['free'][v]: N_Free+=1
+		
 	# initialize starting and best parameter sets
 	par_start	= par_dict['value'].copy()
 	par_MIN 	= par_dict['value'].copy()
@@ -90,7 +90,7 @@ def SimAnnealing ( input_list ):
 	#------------------------ Evaluate first I(q) and X^2
 	intensity_init = function(data[:,0], par_start, state)
 	I = intensity_init.intensity()
-	X2 = X2function(data[:,0],data[:,1],I,data[:,2],N_Free)
+	X2 = X2function(data[:,0], data[:,1], I, data[:,2], N_Free)
 	X2_min = X2
 
 	#####################################################

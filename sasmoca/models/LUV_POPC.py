@@ -88,7 +88,7 @@ def SLDs_POPC(T, V_Chol, V_PCN, V_CG, V_PG2, V_PG1, V_CH, V_CH2, V_CH3, V_BW) :
 class LUV_POPC:
 
 ##################
-	def __init__(self, q, PAR) :
+	def __init__(self, q, PAR, _) :
 		self.q = q
 		[self.Norm, self.nv, 
 		self.Rm, self.Z, 

@@ -50,11 +50,18 @@ if __name__ == "__main__":
 	parameters = input.get_parameters()
 
 	# Read model function and plotting options
-	(function, _) = ChooseFunction( config['model'] )
+	(function, proteo) = ChooseFunction( config['model'] )
 
 	# Initialize control to print progression for each iteration
 	if config['processes'] == 1 :	prt_progress = 1
 	else :							prt_progress = 0
+
+	# Print 'state' of the virtual proteins in pLUVs
+	# or initialize a fictive 0 state for LUVs
+	if proteo:
+		print('############################', config['state'])
+	else:
+		config['state'] = 0
 
 	############################################################ Read & Select Data
 	data_init = Load_data( config['datafile'], config['qrange'], config['data-binning'] )
@@ -73,8 +80,7 @@ if __name__ == "__main__":
 		for v in range(len(parameters['value'])):
 			par_plot.append(parameters.iloc[v,1])
 
-		print('############################', config['state'])
-		I_plot = function(data[:,0],par_plot,config['state']).intensity()
+		I_plot = function(data[:,0], par_plot, config['state']).intensity()
 
 		PlotData(config['qrange'], config['save-folder']).plot_fit(data, I_plot)	
 
@@ -93,6 +99,7 @@ if __name__ == "__main__":
 				fit_inputs = [	data,
 								parameters['name'].to_list(), parameters['value'].to_list(), parameters['free'].to_list(), parameters['prior'].to_list(), parameters['low_l'].to_list(), parameters['high_l'].to_list(),
 								function, config['temperature-init'], config['temperature-gain'], config['target-X2'], config['state'], prt_progress]	
+
 				# Run the minimization routine		
 				(par_res, X2_min) = SimAnnealing( fit_inputs )	
 
@@ -120,7 +127,8 @@ if __name__ == "__main__":
 			# List of inputs for minimization routine
 			fit_inputs = [	(data,
 							parameters['name'].to_list(), parameters['value'].to_list(), parameters['free'].to_list(), parameters['prior'].to_list(), parameters['low_l'].to_list(), parameters['high_l'].to_list(),
-							function, config['temperature-init'], config['temperature-gain'], config['target-X2'], config['state'], prt_progress)	]			
+							function, config['temperature-init'], config['temperature-gain'], config['target-X2'], config['state'], prt_progress)]			
+				
 			# Create a pool of processes with the number of processors
 			pool = multiprocessing.Pool(processes=config['processes'])
 
@@ -207,7 +215,7 @@ if __name__ == "__main__":
 		par_plot = []
 		for p in range(len(parameters['name'])):
 			par_plot.append(parameters['mean'].iloc[p])
-		I_plot = function(data[:,0],par_plot,config['state']).intensity()
+		I_plot = function(data[:,0], par_plot, config['state']).intensity()
 		PlotData(config['qrange'], config['save-folder']).plot_fit( data, I_plot )	
 
 		#------ plot and save histograms
@@ -217,8 +225,8 @@ if __name__ == "__main__":
 		#------ compute equivalent X^2 from the set of mean results
 		N_Free = 0
 		for v in range(len(parameters['value'])):
-			if parameters.iloc[v,2]!="f" : N_Free+=1
-		X2_mean = X2function(data[:,0],data[:,1],I_plot,data[:,2],N_Free)
+			if parameters.iloc[v,2]: N_Free+=1
+		X2_mean = X2function(data[:,0], data[:,1], I_plot, data[:,2], N_Free)
 		X2_mean_to_print = np.empty(1,dtype=float)
 		X2_mean_to_print[0] = X2_mean		
 		

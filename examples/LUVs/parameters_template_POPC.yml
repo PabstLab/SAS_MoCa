@@ -8,7 +8,7 @@ config:
    target-X2: 0.005
    data-binning: 10
    error-scale: 1
-   iterations: 420
+   iterations: 42
    processes: 64
    plot-only: off 
 

@@ -15,17 +15,20 @@ from models.virtual_barrel import (Stacked_disks_singleSLD,
 def ChooseFunction (function ):
 	" Choose Function "
 	
-	pltOptions = {  }
+	proteo = False
 
 ######################
 
-	elif function=="LUV_POPC":
+	if function=="LUV_POPC":
 		intensity	= LUV_POPC
 
 	elif function=="pLUV_POPC_OmpLA_RecBuf":
 		intensity	= pLUV_POPC_OmpLA_RecBuf
+		proteo = True
+
 	elif function=="pLUV_DLPC_OmpLA_RecBuf":
 		intensity	= pLUV_DLPC_OmpLA_RecBuf
+		proteo = True
 
 	elif function=="Stacked_disks_singleSLD":
 		intensity	= Stacked_disks_singleSLD		
@@ -34,7 +37,7 @@ def ChooseFunction (function ):
 	else:
 		sys.exit("--- This function name does not exist")
 	
-	return ( intensity, pltOptions )
+	return ( intensity, proteo )
 	
 
 ###########################################################################################
