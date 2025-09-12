@@ -2,7 +2,6 @@
 
 import os
 import sys
-import time
 import math
 import pandas as pd
 import yaml
@@ -63,10 +62,6 @@ class Load_input:
 			sys.exit("--- Too many arguments")
 		elif len(ARGV)==1:
 			sys.exit("--- Specify the parameters file")
-
-		print("-----------------------------------------------------")
-		localtime = time.asctime( time.localtime(time.time()) )
-		print(localtime)
 
 		file_exists(ARGV[1], "\n-- Parameters File")
 
@@ -133,16 +128,45 @@ class Load_input:
 	
 ###########################################################################################
 	def get_parameters ( self ):
-		'Load parameter matrix'	
+		'Load parameter matrix'
 
 		for index, row in self.param.iterrows():
+
+			# Check if the parameter initialization is a number
+			if not isinstance(row['value'], (int, float)):
+				raise ValueError("Initialization value must be a float number (parameter initialization)")
+
+			# Check if the free/fixed entry is boolean
+			if not isinstance(row['free'], (bool)):
+				raise ValueError("Free/fix entry must be a boolean value (on/off or True/False)")
+
+			# Check if the prior entry is a number or a nan value
+			if not isinstance(row['prior'], (float)):
+				raise ValueError("The relative sigma of the prior must be either a float value or Null (NAN)")			
+
+			# Check if the parameter initialization is a number
+			if not isinstance(row['high_l'], (int, float)):
+				raise ValueError("High boundary must be either a float value or Null (NAN)")
+			
+			# Check if the baudary entries are numbers or a nan values, and if they are consistent
+			if not isinstance(row['low_l'], (float)):
+				raise ValueError("Low boundary must be either a float value or Null (NAN)")
+			#elif not isinstance(row['high_l'], (float)):
+			#	raise ValueError("High boundary must be either a float value or Null (NAN)")
+			elif (not math.isnan(row['low_l']) and math.isnan(row['high_l'])) or (math.isnan(row['low_l']) and not math.isnan(row['high_l'])):
+				raise ValueError("Both low and high limits must be either float values or Null (NAN)")
+
+			# Check if at leat one among boundaries or priors are set
+			if math.isnan(row['low_l']) and math.isnan(row['high_l']) and math.isnan(row['prior']):
+				raise ValueError("set at least one between prior and low-high bondaries entries")
+
+			# Overwrite lw and high limits is the prior is set
 			if not math.isnan(row['prior']):
 				self.param.at[index, 'low_l'] =  row['value']*(1-5*row['prior'])
 				self.param.at[index, 'high_l'] = row['value']*(1+5*row['prior'])
-			#else:
-				#self.param.at[index, 'prior'] =  0
 
-		print("\n-- Parameter matrix:\n", self.param)
+
+		print("\n# Parameter matrix:\n", self.param)
 
 		return self.param
 	
