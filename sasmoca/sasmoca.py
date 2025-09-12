@@ -7,6 +7,7 @@ import pandas as pd
 from scipy import stats
 import multiprocessing
 from tqdm import tqdm
+import time
 
 from in_out import (Load_input, Load_data,
 					PlotData, PlotStat)
@@ -31,7 +32,11 @@ def X2function(Q,IDATA,I,ERR,N):
 # Protect entry point for multiprocessing
 if __name__ == "__main__":
 
-	print("\n--- SAS_MoCa Version", __version__)
+	print("-----------------------------------")
+	print("# SAS_MoCa Version", __version__)
+	localtime = time.asctime( time.localtime(time.time()) )
+	print("#", localtime)
+	print("-----------------------------------")
 
 	# Set the start method for new processes
 	multiprocessing.set_start_method('spawn')
