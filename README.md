@@ -138,7 +138,7 @@ The fitting results (or preview) are saved in the configured folder. Here the li
 
 * **Results_pearsonr.dat** <br> Symmetric matrix containing the Pearson correlation coefficient for the adjustable parameters  (only saved if the number of iterations is higher than 10).
 
-* **Results_recap.dat** <br> Summary of the input parameter table (from name to boiundaries) that includes two new columns of results: mean and standard deviation for each adjustable parameter.
+* **Results_recap.dat** <br> Summary of the input parameter table (from name to boundaries) that includes two new columns for the results: **mean** and **standard deviation** for each adjustable parameter. Additionally, there is the list of calculated values (_marked with *_) such as area per lipid $A_L$, Luzzati thickness $D_B$, phosphate-to-phosphate distance $D_{pp}$ (in the case of SAXS), and estimate of number of water molecules per headgroup $n_W$.
 
 * **Results_X2_mean.dat** <br> Single $\chi^2$-value retrieved from the calculated mean results.
 

@@ -226,11 +226,6 @@ if __name__ == "__main__":
 		PlotData(config['qrange'], config['save-folder']).plot_fit( data, I_plot )	
 		#------ plot data and fitted model
 		_, n_W, D_pp, D_B, A_L = res_function.SDP_profile()
-		rel_err_dD_C = float(parameters.loc[parameters['name']=='dD_C','stdev']/parameters.loc[parameters['name']=='dD_C','mean'])
-		new_row = pd.DataFrame({"name": ["A_L*", "D_B*", "D_pp*", "n_W*"], 
-						  		"mean": [A_L, D_B, D_pp, n_W], 
-								"stdev": [A_L*rel_err_dD_C, D_B*rel_err_dD_C, "-", "-"]})
-		parameters = pd.concat([parameters, new_row], ignore_index=True)
 
 		#------ plot and save histograms
 		if config['iterations'] >= 10:
@@ -248,6 +243,13 @@ if __name__ == "__main__":
 		if config['iterations'] >= 2: PlotStat(results_collection, parameters, "./"+config['save-folder']+"/Plot_histogram_X2.png").histogram_X2(X2_mean)
 		
 		#------ save results
+
+		# Calculate extra physical quantities and add it to parameters dataframe
+		rel_err_dD_C = float(parameters.loc[parameters['name']=='dD_C','stdev']/parameters.loc[parameters['name']=='dD_C','mean'])
+		new_row = pd.DataFrame({"name": ["A_L*", "D_B*", "D_pp*", "n_W*"], 
+						  		"mean": [A_L, D_B, D_pp, n_W], 
+								"stdev": [A_L*rel_err_dD_C, D_B*rel_err_dD_C, "-", "-"]})
+		parameters = pd.concat([parameters, new_row], ignore_index=True)
 		
 		# Global X^2 (from mean values)
 		np.savetxt("./"+config['save-folder']+"/Results_X2_mean.dat", X2_mean_to_print, header='X2 from mean values')		
