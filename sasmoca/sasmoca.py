@@ -216,12 +216,16 @@ if __name__ == "__main__":
 		print("\n----- Results -----\n")
 		print(parameters)
 
-		#------ plot data and fitted model
+		#------ initilize object to calculate final intensity and extra parameters
 		par_plot = []
 		for p in range(len(parameters['name'])):
 			par_plot.append(parameters['mean'].iloc[p])
-		I_plot = function(data[:,0], par_plot, config['state']).intensity()
+		res_function = function(data[:,0], par_plot, config['state'])	
+		#------ plot data and fitted model
+		I_plot = res_function.intensity()
 		PlotData(config['qrange'], config['save-folder']).plot_fit( data, I_plot )	
+		#------ plot data and fitted model
+		_, n_W, D_pp, D_B, A_L = res_function.SDP_profile()
 
 		#------ plot and save histograms
 		if config['iterations'] >= 10:
@@ -239,6 +243,13 @@ if __name__ == "__main__":
 		if config['iterations'] >= 2: PlotStat(results_collection, parameters, "./"+config['save-folder']+"/Plot_histogram_X2.png").histogram_X2(X2_mean)
 		
 		#------ save results
+
+		# Calculate extra physical quantities and add it to parameters dataframe
+		rel_err_dD_C = float(parameters.loc[parameters['name']=='dD_C','stdev']/parameters.loc[parameters['name']=='dD_C','mean'])
+		new_row = pd.DataFrame({"name": ["A_L*", "D_B*", "D_pp*", "n_W*"], 
+						  		"mean": [A_L, D_B, D_pp, n_W], 
+								"stdev": [A_L*rel_err_dD_C, D_B*rel_err_dD_C, "-", "-"]})
+		parameters = pd.concat([parameters, new_row], ignore_index=True)
 		
 		# Global X^2 (from mean values)
 		np.savetxt("./"+config['save-folder']+"/Results_X2_mean.dat", X2_mean_to_print, header='X2 from mean values')		
@@ -249,6 +260,11 @@ if __name__ == "__main__":
 
 	# Metadata (config dictionary)
 	with open("./"+config['save-folder']+"/Results_metadata.dat", 'w') as fl:
+		fl.writelines("-----------------------------------\n")
+		fl.writelines("# SAS_MoCa Version "+ str(__version__)+"\n")
+		#localtime = time.asctime( time.localtime(time.time()) )
+		fl.writelines("# "+ str(localtime)+"\n")
+		fl.writelines("-----------------------------------\n")
 		for c in range(len(config)):
 			fl.writelines( str(list(config.keys())[c]) + "\t" + str(list(config.values())[c]) + "\n" )
 
