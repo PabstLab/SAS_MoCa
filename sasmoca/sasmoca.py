@@ -167,6 +167,17 @@ if __name__ == "__main__":
 	#### Build statistics and save results
 	if not config['plot-only']:
 
+		#------ Prepare the metadata header to be attached to the following output data files.
+		#------ This is a summary of the configuration file.
+		def add_metadata(file):
+			file.writelines("# -----------------------------------\n")
+			file.writelines("# SAS_MoCa Version "+ str(__version__)+"\n")
+			file.writelines("# "+ str(localtime)+"\n")
+			file.writelines("# -----------------------------------\n")
+			for c in range(len(config)):
+				file.writelines( str(list(config.keys())[c]) + ":\t" + str(list(config.values())[c]) + "\n" )		
+			file.writelines("# -----------------------------------\n")
+
 		#------ Fill collected results into the dataframe "results_collection"
 		dict = {}
 		for p in range(len(parameters['name'])):
@@ -193,8 +204,12 @@ if __name__ == "__main__":
 					pearson_correlation[i_n][i_m], _  =  stats.pearsonr(results_collection[n], results_collection[m])
 			pearson_correlation = pd.DataFrame(pearson_correlation, index=names, columns=names)
 			# Save Pearson correlation coefficient matrix
-			print("\n## Pearson correlation coefficients\n",pearson_correlation)
-			pearson_correlation.to_csv("./"+config['save-folder']+"/Results_pearsonr.dat", sep='\t', na_rep='-', header=True, index=True, mode='w')
+			with open("./"+config['save-folder']+"/correlations.dat", 'w') as fl:
+				add_metadata(fl)
+				fl.writelines("# Pearson correlation coefficient matrix,\n")
+				fl.writelines("# see scipy.stats.pearsonr() docs for details.\n")
+				fl.writelines("# -----------------------------------\n")
+			pearson_correlation.to_csv("./"+config['save-folder']+"/correlations.dat", sep='\t', na_rep='-', header=True, index=True, mode='a')
 
 		#------ Add X2 column to "results_collection"
 		results_collection['X2'] = collection_X2
@@ -213,7 +228,7 @@ if __name__ == "__main__":
 		parameters['stdev'] = stdv
 
 		#------ print parameters recap and results
-		print("\n----- Results -----\n")
+		print("\n----- Results recap -----\n")
 		print(parameters)
 
 		#------ initilize object to calculate final intensity and extra parameters
@@ -236,13 +251,11 @@ if __name__ == "__main__":
 		for v in range(len(parameters['value'])):
 			if parameters.iloc[v,2]: N_Free+=1
 		X2_mean = X2function(data[:,0], data[:,1], I_plot, data[:,2], N_Free)
-		X2_mean_to_print = np.empty(1,dtype=float)
-		X2_mean_to_print[0] = X2_mean		
 		
 		#------ plot and save X^2-histogram
 		if config['iterations'] >= 2: PlotStat(results_collection, parameters, "./"+config['save-folder']+"/Plot_histogram_X2.png").histogram_X2(X2_mean)
 		
-		#------ save results
+		#------------------ Saving results
 
 		# Calculate extra physical quantities and add it to parameters dataframe
 		rel_err_dD_C = float(parameters.loc[parameters['name']=='dD_C','stdev']/parameters.loc[parameters['name']=='dD_C','mean'])
@@ -251,22 +264,25 @@ if __name__ == "__main__":
 								"stdev": [A_L*rel_err_dD_C, D_B*rel_err_dD_C, "-", "-"]})
 		parameters = pd.concat([parameters, new_row], ignore_index=True)
 		
-		# Global X^2 (from mean values)
-		np.savetxt("./"+config['save-folder']+"/Results_X2_mean.dat", X2_mean_to_print, header='X2 from mean values')		
-		# Parameter set and info: from start values to results
-		parameters.to_csv("./"+config['save-folder']+"/Results_recap.dat", sep='\t', na_rep='-', header=True, index=False, mode='w', index_label=False)
-		# Collection of results from each instance
-		results_collection.to_csv("./"+config['save-folder']+"/Results_collection.dat", sep='\t', na_rep='-', header=True, index=True, mode='w')
+		#------ Recap of results. It includes parameter initialization
+		with open("./"+config['save-folder']+"/results_recap.dat", 'w') as fl:
+			add_metadata(fl)
+			fl.writelines("# Table of results (mean and stdev) along with parameter initialization.\n")
+			fl.writelines("# * Calculated values\n")
+			fl.writelines("# X^2 from mean values: "+str(X2_mean)+"\n")
+			fl.writelines("# -----------------------------------\n")
+		parameters.to_csv("./"+config['save-folder']+"/results_recap.dat", sep='\t', na_rep='-', header=True, index=False, mode='a', index_label=False)
+		
+		#------ Collection of the result parameters (means only) for each iteration
+		with open("./"+config['save-folder']+"/iterations_collection.dat", 'w') as fl:
+			add_metadata(fl)
+			fl.writelines("# Collection of the result parameters (means only) for each iteration.\n")
+			fl.writelines("# -----------------------------------\n")
+		results_collection.to_csv("./"+config['save-folder']+"/iterations_collection.dat", sep='\t', na_rep='-', header=True, index=True, mode='a')
 
-	# Metadata (config dictionary)
-	with open("./"+config['save-folder']+"/Results_metadata.dat", 'w') as fl:
-		fl.writelines("-----------------------------------\n")
-		fl.writelines("# SAS_MoCa Version "+ str(__version__)+"\n")
-		#localtime = time.asctime( time.localtime(time.time()) )
-		fl.writelines("# "+ str(localtime)+"\n")
-		fl.writelines("-----------------------------------\n")
-		for c in range(len(config)):
-			fl.writelines( str(list(config.keys())[c]) + "\t" + str(list(config.values())[c]) + "\n" )
-
-	# Save data and model scattering intensity ( 0: q, 1: I_data, 2: I_err, 3: I_fit)
-	np.savetxt("./"+config['save-folder']+"/Results_intensity.dat", np.column_stack((data,I_plot)), header='0: q, 1: I_data, 2: I_err, 3: I_fit')	
+	#------ Save data and model scattering intensity ( 0: q, 1: I_data, 2: I_err, 3: I_fit)
+	results_intensity= pd.DataFrame(np.column_stack((data,I_plot)), columns=['q', 'I_data', 'I_err', 'I_fit'])
+	results_intensity=results_intensity.set_index('q')
+	with open("./"+config['save-folder']+"/plot_intensity.dat", 'w') as fl:
+		add_metadata(fl)
+	results_intensity.to_csv("./"+config['save-folder']+"/plot_intensity.dat", sep='\t', na_rep='-', header=True, index=True, mode='a')
