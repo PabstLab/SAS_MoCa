@@ -121,27 +121,26 @@ To fit data o preview the outcome of the chosen scattering model, open a command
 
 
 ### Output
-
 The fitting results (or preview) are saved in the configured folder. Here the list of saved files:
+
+#### Text files
+Each of the following files includes a header containing a timestamp, the version used, and a summary of the configuration used to fit the data.
+
+* **correlations.dat** <br> It contains a symmetric matrix of Pearson's correlation coefficients for the adjustable parameters. _This file is only created if the number of iterations is greater than 10!_.
+
+* **iterations_collection.dat** <br> Collection of the result parameters (means only) for each iteration. Fixed parameters are also included.
+
+* **plot_intensity.dat** <br> It contains the data points used for fitting and the resulting scattering intensity; column 1: $q_i$, column 2:  $I_i^{exp}$, column 3: $\sigma_i$, column 4: $I^{model}(q_i)$.
+
+* **results_recap.dat** <br> Summary of the input parameter table (from name to boundaries) that includes two new columns for the results: **mean** and **standard deviation** for each adjustable parameter. Fixed parameters are also included. Additionally, there is the list of calculated values (_marked with *_) such as area per lipid $A_L$, Luzzati thickness $D_B$, phosphate-to-phosphate distance $D_{pp}$ (in the case of SAXS), and estimate of number of water molecules per headgroup $n_W$.
+
+#### Plots
 
 * **Plot.png** <br> Plot of data and fitted scattering curve, it includes a comparison between relative experimental error and relative deviation from the model.
 
 * **Plot_histograms.png** <br> Histograms showing the distribution obtained for each single adjustable parameter (only saved if the number of iterations is higher than 10). The plots include a kernel-density visualization of distributions, marks pointing the mean ands standard deviations, and the Gaussian prior profiles when present.
 
 * **Plot_histogram_X2.png** <br> Histograms showing the distribution obtained for the best $\chi^2$ values. The plot includes a kernel-density visualization of the distribution.
-
-* **Results_collection.dat** <br> List of the set of resulting parameter for each iterations. 
-
-* **Results_intensity.dat** <br> File containing the data points used for fitting and the resulting scattering intensity; column 1: $q_i$, column 2:  $I_i^{exp}$, column 3: $\sigma_i$, column 4: $I^{model}(q_i)$.
-
-* **Results_metadata.dat** <br> Summary of the configuration used to fit the data.
-
-* **Results_pearsonr.dat** <br> Symmetric matrix containing the Pearson correlation coefficient for the adjustable parameters  (only saved if the number of iterations is higher than 10).
-
-* **Results_recap.dat** <br> Summary of the input parameter table (from name to boundaries) that includes two new columns for the results: **mean** and **standard deviation** for each adjustable parameter. Additionally, there is the list of calculated values (_marked with *_) such as area per lipid $A_L$, Luzzati thickness $D_B$, phosphate-to-phosphate distance $D_{pp}$ (in the case of SAXS), and estimate of number of water molecules per headgroup $n_W$.
-
-* **Results_X2_mean.dat** <br> Single $\chi^2$-value retrieved from the calculated mean results.
-
 
 ## If you use _SAS_MoCa_ repository please cite:
 
