@@ -8,12 +8,10 @@ Recent updates for bound-water molecules and thickness fluctuaions are included.
 The proteoliposome (pLUV) multisacle model is also based on SDP-SFF combination. $^4$
 
 * **Large unilamellar vesicles (LUVs)**: 
-     
+     * **LUV_POPC** -> _LUVs_: POPC/POPG 95:5 mol/mol; suspension in pure water
 * **Proteoliposomes (pLUVs)**: 
-    * **pLUV_POPC_OmpLA_RecBuf** -> _Hosting LUVs_: POPC/POPG 95:5 mol/mol; _protein_: Outer membrane phospholipase A (OmpLA)
- monomer/dimer; suspension in 20 mM TRIS, 2mM EDTA
-    * **pLUV_DLPC_OmpLA_RecBuf** -> _Hosting LUV_: DLPC/DLPG 95:5 mol/mol; _protein_: Outer membrane phospholipase A (OmpLA)
- monomer/dimer; suspension in 20 mM TRIS, 2mM EDTA
+    * **pLUV_POPC_OmpLA_RecBuf** -> _Hosting LUVs_: POPC/POPG 95:5 mol/mol; _protein_: Outer membrane phospholipase A (OmpLA) monomer/dimer; suspension in 20 mM TRIS, 2mM EDTA
+    * **pLUV_DLPC_OmpLA_RecBuf** -> _Hosting LUV_: DLPC/DLPG 95:5 mol/mol; _protein_: Outer membrane phospholipase A (OmpLA) monomer/dimer; suspension in 20 mM TRIS, 2mM EDTA
  
 #### Minimization algorithm: 
 * Adaptive **Thermodynamic Simulated Annealing** (TSA) $^5$
