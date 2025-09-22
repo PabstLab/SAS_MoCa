@@ -2,6 +2,7 @@
 
 import numpy as np
 from scipy import stats
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 ###########################################################################################
@@ -34,7 +35,8 @@ class PlotData:
 
 		bk_color = '#222222' #'#2E3436'
 		label_color = '#D3D7CF'
-		
+		self.point_edge = '#551000'		
+
 		self.axes[0].set_yscale('log', base=10)
 		self.axes[0].set_title(save, color=label_color, fontsize=16)
 
@@ -53,17 +55,17 @@ class PlotData:
 		self.axes[0].set_ylabel('$I(q)$ (mm$^{-1}$)', fontsize=14, color=label_color)
 		self.axes[1].set_ylabel('relative deviation $|I(q)-f(q)|/I(q)$', fontsize=14, color=label_color)
 	
-		self.save_folder = "./"+str(save)+"/Plot.eps"
-		self.save_folder2 = "./"+str(save)+"/Plot.png"
+		#self.save_folder = "./"+str(save)+"/plot.eps"
+		self.save_folder = "./"+str(save)+"/plot.png"
+
 
 ###########################################################################################
 
 	def plot_data ( self, data ):	
 
 		point_color = ['orange', 'magenta', 'lightblue']
-		point_edge = '#551000'		
 
-		self.axes[0].errorbar(data[0][:,0], data[0][:,1], yerr=data[0][:,2], fmt='o', color=point_color[0], markeredgecolor=point_edge, markersize=5, linewidth=3.0, label='SAXS data', zorder=0)		
+		self.axes[0].errorbar(data[0][:,0], data[0][:,1], yerr=data[0][:,2], fmt='o', color=point_color[0], markeredgecolor=self.point_edge, markersize=5, linewidth=3.0, label='SAXS data', zorder=0)		
 
 		self.fig1.tight_layout()
 
@@ -74,14 +76,13 @@ class PlotData:
 	def plot_fit ( self, data, I_plot ):	
 
 		point_color = ['orange', 'magenta', 'blue', 'green', 'orange']
-		point_edge = '#551000'		
 		line_color = ['red', 'violet', 'lightblue', 'lightgreen', 'red']
 
-		self.axes[0].errorbar(data[:,0], data[:,1], yerr=data[:,2], fmt='o', color=point_color[0], markeredgecolor=point_edge, markersize=5, linewidth=1.0, label='SAXS data', zorder=0)		
+		self.axes[0].errorbar(data[:,0], data[:,1], yerr=data[:,2], fmt='o', color=point_color[0], markeredgecolor=self.point_edge, markersize=5, linewidth=1.0, label='SAXS data', zorder=0)		
 		self.axes[0].plot(data[:,0], I_plot, linewidth=2.0, color=line_color[0], ls='-', label='Best fit', zorder=1)
 
 		self.axes[1].axhline(y=0, linewidth=2)		
-		self.axes[1].scatter(data[:,0], data[:,2]/data[:,1], marker='o', color=point_color[0], edgecolor=point_edge, s=18, linewidth=1.2, label='Exp. error', zorder=0)		
+		self.axes[1].scatter(data[:,0], data[:,2]/data[:,1], marker='o', color=point_color[0], edgecolor=self.point_edge, s=18, linewidth=1.2, label='Exp. error', zorder=0)		
 		self.axes[1].plot(data[:,0], np.abs(I_plot-data[:,1])/data[:,1], linewidth=2.0, color=line_color[0], ls='-', label='Best fit', zorder=1)
 
 		self.axes[0].set_ylim([0.1*np.min(data[:,1]),10*np.max(data[:,1])])
@@ -90,7 +91,7 @@ class PlotData:
 			self.axes[g].legend()
 		self.fig1.tight_layout()
 
-		plt.savefig(self.save_folder2, transparent=False, dpi=150, format='png',
+		plt.savefig(self.save_folder, transparent=False, dpi=150, format='png',
         metadata={'Creator': "SAS_MoCa"}, 
 		bbox_inches='tight', facecolor='auto', edgecolor='auto')
 
@@ -105,7 +106,7 @@ class PlotData:
 class PlotStat:
 	'Plot Statistics'
 
-	def __init__ ( self , results, parameters, save ):
+	def __init__ ( self , results, parameters):
 
 		# restrict the list to free parameteres only
 		self.name=[]
@@ -126,25 +127,26 @@ class PlotStat:
 				self.stdev.append(parameters['stdev'].iloc[i])        
 
 		self.results = results
-		self.save = save
+
+		# Define colors
+		self.label_color = '#D3D7CF'
+		self.hist_color = '#BB86FC'
+		self.hist_edge = '#000000' 	
+		self.kde_color = '#F0E4FD'
+		self.bk_color = '#222222' #'#2E3436'
 
 ###########################################################################################
 
-	def histograms(self):
-	
+	def histograms(self, save):
+		""" Plot the histograms of collected adjustable paramters"""
+
+		prior_color = '#F8F042'
+		res_color = '#FF0000'
+
 		# reshape the free parametr list to a i,j-matrix to plot
 		cols=5
 		rows=int(len(self.name)/cols)+1
 		left = rows*cols-len(self.name)
-
-		bk_color = '#222222' #'#2E3436'
-		label_color = '#D3D7CF'
-		
-		hist_color = '#BB86FC'
-		hist_edge = '#000000' 	
-		kde_color = '#F0E4FD'
-		prior_color = '#F8F042'
-		res_color = '#FF0000'
 
 		name_reshaped = reshape(self.name, cols, rows)
 		start_reshaped = reshape(self.start, cols, rows)
@@ -155,7 +157,7 @@ class PlotStat:
 		stdev_reshaped = reshape(self.stdev, cols, rows)
 
 		# initialize plot
-		fig, axs = plt.subplots(rows, cols, figsize=(4.*cols, 4.*rows), facecolor='#2E3436')
+		fig, axs = plt.subplots(rows, cols, figsize=(3.*cols, 3.*rows), facecolor='#2E3436')
 
 		for i in range(len(name_reshaped)):
 			if i!=rows-1 :
@@ -165,13 +167,13 @@ class PlotStat:
 			for j in range(end):
 
 				# plot options	
-				axs[i][j].set_facecolor(bk_color)	
+				axs[i][j].set_facecolor(self.bk_color)	
 
-				axs[i][j].tick_params(axis='both', which='major', labelsize=14, colors=label_color)
-				axs[i][j].tick_params(axis='both', which='minor', labelsize=8, colors=label_color)		
+				axs[i][j].tick_params(axis='both', which='major', labelsize=12, colors=self.label_color)
+				axs[i][j].tick_params(axis='both', which='minor', labelsize=6, colors=self.label_color)		
 
 				axs[i][j].set_xlim(low_l_reshaped[i][j],high_l_reshaped[i][j])
-				axs[i][j].set_xlabel(name_reshaped[i][j], color=label_color)
+				axs[i][j].set_xlabel(name_reshaped[i][j], color=self.label_color)
 				
 				# set x-range within boundaries
 				x = np.arange(low_l_reshaped[i][j],high_l_reshaped[i][j],(high_l_reshaped[i][j]-low_l_reshaped[i][j])/100)
@@ -179,10 +181,10 @@ class PlotStat:
 				y, _, _ = plt.hist(self.results[name_reshaped[i][j]], density=True)
 
 				# generate and plot histogram
-				axs[i][j].hist(self.results[name_reshaped[i][j]], density=True, facecolor=hist_color, edgecolor=hist_edge, linewidth=2.5, zorder=0)
+				axs[i][j].hist(self.results[name_reshaped[i][j]], density=True, facecolor=self.hist_color, edgecolor=self.hist_edge, linewidth=2.5, zorder=0)
 				# generate and plot histogram kernel density
 				kde = stats.gaussian_kde(self.results[name_reshaped[i][j]])
-				axs[i][j].plot(x,kde(x), ls='-', lw=3.5, color=kde_color, alpha=1.0, zorder=1)
+				axs[i][j].plot(x,kde(x), ls='-', lw=3.5, color=self.kde_color, alpha=1.0, zorder=1)
 				
 				# generate and plot priors
 				if prior_reshaped[i][j]!=0 : 
@@ -195,7 +197,7 @@ class PlotStat:
 
 		fig.tight_layout()
 
-		plt.savefig(self.save, transparent=False, dpi=100, format='png',
+		plt.savefig(save, transparent=False, dpi=100, format='png',
        				metadata={'Creator': "SAS_MoCa"}, 
 					bbox_inches='tight', facecolor='auto', edgecolor='auto')
 
@@ -204,44 +206,73 @@ class PlotStat:
 
 ###########################################################################################
 
-	def histogram_X2(self, X2_mean):
-	
-		# reshape the free parametr list to a i,j-matrix to plot
-		bk_color = '#222222'
-		label_color = '#D3D7CF'
-		
-		hist_color = '#BB86FC'
-		hist_edge = '#000000' 	
-		kde_color = '#F0E4FD'
+	def histogram_X2(self, save):
+		""" Plot the histogram of collected chi-suared values"""
 
 		# initialize plot
 		fig, axs = plt.subplots(1, 1, figsize=(4., 4.), facecolor='#2E3436')
 
 		# plot options	
-		axs.set_facecolor(bk_color)	
-		axs.tick_params(axis='both', which='major', labelsize=10, colors=label_color)
-		axs.tick_params(axis='both', which='minor', labelsize=6, colors=label_color)		
+		axs.set_facecolor(self.bk_color)	
+		axs.tick_params(axis='both', which='major', labelsize=10, colors=self.label_color)
+		axs.tick_params(axis='both', which='minor', labelsize=6, colors=self.label_color)		
 				
 		# set x-range within boundaries
 		_, x, _ = plt.hist(self.results['X2'].to_list(), density=True)
 		x = np.arange(x.min()*0.9,x.max()*1.1,(x.max()*1.1-x.min()*0.9)/100)
 
 		# generate and plot histogram
-		axs.hist(self.results['X2'].to_list(), density=True, facecolor=hist_color, edgecolor=hist_edge, linewidth=2.5)#, zorder=0)
+		axs.hist(self.results['X2'].to_list(), density=True, facecolor=self.hist_color, edgecolor=self.hist_edge, linewidth=2.5)#, zorder=0)
 		# generate and plot histogram kernel density
 		kde = stats.gaussian_kde(self.results['X2'].to_list())
-		axs.plot(x,kde(x), ls='-', lw=3.5, color=kde_color, alpha=1.0, zorder=1)
-		axs.set_xlabel('$\chi^2$', fontsize=14, color=label_color)
-
-		#axs.axvline(x=X2_mean, ls=':', lw=3.5, color=kde_color, alpha=1.0, zorder=1)
+		axs.plot(x,kde(x), ls='-', lw=3.5, color=self.kde_color, alpha=1.0, zorder=1)
+		axs.set_xlabel('$\\chi^2$', fontsize=14, color=self.label_color)
 
 		fig.tight_layout()
 
-		plt.savefig(self.save, transparent=False, dpi=150, format='png',
+		plt.savefig(save, transparent=False, dpi=150, format='png',
       				metadata={'Creator': "SAS_MoCa"}, 
 					bbox_inches='tight', facecolor='auto', edgecolor='auto')
 
 		#plt.show()
+		plt.close()
+
+###########################################################################################
+
+	def correlations(self, pearson_correlation, save):	
+		""" Prepare the heatmap of the Pearson correlation matrix"""
+
+		fig, axs = plt.subplots(1, 1, figsize=(8., 8.), facecolor='#2E3436')
+
+		# round correlation coefficients to 1 digit after comma
+		pearson_correlation = pearson_correlation.round(1)
+
+		# set size, shape and position of the heatmap
+		from mpl_toolkits.axes_grid1 import make_axes_locatable
+		divider = make_axes_locatable(axs)
+		ax_cb = divider.append_axes('right', size="5%", pad=0.05)
+
+		# plot heatmap and colorbar
+		im = axs.imshow(pearson_correlation, cmap='coolwarm', vmin=-1, vmax=1)
+		fig.colorbar(im, cax=ax_cb, ax=axs, location='right', ticks=[-1.0, -0.5, 0, +0.5, +1])
+		ax_cb.yaxis.set_tick_params(color=self.label_color)	
+		ax_cb.tick_params(axis='y',colors='white')
+		
+		# add text: each single coefficient on plot 
+		for i in range(pearson_correlation.shape[0]):
+			for j in range(pearson_correlation.shape[0]):
+				if j<=i:
+					text = axs.text(j, i, pearson_correlation.iloc[i, j],
+								ha="center", va="center", color="black", fontsize="8")
+		
+		# add ticks' labels
+		axs.set_xticks(range(len(self.name)), labels=self.name,
+					rotation=45, ha="right", rotation_mode="anchor", color=self.label_color)
+		axs.set_yticks(range(len(self.name)), labels=self.name, color=self.label_color)
+
+		plt.savefig(save, transparent=False, dpi=150, format='png',
+      				metadata={'Creator': "SAS_MoCa"}, 
+					bbox_inches='tight', facecolor='auto', edgecolor='auto')
 		plt.close()
 
 ###########################################################################################

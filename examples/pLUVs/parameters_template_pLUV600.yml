@@ -20,7 +20,7 @@ parameters:
     nv: [2.3, on, Null, 0.8, 4.8] # Vesicle concencentration x10^7 (AA^-3)
     Rv: [390, on, Null, 290, 490] # Vesicle radius (AA)
     Z: [5.1, off, Null, 5.1, 18] # Vesicle poldispersity
-    x: [0.45, on, 0.04, Null, Null] #	Protein to lipid fraction
+    x_p: [0.45, on, 0.04, Null, Null] #	Protein to lipid fraction
     #	Head-group Positions & Widths
     d_Chol: [2.7, on, 0.02, Null, Null] # CholCH3 position (AA)			
     s_Chol: [3.0, on, 0.02, Null, Null] # CholCH3 width (AA)			
