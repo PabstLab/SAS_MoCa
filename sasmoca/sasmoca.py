@@ -242,19 +242,21 @@ if __name__ == "__main__":
 		#------ plot data and fitted model
 		_, n_W, D_pp, D_B, A_L = res_function.SDP_profile()
 
-		#------ plot and save histograms
-		if config['iterations'] >= 10:
-			PlotStat(results_collection, parameters, "./"+config['save-folder']+"/Plot_histograms.png").histograms()
-
 		#------ compute equivalent X^2 from the set of mean results
 		N_Free = 0
 		for v in range(len(parameters['value'])):
 			if parameters.iloc[v,2]: N_Free+=1
 		X2_mean = X2function(data[:,0], data[:,1], I_plot, data[:,2], N_Free)
-		
-		#------ plot and save X^2-histogram
-		if config['iterations'] >= 2: PlotStat(results_collection, parameters, "./"+config['save-folder']+"/Plot_histogram_X2.png").histogram_X2(X2_mean)
-		
+
+
+		#------ plot and save statistics 
+		Plots=PlotStat(results_collection, parameters)
+		#------ parameters and chi-squared histograms
+		if config['iterations'] >= 10: 
+			Plots.histograms("./"+config['save-folder']+"/plot_histograms.png")
+			Plots.histogram_X2("./"+config['save-folder']+"/plot_histogram_X2.png")
+			Plots.correlations(pearson_correlation, "./"+config['save-folder']+"/plot_correlations.png")
+
 		#------------------ Saving results
 
 		# Calculate extra physical quantities and add it to parameters dataframe
