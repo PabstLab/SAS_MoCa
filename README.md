@@ -148,6 +148,10 @@ Each of the following files includes a header containing a timestamp, the versio
 * Semeraro, E. F., & Pabst, G. SAS_MoCa (Version 1.0.1) [Computer software]. https://github.com/PabstLab/SAS_MoCa
 * Semeraro E. F., et al., in preparation 
 
+## License
+**SAS_MoCa** is free and open source software, distributed under the [BSD 3‑Clause “New” or “Revised” License](https://opensource.org/license/BSD-3-Clause).<br> 
+For the full legal text, see the `LICENSE` file in this repository.
+
 ## References
 
 1. Kučerka, N., Nagle, J. F., Sachs, J. N., Feller, S. E., Pencer, J., Jackson, A., & Katsaras, J. (2008). Lipid Bilayer Structure Determined by the Simultaneous Analysis of Neutron and X-Ray Scattering Data. Biophysical Journal, 95(5), 2356–2367. https://doi.org/10.1529/biophysj.108.132662
