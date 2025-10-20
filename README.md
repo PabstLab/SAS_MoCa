@@ -145,7 +145,7 @@ Each of the following files includes a header containing a timestamp, the versio
 
 ## If you use _SAS_MoCa_ repository please cite:
 
-* Semeraro, E. F., & Pabst, G. SAS_MoCa (Version 1.0.1) [Computer software]. https://github.com/PabstLab/SAS_MoCa
+* Semeraro, E. F., & Pabst, G. SAS_MoCa (Version 1.2.4) [Computer software]. https://github.com/PabstLab/SAS_MoCa
 * Semeraro E. F., et al., in preparation 
 
 ## License
