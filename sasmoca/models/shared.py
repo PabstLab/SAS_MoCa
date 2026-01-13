@@ -12,15 +12,15 @@ from models.constants import *
 
 def mu0(q, Z, a) :
 	x = 2*q*a
-	return np.where(q==0, (Z-1)/Z, ( 1 - (1+x**2)**(-(Z-1)/2.) * np.cos((Z-1)*np.arctan(x)) ) / ( Z*(Z-1)*(x)**2/2 ) )
+	return np.where(q==0, 1, ( 1 - (1+x**2)**(-(Z-1)/2.) * np.cos((Z-1)*np.arctan(x)) ) / ( Z*(Z-1)*(x)**2/2 ) )
 
 def mu2(q, Z, a) :
 	x = 2*q*a
-	return np.where(q==0, a*a*(Z+1)*(Z+1), ( 1 - (1+x**2)**(-(Z+1)/2.) * np.cos((Z+1)*np.arctan(x)) ) / ( 2*q**2 ) )
+	return np.where(q==0, a**2*(Z+1)*(Z+2), ( 1 - (1+x**2)**(-(Z+1)/2.) * np.cos((Z+1)*np.arctan(x)) ) / ( 2*q**2 ) )
 		
 def mu4(q, Z, a) :
 	x = 2*q*a
-	return np.where(q==0, a**4*(Z+1)*(Z+2)*(Z+3)**2,  a**2 * (Z+2)*(Z+1) * ( 1 - (1+x**2)**(-(Z+3)/2.) * np.cos((Z+3)*np.arctan(x)) ) / ( 2*q**2 ) )	
+	return np.where(q==0, a**4*(Z+1)*(Z+2)*(Z+3)*(Z+4),  a**2 * (Z+2)*(Z+1) * ( 1 - (1+x**2)**(-(Z+3)/2.) * np.cos((Z+3)*np.arctan(x)) ) / ( 2*q**2 ) )	
 
 #####################################################################################################################
 """ Auxiliary functions:
