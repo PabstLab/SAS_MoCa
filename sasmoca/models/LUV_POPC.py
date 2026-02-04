@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import numpy as np
+import pandas as pd
 from scipy.special import erf
 
 from models.shared import (mu4,
@@ -140,7 +141,7 @@ class LUV_POPC:
 		### Assembling membrane scattering amplitude		
 		Am = np.zeros([self.q.size, Nd], dtype=float)
 
-		self.z_BW = self.d_CG +self.d_PCN + self.d_Chol + d_shl	
+		self.d_BW = self.d_CG +self.d_PCN + self.d_Chol + d_shl	
 
 		# Adding hydrocarbon-chain envelope 
 		Am += 2 * self.drho_CH2 * HC_array[None,:] * FTreal_erf(self.q[:,None], 0, 2*HC_array[None,:], self.s_CH2)
@@ -148,7 +149,7 @@ class LUV_POPC:
 		Am += 2 * (self.drho_CH  - self.drho_CH2) * c_CH[None,:]  * FTreal_gauss(self.q[:,None], self.d_CH, self.s_CH) 
 		Am += 2 * (self.drho_CH3 - self.drho_CH2) * c_CH3[None,:] * FTreal_gauss(self.q[:,None], 0,         self.s_CH3) 
 		# Adding hydration-water envelope 
-		Am += 4 * self.drho_BW * self.z_BW/2. * FTreal_erf(self.q[:,None], (HC_array[None,:]+self.z_BW/2.), self.z_BW, self.s_CH2)
+		Am += 4 * self.drho_BW * self.d_BW/2. * FTreal_erf(self.q[:,None], (HC_array[None,:]+self.d_BW/2.), self.d_BW, self.s_CH2)
 		# Adding CG, PCN and CholCH3 groups 
 		Am += 2 * (self.drho_CG		- self.drho_BW) * c_CG	* FTreal_gauss(self.q[:,None], (HC_array[None,:] + self.d_CG),	self.s_CG) 
 		Am += 2 * (self.drho_PCN	- self.drho_BW) * c_PCN	* FTreal_gauss(self.q[:,None], (HC_array[None,:] + self.d_CG + self.d_PCN), self.s_PCN) 
@@ -176,14 +177,14 @@ class LUV_POPC:
 		D_B = 2*Lipid_volume(self.T)/self.A_L
 
 		# Set z arrasy to plt SDP profile...
-		z_array = np.linspace(0.,D_B*1.1,321)
+		z_array = np.linspace(0., D_B*1.1, int(D_B*1.1)*10, endpoint=False)
 
 		self.check = 0
 
 		CG		= Gauss(z_array, self.V_CG,			self.D_C+self.d_CG,							self.s_CG,		self.A_L)
 		PCN		= Gauss(z_array, self.V_PCN,		self.D_C+self.d_CG+self.d_PCN,				self.s_PCN,		self.A_L)
 		Chol	= Gauss(z_array, self.V_Chol,		self.D_C+self.d_CG+self.d_PCN+self.d_Chol,	self.s_Chol,	self.A_L)
-		BW		= Slab(z_array,	self.D_C+self.z_BW/2., self.z_BW, self.s_CH2) - CG - PCN - Chol
+		BW		= Slab(z_array,	self.D_C+self.d_BW/2., self.d_BW, self.s_CH2) - CG - PCN - Chol
 
 		for i in(BW) : 
 			if i <-0.001 : self.check+= 1   
@@ -197,33 +198,38 @@ class LUV_POPC:
 		D_B = 2*Lipid_volume(self.T)/self.A_L
 
 		# Set z arrasy to plt SDP profile...
-		z_array = np.linspace(0.,D_B*1.1,321)
+		z_array = np.linspace(0., D_B*1.1, int(D_B*1.1)*10, endpoint=False)
 		
+		CH2		= Slab(z_array, 0, 2*self.D_C, self.s_CH2)
+		BW		= Slab(z_array,	self.D_C+self.d_BW/2., self.d_BW, self.s_CH2) 
+
 		CH3		= Gauss(z_array, 2*n_CH3*self.V_CH3, 0, self.s_CH3, self.A_L)
 		CH		= Gauss(z_array, n_CH*self.V_CH, self.d_CH, self.s_CH, self.A_L)
-		CH2		= Slab(z_array, 0, 2*self.D_C, self.s_CH2)
-		
+		CH2		= CH2 - CH3 - CH
+
 		CG		= Gauss(z_array, self.V_CG,			self.D_C+self.d_CG,							self.s_CG,		self.A_L)
 		PCN		= Gauss(z_array, self.V_PCN,		self.D_C+self.d_CG+self.d_PCN,				self.s_PCN,		self.A_L)
 		Chol	= Gauss(z_array, self.V_Chol,		self.D_C+self.d_CG+self.d_PCN+self.d_Chol,	self.s_Chol,	self.A_L)
-		BW		= Slab(z_array,	self.D_C+self.z_BW/2., self.z_BW, self.s_CH2) 
+		BW		= BW - CG - PCN - Chol
 
 		# ...and DeltaSLD profile
 		SLD = np.zeros_like(z_array)
-		SLD += CH3 * self.drho_CH3 
-		SLD += CH * self.drho_CH 
-		SLD	+= (CH2-CH3-CH) * self.drho_CH2 
+		SLD += CH3 * self.drho_CH3 + CH2 * self.drho_CH2 + CH * self.drho_CH 
 		SLD += CG * self.drho_CG + PCN * self.drho_PCN + Chol * self.drho_Chol
-		SLD += (BW-(CG+PCN+Chol)) * self.drho_BW
+		SLD += BW * self.drho_BW
 
 		# Calculate peak-to-peak distance D_pp (proxy for phosphate-to-phosphate distance)
 		SLD_peak = np.argmax(SLD)
 		D_pp = 2*z_array[SLD_peak]
 
 		# Calculate the number of water molecules per lipid headgroup
-		n_W =  ( self.A_L * self.z_BW*erf(self.z_BW/2./(np.sqrt(2)*self.s_CH2)) - self.V_H ) / self.V_BW
+		n_W =  ( self.A_L * self.d_BW*erf(self.d_BW/2./(np.sqrt(2)*self.s_CH2)) - self.V_H ) / self.V_BW
 		
-		return 	np.column_stack((z_array, CH3, CH, CH2, CG, PCN, Chol, BW, SLD)), n_W, D_pp, D_B, self.A_L
+
+		SDP_matrix = pd.DataFrame(np.column_stack((z_array, CH3, CH, CH2, CG, PCN, Chol, BW, SLD)), 
+								  columns=["z", "CH3", "CH", "CH2", "CG", "PCN", "Chol", "BW", "SLD"])
+
+		return 	SDP_matrix, n_W, D_pp, D_B, self.D_C, self.A_L
 				
 ##################################################################################################################
 ##################################################################################################################

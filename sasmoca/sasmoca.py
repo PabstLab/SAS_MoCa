@@ -10,20 +10,12 @@ from tqdm import tqdm
 import time
 
 from in_out import (Load_input, Load_data,
-					PlotData, PlotStat)
+					PlotData, PlotStat, PlotSDP_profile)
 
 from models.models_list import ChooseFunction
 from moca.TSA_algorithm import SimAnnealing
+from moca.TSA_algorithm import X2function
 from version import __version__
-
-############################################################
-############################################################
-############################################################
-
-def X2function(Q,IDATA,I,ERR,N):
-	'X^2 calculation'
-	X2 = np.sum(  ( ( IDATA-I ) / ERR )**2 )
-	return X2/(Q.shape[0]-(N-1))
 
 ############################################################
 ############################################################
@@ -239,8 +231,18 @@ if __name__ == "__main__":
 		#------ plot data and fitted model
 		I_plot = res_function.intensity()
 		PlotData(config['qrange'], config['save-folder']).plot_fit( data, I_plot )	
-		#------ plot data and fitted model
-		_, n_W, D_pp, D_B, A_L = res_function.SDP_profile()
+		#------ calculate extra parameters and real space description
+		SDP_matrix, n_W, D_pp, D_B, D_C, A_L = res_function.SDP_profile()
+		#------ plot SDP and SLD profiles
+		SDP = PlotSDP_profile(SDP_matrix, D_B, D_C, config['save-folder'])
+		SDP.plot_sdp()
+		#------ save SDP and SLD profiles 
+		with open("./"+config['save-folder']+"/plot_SDP-SLD.dat", 'w') as fl:
+			add_metadata(fl)
+			fl.writelines("# Probabilities of finding a quasimolecular group at a position z (Angstrom) (distance from the bilayer center).\n")
+			fl.writelines("# SLD column: SLD contrast (difference from suspension medium) as a function of z; unit Angstrom^-2.\n")
+			fl.writelines("# -----------------------------------\n")
+		SDP_matrix.to_csv("./"+config['save-folder']+"/plot_SDP-SLD.dat", sep='\t', na_rep='-', header=True, index=False, mode='a', index_label=False)
 
 		#------ compute equivalent X^2 from the set of mean results
 		N_Free = 0
@@ -285,6 +287,7 @@ if __name__ == "__main__":
 	#------ Save data and model scattering intensity ( 0: q, 1: I_data, 2: I_err, 3: I_fit)
 	results_intensity= pd.DataFrame(np.column_stack((data,I_plot)), columns=['q', 'I_data', 'I_err', 'I_fit'])
 	results_intensity=results_intensity.set_index('q')
-	with open("./"+config['save-folder']+"/plot_intensity.dat", 'w') as fl:
-		add_metadata(fl)
+	if not config['plot-only']:
+		with open("./"+config['save-folder']+"/plot_intensity.dat", 'w') as fl:
+			add_metadata(fl)
 	results_intensity.to_csv("./"+config['save-folder']+"/plot_intensity.dat", sep='\t', na_rep='-', header=True, index=True, mode='a')

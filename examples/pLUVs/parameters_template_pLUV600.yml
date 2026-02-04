@@ -5,10 +5,10 @@ config:
    model: pLUV_POPC_OmpLA_RecBuf 
    temperature-init: 400
    temperature-gain: 50 
-   target-X2: 5.0
-   data-binning: 10
+   target-X2: 20.0
+   data-binning: 1
    error-scale: 1
-   iterations: 42
+   iterations: 30
    processes: 24
    plot-only: off 
    state: monomer
@@ -29,7 +29,7 @@ parameters:
     d_CG: [0.8, on, 0.08, Null, Null] # CG position (AA)			
     s_CG: [2.5, on, 0.20, Null, Null] # CG width (AA)	
     #	Acyl chain Positions & Widths
-    dD_C: [28.2, on, 0.03, Null, Null] # Hydrocarbon thickness 2Dc (AA)
+    dD_C: [27.5, on, 0.03, Null, Null] # Hydrocarbon thickness 2Dc (AA)
     r_D_C: [0.15, on, Null, 0.055, 0.2] #	relative Dc std
     s_CH2: [2.5, on, 0.02, Null, Null] # HC smearing (AA)
     d_CH: [9.0, off, Null, 8, 10] # CH position (AA)

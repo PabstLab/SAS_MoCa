@@ -37,11 +37,11 @@ class PlotData:
 		label_color = '#D3D7CF'
 		self.point_edge = '#551000'		
 
-		self.axes[0].set_yscale('log', base=10)
 		self.axes[0].set_title(save, color=label_color, fontsize=16)
 
 		for g in range(len(self.axes)):
 			self.axes[g].set_xscale('log', base=10)
+			self.axes[g].set_yscale('log', base=10)
 
 			self.axes[g].grid()		
 			self.axes[g].set_facecolor(bk_color)			
@@ -55,7 +55,6 @@ class PlotData:
 		self.axes[0].set_ylabel('$I(q)$ (mm$^{-1}$)', fontsize=14, color=label_color)
 		self.axes[1].set_ylabel('relative deviation $|I(q)-f(q)|/I(q)$', fontsize=14, color=label_color)
 	
-		#self.save_folder = "./"+str(save)+"/plot.eps"
 		self.save_folder = "./"+str(save)+"/plot.png"
 
 
@@ -78,12 +77,13 @@ class PlotData:
 		point_color = ['orange', 'magenta', 'blue', 'green', 'orange']
 		line_color = ['red', 'violet', 'lightblue', 'lightgreen', 'red']
 
-		self.axes[0].errorbar(data[:,0], data[:,1], yerr=data[:,2], fmt='o', color=point_color[0], markeredgecolor=self.point_edge, markersize=5, linewidth=1.0, label='SAXS data', zorder=0)		
-		self.axes[0].plot(data[:,0], I_plot, linewidth=2.0, color=line_color[0], ls='-', label='Best fit', zorder=1)
+		#self.axes[0].errorbar(data[:,0], data[:,1], yerr=data[:,2], fmt='o', color=point_color[0], markeredgecolor=self.point_edge, markersize=5, linewidth=1.0, label='SAXS data', zorder=0)		
+		self.axes[0].errorbar(data[:,0], data[:,1], yerr=data[:,2], fmt='o', color=point_color[0], markeredgecolor=self.point_edge, markersize=5, linewidth=1.0, label='SAXS data', alpha=0.33, zorder=0)		
+		self.axes[0].plot(data[:,0], I_plot, linewidth=2.0, color=line_color[0], ls='-', label='Best fit', zorder=10)
 
 		self.axes[1].axhline(y=0, linewidth=2)		
-		self.axes[1].scatter(data[:,0], data[:,2]/data[:,1], marker='o', color=point_color[0], edgecolor=self.point_edge, s=18, linewidth=1.2, label='Exp. error', zorder=0)		
-		self.axes[1].plot(data[:,0], np.abs(I_plot-data[:,1])/data[:,1], linewidth=2.0, color=line_color[0], ls='-', label='Best fit', zorder=1)
+		self.axes[1].scatter(data[:,0], data[:,2]/data[:,1], marker='o', color=point_color[0], edgecolor=self.point_edge, s=18, linewidth=1.2, label='Exp. error', alpha=0.33, zorder=10)		
+		self.axes[1].plot(data[:,0], np.abs(I_plot-data[:,1])/data[:,1], linewidth=2.0, color=line_color[0], ls='-', label='Best fit', zorder=0)
 
 		self.axes[0].set_ylim([0.1*np.min(data[:,1]),10*np.max(data[:,1])])
 
@@ -276,3 +276,89 @@ class PlotStat:
 		plt.close()
 
 ###########################################################################################
+###########################################################################################
+
+class PlotSDP_profile:
+	'Plot SDP profile'
+
+	#def __init__ ( self , SDP_matrix, SDP_labels, SLD_list, D_B, save):
+	def __init__ ( self , SDP_matrix, D_B, D_C, save):
+
+		self.fig1, self.axes = plt.subplots(2, 1, figsize=(9.0, 12), facecolor='#2E3436')
+
+		bk_color = '#222222' #'#2E3436'
+		self.label_color = '#D3D7CF'
+
+		self.colors = { "CH3": "#11AA0C", 
+				 		"CH": "#103F0E",
+						"CH2": "#569C53",
+						"CG": "#F02020",
+						"PCN": "#EC982A",
+						"P": "#EC982A",
+						"Chol": "#F8F52B",
+						"BW": "#2B73F8",
+						"water": "#2BCFF8" }
+
+
+		self.SDP_matrix=SDP_matrix
+		self.SDP_labels=list(SDP_matrix.columns)
+		self.D_B=D_B
+		self.D_C=D_C
+
+		self.axes[0].set_title(save, color=self.label_color, fontsize=16)
+
+		for g in range(len(self.axes)):
+
+			self.axes[g].set_facecolor(bk_color)			
+
+			self.axes[g].tick_params(axis='both', which='major', labelsize=14, colors=self.label_color)
+			self.axes[g].tick_params(axis='both', which='minor', labelsize=8, colors=self.label_color)
+
+			self.axes[g].set_xlim([0, self.D_B*1.1])
+			self.axes[g].set_xlabel('$z$ ($\\AA$)', fontsize=14, color=self.label_color)
+			
+		self.axes[0].set_ylabel('$\\phi$', fontsize=14, color=self.label_color)
+		self.axes[1].set_ylabel('SLD constrast ($\\AA^{-2}$)', fontsize=14, color=self.label_color)
+	
+		self.save_folder = "./"+str(save)+"/plot_SDP-SLD.png"
+
+###########################################################################################
+
+	def plot_sdp ( self ):	
+
+		# SDP profile
+
+		self.axes[0].axhline(y=0, color="gray", ls="--")
+		self.axes[0].axhline(y=1, color="gray", ls="--")
+
+		total = np.zeros_like(self.SDP_matrix['z'])
+
+		for index in range(1, self.SDP_matrix.shape[1]-1):
+
+			columnSeriesObj = self.SDP_matrix.iloc[:, index]
+			self.axes[0].plot(self.SDP_matrix['z'], self.SDP_matrix[columnSeriesObj.name], linewidth=2.0, color=self.colors[columnSeriesObj.name], ls='-', label=columnSeriesObj.name, zorder=10)
+			total+=self.SDP_matrix[columnSeriesObj.name]
+
+		self.axes[0].plot(self.SDP_matrix['z'], 1-total, linewidth=2.0, color=self.colors['water'], ls='-', label="Bulk water", zorder=10)
+		
+		self.axes[0].axvline(x=self.D_C, color=self.colors['CH2'], ls="--")
+		self.axes[0].text(self.D_C*1.05, 0.95, "$D_C$", fontsize=14, color=self.label_color)
+		self.axes[0].axvline(x=self.D_B/2., color=self.colors['water'], ls="--")
+		self.axes[0].text(self.D_B/2.*1.05, 0.95, "$D_B/2$", fontsize=14, color=self.label_color)
+		self.axes[0].set_ylim([-0.025, 1.025])
+		self.axes[0].legend(loc='center right', fontsize=14)
+
+		# SLD contrast profile
+
+		self.axes[1].axhline(y=0, color="gray", ls="--")
+		self.axes[1].plot(self.SDP_matrix['z'], self.SDP_matrix['SLD'], linewidth=2.0, color="red", ls='-', label='', zorder=10)
+		self.axes[1].axvline(x=self.D_C, color=self.colors['CH2'], ls="--")
+		self.axes[1].axvline(x=self.D_B/2., color=self.colors['water'], ls="--")
+
+		self.fig1.tight_layout()
+
+		plt.savefig(self.save_folder, transparent=False, dpi=150, format='png',
+        metadata={'Creator': "SAS_MoCa"}, 
+		bbox_inches='tight', facecolor='auto', edgecolor='auto')
+
+		plt.close()		

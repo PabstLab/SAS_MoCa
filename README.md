@@ -133,6 +133,8 @@ Each of the following files includes a header containing a timestamp, the versio
 
 * **plot_intensity.dat** <br> It contains the data points used for fitting and the resulting scattering intensity; column 1: $q_i$, column 2:  $I_i^{exp}$, column 3: $\sigma_i$, column 4: $I^{model}(q_i)$.
 
+* **plot_SDP-SLD.dat**  <br> It contains the calculate probability density for each quasi-molecular group of the (p)LUV model (SDP profile), as well as the corresponding SLD contrast profile. The $z$-axis units are $\AA$, and the SLD units are $\AA^{-2}$.
+
 * **results_recap.dat** <br> Summary of the input parameter table (from name to boundaries) that includes two new columns for the results: **mean** and **standard deviation** for each adjustable parameter. Fixed parameters are also included. Additionally, there is the list of calculated values (_marked with *_) such as area per lipid $A_L$, Luzzati thickness $D_B$, phosphate-to-phosphate distance $D_{pp}$ (in the case of SAXS), and estimate of number of water molecules per headgroup $n_W$.
 
 #### Plots
@@ -143,9 +145,11 @@ Each of the following files includes a header containing a timestamp, the versio
 
 * **Plot_histogram_X2.png** <br> Histograms showing the distribution obtained for the best $\chi^2$ values. The plot includes a kernel-density visualization of the distribution.
 
+* **plot_SDP-SLD.png**  <br> Calculated SDP and SLD contrast profiles. The plots include visualizations of acyl-chain thickness ($D_C$) and Luzzati length ($D_B$).
+
 ## If you use _SAS_MoCa_ repository please cite:
 
-* Semeraro, E. F., & Pabst, G. SAS_MoCa (Version 1.2.4) [Computer software]. https://github.com/PabstLab/SAS_MoCa
+* Semeraro, E. F., & Pabst, G. SAS_MoCa (Version 1.3.0) [Computer software]. https://github.com/PabstLab/SAS_MoCa
 * Semeraro E. F., et al., in preparation 
 
 ## License
