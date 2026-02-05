@@ -296,6 +296,7 @@ class PlotSDP_profile:
 						"PCN": "#EC982A",
 						"P": "#EC982A",
 						"Chol": "#F8F52B",
+						"ENX": "#F8F52B",
 						"BW": "#2B73F8",
 						"water": "#2BCFF8" }
 
@@ -318,7 +319,7 @@ class PlotSDP_profile:
 			self.axes[g].set_xlabel('$z$ ($\\AA$)', fontsize=14, color=self.label_color)
 			
 		self.axes[0].set_ylabel('$\\phi$', fontsize=14, color=self.label_color)
-		self.axes[1].set_ylabel('SLD constrast ($\\AA^{-2}$)', fontsize=14, color=self.label_color)
+		self.axes[1].set_ylabel('SLD contrast ($\\AA^{-2}$)', fontsize=14, color=self.label_color)
 	
 		self.save_folder = "./"+str(save)+"/plot_SDP-SLD.png"
 

@@ -2,9 +2,11 @@
 
 import sys
 
-from models import (LUV_POPC,
-					pLUV_POPC_OmpLA_RecBuf, 
-					pLUV_DLPC_OmpLA_RecBuf)
+from models import (LUV_DMPC,
+					LUV_POPC,
+					LUV_POPE, 
+					pLUV_DLPC_OmpLA_RecBuf,
+					pLUV_POPC_OmpLA_RecBuf)
 
 from models.virtual_barrel import (Stacked_disks_singleSLD,
 								   Stacked_disks_singleSLD_dimer)
@@ -19,8 +21,14 @@ def ChooseFunction (function ):
 
 ######################
 
-	if function=="LUV_POPC":
+	if function=="LUV_DMPC":
+		intensity	= LUV_DMPC
+
+	elif function=="LUV_POPC":
 		intensity	= LUV_POPC
+
+	elif function=="LUV_POPE":
+		intensity	= LUV_POPE
 
 	elif function=="pLUV_POPC_OmpLA_RecBuf":
 		intensity	= pLUV_POPC_OmpLA_RecBuf

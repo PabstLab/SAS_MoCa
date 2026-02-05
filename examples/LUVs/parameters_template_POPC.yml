@@ -1,14 +1,14 @@
 config:
-   datafile:  "./POPC_50C_Symmetry2021.dat"  # POPC-OmpLA pLUV dataset; Nominal x_p=1/600; see [Frewein et al., Symmetry 2021, DOI:10.3390/sym13081441]
+   datafile:  "./POPC_50C_Symmetry2021.dat"  # POPC LUV dataset; see [Frewein et al., Symmetry 2021, DOI:10.3390/sym13081441]
    save-folder: "POPC-Symmetry2021"
    qrange: [0.005, 0.6] 
    model: LUV_POPC 
    temperature-init: 400
    temperature-gain: 50 
    target-X2: 0.005
-   data-binning: 10
+   data-binning: 1
    error-scale: 1
-   iterations: 42
+   iterations: 100
    processes: 64
    plot-only: off 
 
@@ -40,6 +40,6 @@ parameters:
     r32: [2.09, on, 0.02, Null, Null] #	V_CH3/V_CH2					
     T: [50, off, Null, 32, 52] # Temperature (°C) 
     V_H: [324, on, 0.02, Null, Null] # Lipid-head volume (AA³)
-    V_BW: [29.9, on, Null, 28, 32] # Bound-water volume (AA³)
+    V_BW: [29.9, on, Null, 28.5, 31.5] # Bound-water volume (AA³)
     #
-    Con: [0.0005, on, Null, 0.0003, 0.0008] # Constant (AA⁻¹)
+    Con: [0.0005, on, Null, 0.0003, 0.0007] # Constant (AA⁻¹)

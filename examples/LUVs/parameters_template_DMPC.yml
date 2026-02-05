@@ -1,0 +1,42 @@
+config:
+   datafile:  "./DMPC_50C_tmp_submission.dat"  # POPE dataset, T=50°C; see [Semeraro et al., in submission]
+   save-folder: "DMPC-example"
+   qrange: [0.005, 0.6] 
+   model: LUV_DMPC
+   temperature-init: 400
+   temperature-gain: 50 
+   target-X2: 10
+   data-binning: 1
+   error-scale: 1
+   iterations: 100
+   processes: 24
+   plot-only: off
+
+# Name:	[ initialization, fixed=off / free=on, prior->relative standard deviation, low & high limits ]
+parameters:
+    #	Vesicle's parameters
+    Norm: [0.0000002, off, Null, 0.00000001, 1] # Normalization
+    nv: [1.0, on, Null, 0.1, 5.] # Vesicle concencentration x10^7 (AA^-3)
+    Rv: [450, on, Null, 300, 500] # Vesicle radius (AA)
+    Z: [10, on, Null, 5.1, 18] # Vesicle poldispersity
+    #	Head-group Positions & Widths
+    d_Chol: [1.0, on, 0.03, Null, Null] # CholCH3 position (AA)			
+    s_Chol: [3.0, on, 0.02, Null, Null] # CholCH3 width (AA)			
+    d_PCN: [4.0, on, 0.08, Null, Null] # PCN position (AA)			
+    s_PCN: [2.8, on, 0.02, Null, Null] # PCN width (AA)	
+    d_CG: [0.8, on, 0.08, Null, Null] # CG position (AA)			
+    s_CG: [2.4, on, 0.02, Null, Null] # CG width (AA)	
+    #	Acyl chain Positions & Widths
+    dD_C: [24.8, on, 0.03, Null, Null] # Hydrocarbon thickness 2Dc (AA)
+    r_D_C: [0.079, on, Null, 0.0, 0.08] #	relative Dc std
+    s_CH2: [2.45, on, 0.02, Null, Null] # HC smearing (AA)
+    s_CH3: [1.93, on, 0.05, Null, Null] #	CH3 width (AA)
+    #	Area & Volumes
+    r_PCN: [0.29, on, 0.02, Null, Null] # V_PCN/V_H				
+    r_CG: [0.43, on, 0.02, Null, Null] # V_GG/V_H					
+    r32: [1.93, on, 0.02, Null, Null] #	V_CH3/V_CH2					
+    T: [50, off, Null, 32, 52] # Temperature (°C) 
+    V_H: [324, on, 0.02, Null, Null] # Lipid-head volume (AA³)
+    V_BW: [29.9, on, Null, 29.5, 31.5] # Bound-water volume (AA³)
+    #
+    Con: [0.002, on, Null, 0.001, 0.005] # Constant (AA⁻¹)
