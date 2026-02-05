@@ -2,19 +2,30 @@
 
 ## A stochastic analysis tool for studying the structure of lipid membrane systems using small-angle scattering (SAS).
 
-#### Currently supported models
-Currently supported models of Large unilamellar vesicles (LUVs) are based on the combination of scattering density profile (SDP) $^1$ and separated form factor (SFF) $^2$ scattering models.
+### Currently supported models
+Currently supported models of Large unilamellar vesicles (LUVs) and protein-containinn LUVs (pLUVs, or proteoliposomes) are based on the combination of scattering density profile (SDP) $^1$ and separated form factor (SFF) $^2$ scattering models.
 Recent updates for bound-water molecules and thickness fluctuaions are included. $^3$ </br>
-The proteoliposome (pLUV) multisacle model is also based on SDP-SFF combination. $^4$
 
 * **Large unilamellar vesicles (LUVs)**: 
-     * **LUV_POPC** -> _LUVs_: POPC/POPG 95:5 mol/mol; suspension in pure water.
+     * **LUV_DMPC** -> _LUVs_: DMPC/DMPG 95:5 mol/mol mixture; suspension in pure water.
+     * **LUV_POPC** -> _LUVs_: POPC/POPG 95:5 mol/mol mixture; suspension in pure water.
+     * **LUV_POPE** -> _LUVs_: POPE/POPG 90:10 mol/mol mixture; suspension in pure water.
 * **Proteoliposomes (pLUVs)**: 
-    * **pLUV_POPC_OmpLA_RecBuf** -> _Hosting LUVs_: POPC/POPG 95:5 mol/mol; _protein_: Outer membrane phospholipase A (OmpLA) monomer/dimer; suspension in 20 mM TRIS, 2mM EDTA;
-    * **pLUV_DLPC_OmpLA_RecBuf** -> _Hosting LUV_: DLPC/DLPG 95:5 mol/mol; _protein_: Outer membrane phospholipase A (OmpLA) monomer/dimer; suspension in 20 mM TRIS, 2mM EDTA.
+    * **pLUV_DLPC_OmpLA_RecBuf** -> _Hosting LUV_: DLPC/DLPG 95:5 mol/mol mixture; _protein_: Outer membrane phospholipase A (OmpLA) monomer/dimer; suspension in 20 mM TRIS, 2mM EDTA.
+    * **pLUV_POPC_OmpLA_RecBuf** -> _Hosting LUVs_: POPC/POPG 95:5 mol/mol mixture; _protein_: Outer membrane phospholipase A (OmpLA) monomer/dimer; suspension in 20 mM TRIS, 2mM EDTA;
+
  
-#### Minimization algorithm: 
-* Adaptive **Thermodynamic Simulated Annealing** (TSA) $^5$
+**Abbreviations**:
+* *DLPC* -> 1,2-dilauroyl-sn-glycero-3-phosphatidylcholine
+* *DMPC* -> 1,2-dimyristoyl-sn-glycero-3-phosphocholine
+* *POPC* ->	1-palmitoyl-2-oleoyl-sn-glycero-3-phosphocholine 
+* *POPE* ->	1-palmitoyl-2-oleoyl-sn-glycero-3-phosphoethanolamine 
+* *DLPG* -> 1,2-dilauroyl-sn-glycero-3-phosphoglycerol
+* *DMPG* -> 1,2-dimyristoyl-sn-glycero-3-phosphoglycerol
+* *POPG* ->	1-palmitoyl-2-oleoyl-sn-glycero-3-phosphoglycerol 
+
+### Minimization algorithm: 
+* Adaptive **Thermodynamic Simulated Annealing** (TSA) $^{4,5}$
 
 ## Installation
 
@@ -151,6 +162,7 @@ Each of the following files includes a header containing a timestamp, the versio
 
 * Semeraro, E. F., & Pabst, G. SAS_MoCa (Version 1.3.0) [Computer software]. https://github.com/PabstLab/SAS_MoCa
 * Semeraro E. F., et al., in preparation 
+* Semeraro E. F., et al., in preparation 
 
 ## License
 **SAS_MoCa** is free and open source software, distributed under the [BSD 3‑Clause “New” or “Revised” License](https://opensource.org/license/BSD-3-Clause).<br> 
@@ -161,5 +173,5 @@ For the full legal text, see the `LICENSE` file in this repository.
 1. Kučerka, N., Nagle, J. F., Sachs, J. N., Feller, S. E., Pencer, J., Jackson, A., & Katsaras, J. (2008). Lipid Bilayer Structure Determined by the Simultaneous Analysis of Neutron and X-Ray Scattering Data. Biophysical Journal, 95(5), 2356–2367. https://doi.org/10.1529/biophysj.108.132662
 2. Pencer, J., Krueger, S., Adams, C. P., & Katsaras, J. (2006). Method of separated form factors for polydisperse vesicles. Journal of Applied Crystallography, 39(3), 293–303. https://doi.org/10.1107/S0021889806005255
 3. Frewein, M. P. K., Doktorova, M., Heberle, F. A., Scott, H. L., Semeraro, E. F., Porcar, L., & Pabst, G. (2021). Structure and Interdigitation of Chain-Asymmetric Phosphatidylcholines and Milk Sphingomyelin in the Fluid Phase. Symmetry, 13(8), 1441. https://doi.org/10.3390/sym13081441
-4. Semeraro E. F., et al., in preparation
-5. de Vicente, J., Lanchares, J., & Hermida, R. (2003). Placement by thermodynamic simulated annealing. Physics Letters A, 317(5–6), 415–423. https://doi.org/10.1016/j.physleta.2003.08.070
+4. de Vicente, J., Lanchares, J., & Hermida, R. (2003). Placement by thermodynamic simulated annealing. Physics Letters A, 317(5–6), 415–423. https://doi.org/10.1016/j.physleta.2003.08.070
+5. Semeraro et al., in submission 

@@ -1,6 +1,8 @@
+from models.LUV_DMPC import (LUV_DMPC)
 from models.LUV_POPC import (LUV_POPC)
-from models.PLUV_POPC import (pLUV_POPC_OmpLA_RecBuf)
+from models.LUV_POPE import (LUV_POPE)
 from models.PLUV_DLPC import (pLUV_DLPC_OmpLA_RecBuf)
+from models.PLUV_POPC import (pLUV_POPC_OmpLA_RecBuf)
 
 from models.virtual_barrel import (Stacked_disks_singleSLD,
                                    Stacked_disks_singleSLD_dimer)

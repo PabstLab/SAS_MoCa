@@ -1,0 +1,45 @@
+config:
+   datafile: "./POPE_50C_tmp_submission.dat"  # POPE dataset, T=50°C; see [Semeraro et al., in submission]
+   save-folder: "POPE-example"
+   qrange: [0.005, 0.6] 
+   model: LUV_POPE 
+   temperature-init: 400
+   temperature-gain: 50 
+   target-X2: 1
+   data-binning: 1
+   error-scale: 1
+   iterations: 100
+   processes: 24
+   plot-only: off 
+
+# Name:	[ initialization, fixed=off / free=on, prior->relative standard deviation, low & high limits ]
+parameters:
+    #	Vesicle's parameters
+    Norm: [0.0000001, off, Null, 0.00000001, 1] # Normalization
+    nv: [5.0, on, Null, 0.1, 10.0] # Vesicle concencentration x10^7 (AA^-3)
+    Rv: [330, on, 0.1, 230, 480] # Vesicle radius (AA)
+    Z: [20, on, Null, 8, 30] # Vesicle poldispersity
+    #	Head-group Positions & Widths
+    d_ENX: [1.7, on, 0.03, Null, Null] # CholCH3 position (AA)			
+    s_ENX: [2.8, on, 0.02, Null, Null] # CholCH3 width (AA)			
+    d_P: [4.3, on, 0.08, Null, Null] # PCN position (AA)			
+    s_P: [2.3, on, 0.02, Null, Null] # PCN width (AA)	
+    d_CG: [0.3, on, 0.08, Null, Null] # CG position (AA)			
+    s_CG: [2.3, on, 0.02, Null, Null] # CG width (AA)	
+    #	Acyl chain Positions & Widths
+    dD_C: [30.8, on, 0.02, Null, Null] # Hydrocarbon thickness 2Dc (AA)
+    r_D_C: [0.079, on, Null, 0.00, 0.07] #	relative Dc std
+    s_CH2: [2.6, on, 0.02, Null, Null] # HC smearing (AA)
+    d_CH: [9.4, off, Null, 5, 9.5] # CH position (AA)
+    s_CH: [2.8, off, Null, 1.5, 4.0] #	CH width (AA)
+    s_CH3: [2.7, on, 0.02, Null, Null] #	CH3 width (AA)
+    #	Area & Volumes
+    r_P: [0.133, on, 0.02, Null, Null] # V_PCN/V_H				
+    r_CG: [0.515, on, 0.02, Null, Null] # V_GG/V_H					
+    r12: [0.757, off, Null, 0.73, 0.89] # V_CH/V_CH2
+    r32: [2.00, on, 0.02, Null, Null] #	V_CH3/V_CH2					
+    T: [50, off, Null, 32, 60] # Temperature (°C) 
+    V_H: [245, on, 0.02, Null, Null] # Lipid-head volume (AA³)
+    V_BW: [29.9, on, Null, 29.5, 31.5] # Bound-water volume (AA³)
+    #
+    Con: [0.0015, on, Null, 0.001, 0.0022] # Constant (AA⁻¹)

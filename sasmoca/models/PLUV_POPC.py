@@ -53,7 +53,7 @@ def Volumes_POPC(V_H_POPC, T, r12, r32, r_CG, r_PCN) :
 
 	# Volumes 
 	V_L = Lipid_volume(T)
-	V_HC = V_L - ( (1-x_PG) * V_H_POPC + x_PG * V_H_POPG )
+	V_HC = V_L - ( (1-x_PG) * V_H_POPC + x_PG * V_H_PG )
 
 	# Quasi-molecular volumes 
 	V_CH2	= V_HC / ( n_CH2 + n_CH*r12 + n_CH3*r32 )	# Volume of CH2 groups  
@@ -64,8 +64,8 @@ def Volumes_POPC(V_H_POPC, T, r12, r32, r_CG, r_PCN) :
 	V_PCN	= V_H_POPC	* 	r_PCN 				# Volume of PCN group 
 	V_Chol	= V_H_POPC	*   (1 - r_PCN - r_CG)	# Volume of CholCH3 group  
 
-	V_PG1	= V_H_POPG	*	0.16 				# Pan et al. BBA 2012
-	V_PG2	= V_H_POPG	*	( 1 - 0.51 - 0.16) 	# Pan et al. BBA 2012
+	V_PG1	= V_H_PG	*	0.16 				# Pan et al. BBA 2012
+	V_PG2	= V_H_PG	*	( 1 - 0.51 - 0.16) 	# Pan et al. BBA 2012
 	
 	return V_L, V_HC, V_CH2, V_CH, V_CH3, V_CG, V_PCN, V_Chol, V_PG1, V_PG2
 
@@ -76,7 +76,7 @@ def SLDs_POPC(T, xtris, xEDTA, V_Chol, V_PCN, V_CG, V_PG2, V_PG1, V_CH, V_CH2, V
 	############### X-ray scattering length densities (nm^-2)
 	rho_sol		= ( b_HW + xtris*b_tris + xEDTA*b_EDTA ) / Water_volume(T) 
 	drho_Chol	= ( (1-x_PG)*b_Chol/V_Chol	+ x_PG*b_PG2/V_PG2 )	- rho_sol 
-	drho_PCN	= ( (1-x_PG)*b_PCN/V_PCN	+ x_PG*b_PG1/V_PG1 )	- rho_sol 
+	drho_PCN	= ( (1-x_PG)*b_PCN/V_PCN	+ x_PG*b_P/V_PG1 )	- rho_sol 
 	drho_CG		= b_CG  / V_CG  									- rho_sol 
 	drho_CH		= b_CH  / V_CH  									- rho_sol 
 	drho_CH2	= b_CH2 / V_CH2  									- rho_sol 
