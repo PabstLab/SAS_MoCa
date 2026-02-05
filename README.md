@@ -3,7 +3,7 @@
 ## A stochastic analysis tool for studying the structure of lipid membrane systems using small-angle scattering (SAS).
 
 ### Currently supported models
-Currently supported models of Large unilamellar vesicles (LUVs) and protein-containinn LUVs (pLUVs, or proteoliposomes) are based on the combination of scattering density profile (SDP) $^1$ and separated form factor (SFF) $^2$ scattering models.
+The currently supported models of Large Unilamellar Vesicles (LUVs) and protein-containing LUVs (pLUVs, or proteoliposomes) are based on a combination of the Scattering Density Profile (SDP) $^1$ and Separated Form Factor (SFF) $^2$ scattering models.
 Recent updates for bound-water molecules and thickness fluctuaions are included. $^3$ </br>
 
 * **Large unilamellar vesicles (LUVs)**: 
