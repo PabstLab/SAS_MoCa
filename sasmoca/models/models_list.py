@@ -18,6 +18,7 @@ def ChooseFunction (function ):
 	" Choose Function "
 	
 	proteo = False
+	LUV = True
 
 ######################
 
@@ -40,12 +41,14 @@ def ChooseFunction (function ):
 
 	elif function=="Stacked_disks_singleSLD":
 		intensity	= Stacked_disks_singleSLD		
+		LUV = False
 	elif function=="Stacked_disks_singleSLD_dimer":
 		intensity	= Stacked_disks_singleSLD_dimer	
+		LUV = False
 	else:
 		sys.exit("--- This function name does not exist")
 	
-	return ( intensity, proteo )
+	return ( intensity, proteo, LUV )
 	
 
 ###########################################################################################

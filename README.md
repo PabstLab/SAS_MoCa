@@ -3,28 +3,30 @@
 ## A stochastic analysis tool for studying the structure of lipid membrane systems using small-angle scattering (SAS).
 
 ### Currently supported models
+
 The currently supported models of Large Unilamellar Vesicles (LUVs) and protein-containing LUVs (pLUVs, or proteoliposomes) are based on a combination of the Scattering Density Profile (SDP) $^1$ and Separated Form Factor (SFF) $^2$ scattering models.
 Recent updates for bound-water molecules and thickness fluctuaions are included. $^3$ </br>
 
 * **Large unilamellar vesicles (LUVs)**: 
-     * **LUV_DMPC** -> _LUVs_: DMPC/DMPG 95:5 mol/mol mixture; suspension in pure water.
-     * **LUV_POPC** -> _LUVs_: POPC/POPG 95:5 mol/mol mixture; suspension in pure water.
-     * **LUV_POPE** -> _LUVs_: POPE/POPG 90:10 mol/mol mixture; suspension in pure water.
+  * **LUV_DMPC** -> _LUVs_: DMPC/DMPG 95:5 mol/mol mixture; suspension in pure water.
+  * **LUV_POPC** -> _LUVs_: POPC/POPG 95:5 mol/mol mixture; suspension in pure water.
+  * **LUV_POPE** -> _LUVs_: POPE/POPG 90:10 mol/mol mixture; suspension in pure water.
 * **Proteoliposomes (pLUVs)**: 
-    * **pLUV_DLPC_OmpLA_RecBuf** -> _Hosting LUV_: DLPC/DLPG 95:5 mol/mol mixture; _protein_: Outer membrane phospholipase A (OmpLA) monomer/dimer; suspension in 20 mM TRIS, 2mM EDTA.
-    * **pLUV_POPC_OmpLA_RecBuf** -> _Hosting LUVs_: POPC/POPG 95:5 mol/mol mixture; _protein_: Outer membrane phospholipase A (OmpLA) monomer/dimer; suspension in 20 mM TRIS, 2mM EDTA;
+  * **pLUV_DLPC_OmpLA_RecBuf** -> _Hosting LUV_: DLPC/DLPG 95:5 mol/mol mixture; _protein_: Outer membrane phospholipase A (OmpLA) monomer/dimer; suspension in 20 mM TRIS, 2mM EDTA.
+  * **pLUV_POPC_OmpLA_RecBuf** -> _Hosting LUVs_: POPC/POPG 95:5 mol/mol mixture; _protein_: Outer membrane phospholipase A (OmpLA) monomer/dimer; suspension in 20 mM TRIS, 2mM EDTA;
 
- 
 **Abbreviations**:
+
 * *DLPC* -> 1,2-dilauroyl-sn-glycero-3-phosphatidylcholine
 * *DMPC* -> 1,2-dimyristoyl-sn-glycero-3-phosphocholine
-* *POPC* ->	1-palmitoyl-2-oleoyl-sn-glycero-3-phosphocholine 
-* *POPE* ->	1-palmitoyl-2-oleoyl-sn-glycero-3-phosphoethanolamine 
+* *POPC* ->    1-palmitoyl-2-oleoyl-sn-glycero-3-phosphocholine 
+* *POPE* ->    1-palmitoyl-2-oleoyl-sn-glycero-3-phosphoethanolamine 
 * *DLPG* -> 1,2-dilauroyl-sn-glycero-3-phosphoglycerol
 * *DMPG* -> 1,2-dimyristoyl-sn-glycero-3-phosphoglycerol
-* *POPG* ->	1-palmitoyl-2-oleoyl-sn-glycero-3-phosphoglycerol 
+* *POPG* ->    1-palmitoyl-2-oleoyl-sn-glycero-3-phosphoglycerol 
 
-### Minimization algorithm: 
+### Minimization algorithm:
+
 * Adaptive **Thermodynamic Simulated Annealing** (TSA) $^{4,5}$
 
 ## Installation
@@ -96,6 +98,7 @@ In the _config_ block there are all the configuration options.
 #### Initialize model parameters
 
 In the second block there is the list of the parameters required by a given scattering model.
+
 ```
     parameter_1: [4.2, off, Null, 1.0, 10.]
     parameter_3: [2.4, on, Null, 0.8, 4.8] 
@@ -105,17 +108,18 @@ In the second block there is the list of the parameters required by a given scat
     .
     parameter_N: [420, on, 0.042, 0, 10000]
 ```
+
 * **label:** <br> Name of the parameters, it is just a label for visualization and should be short and without spaces; use the description are after *#* to include a longer description if needed. The order of parameters matters: check the model to verify the order of the parameters. 
 
 * **List of values** <br> It contains, in the order, 1) initialization value, 2) fix/free parameter option, 3) prior information, 4) low hard-boundary, 5) high hard-boundary.
-
-    * **initialization** <br> Starting values to initialize the fitting routine. 
-
-    * **fix/free parameter option** <br> set off to have a fixed value, set on to adjust the parameter during the minimization run.
-
-    * **prior information** <br> Set the relative $\sigma_{prioir}$ value of a Gaussian prior pdf centered at the initialization value. If the value is _Null_, no informative prior is set for the given parameter.
-
-    * **low and high hard-boundaries** <br> Set the lower and higher boundaries accessible to the adjustable parameters. The _Null_ option is only valid if the prior information is not _Null_, as the lower and higher boundaries are automatically set to $\pm5\times\sigma_{prioir}$.
+  
+  * **initialization** <br> Starting values to initialize the fitting routine. 
+  
+  * **fix/free parameter option** <br> set off to have a fixed value, set on to adjust the parameter during the minimization run.
+  
+  * **prior information** <br> Set the relative $\sigma_{prioir}$ value of a Gaussian prior pdf centered at the initialization value. If the value is _Null_, no informative prior is set for the given parameter.
+  
+  * **low and high hard-boundaries** <br> Set the lower and higher boundaries accessible to the adjustable parameters. The _Null_ option is only valid if the prior information is not _Null_, as the lower and higher boundaries are automatically set to $\pm5\times\sigma_{prioir}$.
 
 > [!NOTE]
 > To simplify the the initial use of _SAS_MoCa_ see the _examples_ folder for working examples and templates.
@@ -133,9 +137,11 @@ To fit data o preview the outcome of the chosen scattering model, open a command
 ---
 
 ### Output
+
 The fitting results (or preview) are saved in the configured folder. Here the list of saved files:
 
 #### Text files
+
 Each of the following files includes a header containing a timestamp, the version used, and a summary of the configuration used to fit the data.
 
 * **correlations.dat** <br> It contains a symmetric matrix of Pearson's correlation coefficients for the adjustable parameters. _This file is only created if the number of iterations is greater than 10!_.
@@ -160,11 +166,12 @@ Each of the following files includes a header containing a timestamp, the versio
 
 ## If you use _SAS_MoCa_ repository please cite:
 
-* Semeraro, E. F., & Pabst, G. SAS_MoCa (Version 1.3.0) [Computer software]. https://github.com/PabstLab/SAS_MoCa
+* Semeraro, E. F., & Pabst, G. SAS_MoCa (Version 1.3.1) [Computer software]. https://github.com/PabstLab/SAS_MoCa
 * Semeraro E. F., et al., in preparation 
 * Semeraro E. F., et al., in preparation 
 
 ## License
+
 **SAS_MoCa** is free and open source software, distributed under the [BSD 3‑Clause “New” or “Revised” License](https://opensource.org/license/BSD-3-Clause).<br> 
 For the full legal text, see the `LICENSE` file in this repository.
 

@@ -47,7 +47,7 @@ if __name__ == "__main__":
 	parameters = input.get_parameters()
 
 	# Read model function and plotting options
-	(function, proteo) = ChooseFunction( config['model'] )
+	(function, proteo, LUV) = ChooseFunction( config['model'] )
 
 	# Initialize control to print progression for each iteration
 	if config['processes'] == 1 :	prt_progress = 1
@@ -231,18 +231,20 @@ if __name__ == "__main__":
 		#------ plot data and fitted model
 		I_plot = res_function.intensity()
 		PlotData(config['qrange'], config['save-folder']).plot_fit( data, I_plot )	
-		#------ calculate extra parameters and real space description
-		SDP_matrix, n_W, D_pp, D_B, D_C, A_L = res_function.SDP_profile()
-		#------ plot SDP and SLD profiles
-		SDP = PlotSDP_profile(SDP_matrix, D_B, D_C, config['save-folder'])
-		SDP.plot_sdp()
-		#------ save SDP and SLD profiles 
-		with open("./"+config['save-folder']+"/plot_SDP-SLD.dat", 'w') as fl:
-			add_metadata(fl)
-			fl.writelines("# Probabilities of finding a quasimolecular group at a position z (Angstrom) (distance from the bilayer center).\n")
-			fl.writelines("# SLD column: SLD contrast (difference from suspension medium) as a function of z; unit Angstrom^-2.\n")
-			fl.writelines("# -----------------------------------\n")
-		SDP_matrix.to_csv("./"+config['save-folder']+"/plot_SDP-SLD.dat", sep='\t', na_rep='-', header=True, index=False, mode='a', index_label=False)
+		
+		if LUV:
+			#------ calculate extra parameters and real space description
+			SDP_matrix, n_W, D_pp, D_B, D_C, A_L = res_function.SDP_profile()
+			#------ plot SDP and SLD profiles
+			SDP = PlotSDP_profile(SDP_matrix, D_B, D_C, config['save-folder'])
+			SDP.plot_sdp()
+			#------ save SDP and SLD profiles
+			with open("./"+config['save-folder']+"/plot_SDP-SLD.dat", 'w') as fl:
+				add_metadata(fl)
+				fl.writelines("# Probabilities of finding a quasimolecular group at a position z (Angstrom) (distance from the bilayer center).\n")
+				fl.writelines("# SLD column: SLD contrast (difference from suspension medium) as a function of z; unit Angstrom^-2.\n")
+				fl.writelines("# -----------------------------------\n")
+			SDP_matrix.to_csv("./"+config['save-folder']+"/plot_SDP-SLD.dat", sep='\t', na_rep='-', header=True, index=False, mode='a', index_label=False)
 
 		#------ compute equivalent X^2 from the set of mean results
 		N_Free = 0
@@ -260,13 +262,13 @@ if __name__ == "__main__":
 			Plots.correlations(pearson_correlation, "./"+config['save-folder']+"/plot_correlations.png")
 
 		#------------------ Saving results
-
-		# Calculate extra physical quantities and add it to parameters dataframe
-		rel_err_dD_C = float(parameters.loc[parameters['name']=='dD_C','stdev']/parameters.loc[parameters['name']=='dD_C','mean'])
-		new_row = pd.DataFrame({"name": ["A_L*", "D_B*", "D_pp*", "n_W*"], 
-						  		"mean": [A_L, D_B, D_pp, n_W], 
-								"stdev": [A_L*rel_err_dD_C, D_B*rel_err_dD_C, "-", "-"]})
-		parameters = pd.concat([parameters, new_row], ignore_index=True)
+		if LUV:
+			# Calculate extra physical quantities and add it to parameters dataframe
+			rel_err_dD_C = float(parameters.loc[parameters['name']=='dD_C','stdev']/parameters.loc[parameters['name']=='dD_C','mean'])
+			new_row = pd.DataFrame({"name": ["A_L*", "D_B*", "D_pp*", "n_W*"],
+									"mean": [A_L, D_B, D_pp, n_W],
+									"stdev": [A_L*rel_err_dD_C, D_B*rel_err_dD_C, "-", "-"]})
+			parameters = pd.concat([parameters, new_row], ignore_index=True)
 		
 		#------ Recap of results. It includes parameter initialization
 		with open("./"+config['save-folder']+"/results_recap.dat", 'w') as fl:

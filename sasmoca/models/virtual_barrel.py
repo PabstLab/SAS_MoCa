@@ -36,7 +36,7 @@ class Stacked_disks_singleSLD:
 	"""
 
 ##################
-	def __init__(self, q, PAR) :
+	def __init__(self, q, PAR, _) :
 		[self.Norm, self.n,
 		dR0, dR1, dR2, dR3, dR4, dR5, dR6,
 		dH0, dH1, dH2, dH3, dH4, dH5, dH6,
@@ -96,7 +96,7 @@ class Stacked_disks_singleSLD_dimer:
 	"""
 	
 ##################
-	def __init__(self, q, PAR) :
+	def __init__(self, q, PAR, _) :
 		self.q = q
 		[self.Norm, self.n,
 		dR0, dR1, dR2, dR3, dR4,

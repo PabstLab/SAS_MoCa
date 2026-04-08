@@ -36,7 +36,7 @@ def Min_likelyhood (prior_ratio) :
 def PriorRatio (start, check, rel, prev) :
 	new = np.exp(-(start-check)**2/(2*(rel*start)**2))
 	old = np.exp(-(start-prev)**2/(2*(rel*start)**2))
-	return new/old
+	return Min_likelyhood(new/old)
 
 ###########################################################################################
 ###########################################################################################
@@ -131,8 +131,9 @@ def SimAnnealing ( input_list ):
 		
 		#------------------------ Calculate Boltzmann-like probability
 		prBol = np.exp(-(X2_TEMP-X2)/T)
-		prBol*= Min_likelyhood(prior)
-		
+		#prBol*= Min_likelyhood(prior)
+		prBol*= prior
+
 		#####################################################
 		#------------------------ Check temporary X^2 value
 		#------------------------ Update configuration
