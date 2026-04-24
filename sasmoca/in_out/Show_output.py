@@ -111,8 +111,8 @@ class PlotStat:
 		# restrict the list to free parameteres only
 		self.name=[]
 		self.start=[]
-		self.mean=[]
-		self.stdev=[]
+		self.median=[]
+		self.MAD=[]
 		self.low_l=[]
 		self.high_l=[]
 		self.prior=[]
@@ -123,8 +123,8 @@ class PlotStat:
 				self.prior.append(parameters['prior'].iloc[i])    
 				self.low_l.append(parameters['low_l'].iloc[i])        
 				self.high_l.append(parameters['high_l'].iloc[i])      
-				self.mean.append(parameters['mean'].iloc[i])        
-				self.stdev.append(parameters['stdev'].iloc[i])        
+				self.median.append(parameters['median'].iloc[i])
+				self.MAD.append(parameters['MAD'].iloc[i])
 
 		self.results = results
 
@@ -153,8 +153,8 @@ class PlotStat:
 		prior_reshaped = reshape(self.prior, cols, rows)
 		low_l_reshaped = reshape(self.low_l, cols, rows)
 		high_l_reshaped = reshape(self.high_l, cols, rows)
-		mean_reshaped = reshape(self.mean, cols, rows)
-		stdev_reshaped = reshape(self.stdev, cols, rows)
+		median_reshaped = reshape(self.median, cols, rows)
+		MAD_reshaped = reshape(self.MAD, cols, rows)
 
 		# initialize plot
 		fig, axs = plt.subplots(rows, cols, figsize=(3.*cols, 3.*rows), facecolor='#2E3436')
@@ -188,12 +188,17 @@ class PlotStat:
 				
 				# generate and plot priors
 				if prior_reshaped[i][j]!=0 : 
-					prior_pdf = y.max()*np.exp( -(x-start_reshaped[i][j])**2 / (2*(start_reshaped[i][j]*prior_reshaped[i][j])**2) )
-					axs[i][j].plot(x, prior_pdf, ls='-', lw=3.5, color=prior_color, alpha=1.0, zorder=2)
+					#prior_pdf = y.max()*np.exp( -(x-start_reshaped[i][j])**2 / (2*(start_reshaped[i][j]*prior_reshaped[i][j])**2) )
+					#axs[i][j].plot(x, prior_pdf, ls='-', lw=3.5, color=prior_color, alpha=1.0, zorder=2)
+					prior_pdf = np.exp( -(x-start_reshaped[i][j])**2 / (2*(start_reshaped[i][j]*prior_reshaped[i][j])**2) )
+					axs[i][j].fill_between(x, 0, prior_pdf, ls='-', lw=3.5, color=prior_color, alpha=0.5, zorder=2)
 
-				# generate mean and standard deviation			
-				axs[i][j].errorbar( x=mean_reshaped[i][j], y=y.max()/2, xerr=stdev_reshaped[i][j], marker='D', ms=8, markerfacecolor=res_color, markeredgecolor='None', 
+				# generate median and standard deviation
+				axs[i][j].errorbar( x=median_reshaped[i][j], y=y.max()/2, xerr=MAD_reshaped[i][j], marker='D', ms=8, markerfacecolor=res_color, markeredgecolor='None',
 					   				ecolor=res_color, elinewidth=3.0, capsize=8, zorder=4)
+
+				axs[i][j].set(yticklabels=[])  # remove the tick labels
+				axs[i][j].tick_params(axis='y', left=False)
 
 		fig.tight_layout()
 
