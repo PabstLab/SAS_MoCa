@@ -5,10 +5,10 @@ config:
    model: pLUV_POPC_OmpLA_RecBuf 
    temperature-init: 400
    temperature-gain: 50 
-   target-X2: 20.0
+   target-X2: 2.0
    data-binning: 1
    error-scale: 1
-   iterations: 30
+   iterations: 100
    processes: 24
    plot-only: off 
    state: monomer

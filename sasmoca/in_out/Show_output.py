@@ -95,7 +95,7 @@ class PlotData:
 		self.axes[2].scatter(data[:,0], -data[:,2], marker='o', color=point_color[0], edgecolor=self.point_edge, s=18, linewidth=1.2, label='', alpha=0.33, zorder=10)
 		self.axes[2].plot(data[:,0], I_plot-data[:,1], linewidth=2.0, color=line_color[0], ls='-', label='Best fit', zorder=0)
 
-		for g in range(len(self.axes)):
+		for g in range(1, len(self.axes)):
 			self.axes[g].legend()
 		self.fig1.tight_layout()
 
