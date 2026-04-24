@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import math
 import numpy as np
 from scipy import stats
 import matplotlib as mpl
@@ -188,13 +189,11 @@ class PlotStat:
 				
 				# generate and plot priors
 				if prior_reshaped[i][j]!=0 : 
-					#prior_pdf = y.max()*np.exp( -(x-start_reshaped[i][j])**2 / (2*(start_reshaped[i][j]*prior_reshaped[i][j])**2) )
-					#axs[i][j].plot(x, prior_pdf, ls='-', lw=3.5, color=prior_color, alpha=1.0, zorder=2)
-					prior_pdf = np.exp( -(x-start_reshaped[i][j])**2 / (2*(start_reshaped[i][j]*prior_reshaped[i][j])**2) )
-					axs[i][j].fill_between(x, 0, prior_pdf, ls='-', lw=3.5, color=prior_color, alpha=0.5, zorder=2)
+					prior_pdf = np.exp( -(x-start_reshaped[i][j])**2 / (2*(start_reshaped[i][j]*prior_reshaped[i][j])**2) ) / ( math.sqrt(2*math.pi)*start_reshaped[i][j]*prior_reshaped[i][j] )
+					axs[i][j].fill_between(x, 0, prior_pdf, ls='-', lw=3, color=prior_color, alpha=0.4, zorder=2)
 
 				# generate median and standard deviation
-				axs[i][j].errorbar( x=median_reshaped[i][j], y=y.max()/2, xerr=MAD_reshaped[i][j], marker='D', ms=8, markerfacecolor=res_color, markeredgecolor='None',
+				axs[i][j].errorbar( x=median_reshaped[i][j], y=y.max()*1.2, xerr=MAD_reshaped[i][j], marker='D', ms=8, markerfacecolor=res_color, markeredgecolor='None',
 					   				ecolor=res_color, elinewidth=3.0, capsize=8, zorder=4)
 
 				axs[i][j].set(yticklabels=[])  # remove the tick labels
