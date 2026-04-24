@@ -206,18 +206,18 @@ if __name__ == "__main__":
 		#------ Add X2 column to "results_collection"
 		results_collection['X2'] = collection_X2
 
-		#------ Get mean values and standard deviation for each parameter
-		mean = []
-		stdv = []
+		#------ Get median values and standard deviation for each parameter
+		median = []
+		MAD = []
 		for p in range(len(parameters['name'])):
 			tmp = []
 			for clt in (collection):
 				tmp.append(clt.iloc[p,1])
-			mean.append( np.mean(np.array(tmp)) )
-			stdv.append( np.std(np.array(tmp), ddof=1) )
+			median.append( np.median(np.array(tmp)) )
+			MAD.append( stats.median_abs_deviation(np.array(tmp), nan_policy='propagate', scale=1.0) )
 		del tmp
-		parameters['mean'] = mean
-		parameters['stdev'] = stdv
+		parameters['median'] = median
+		parameters['MAD'] = MAD
 
 		#------ print parameters recap and results
 		print("\n----- Results recap -----\n")
@@ -226,7 +226,7 @@ if __name__ == "__main__":
 		#------ initilize object to calculate final intensity and extra parameters
 		par_plot = []
 		for p in range(len(parameters['name'])):
-			par_plot.append(parameters['mean'].iloc[p])
+			par_plot.append(parameters['median'].iloc[p])
 		res_function = function(data[:,0], par_plot, config['state'])	
 		#------ plot data and fitted model
 		I_plot = res_function.intensity()
@@ -246,12 +246,11 @@ if __name__ == "__main__":
 				fl.writelines("# -----------------------------------\n")
 			SDP_matrix.to_csv("./"+config['save-folder']+"/plot_SDP-SLD.dat", sep='\t', na_rep='-', header=True, index=False, mode='a', index_label=False)
 
-		#------ compute equivalent X^2 from the set of mean results
+		#------ compute equivalent X^2 from the set of median results
 		N_Free = 0
 		for v in range(len(parameters['value'])):
 			if parameters.iloc[v,2]: N_Free+=1
-		X2_mean = X2function(data[:,0], data[:,1], I_plot, data[:,2], N_Free)
-
+		X2_median = X2function(data[:,0], data[:,1], I_plot, data[:,2], N_Free)
 
 		#------ plot and save statistics 
 		Plots=PlotStat(results_collection, parameters)
@@ -264,25 +263,25 @@ if __name__ == "__main__":
 		#------------------ Saving results
 		if LUV:
 			# Calculate extra physical quantities and add it to parameters dataframe
-			rel_err_dD_C = float(parameters.loc[parameters['name']=='dD_C','stdev']/parameters.loc[parameters['name']=='dD_C','mean'])
+			rel_err_dD_C = float(parameters.loc[parameters['name']=='dD_C','MAD']/parameters.loc[parameters['name']=='dD_C','median'])
 			new_row = pd.DataFrame({"name": ["A_L*", "D_B*", "D_pp*", "n_W*"],
-									"mean": [A_L, D_B, D_pp, n_W],
-									"stdev": [A_L*rel_err_dD_C, D_B*rel_err_dD_C, "-", "-"]})
+									"median": [A_L, D_B, D_pp, n_W],
+									"MAD": [A_L*rel_err_dD_C, D_B*rel_err_dD_C, "-", "-"]})
 			parameters = pd.concat([parameters, new_row], ignore_index=True)
 		
 		#------ Recap of results. It includes parameter initialization
 		with open("./"+config['save-folder']+"/results_recap.dat", 'w') as fl:
 			add_metadata(fl)
-			fl.writelines("# Table of results (mean and stdev) along with parameter initialization.\n")
+			fl.writelines("# Table of results (median and MAD) along with parameter initialization.\n")
 			fl.writelines("# * Calculated values\n")
-			fl.writelines("# X^2 from mean values: "+str(X2_mean)+"\n")
+			fl.writelines("# X^2 from median values: "+str(X2_median)+"\n")
 			fl.writelines("# -----------------------------------\n")
 		parameters.to_csv("./"+config['save-folder']+"/results_recap.dat", sep='\t', na_rep='-', header=True, index=False, mode='a', index_label=False)
 		
-		#------ Collection of the result parameters (means only) for each iteration
+		#------ Collection of the result parameters (medians only) for each iteration
 		with open("./"+config['save-folder']+"/iterations_collection.dat", 'w') as fl:
 			add_metadata(fl)
-			fl.writelines("# Collection of the result parameters (means only) for each iteration.\n")
+			fl.writelines("# Collection of the result parameters (medians only) for each iteration.\n")
 			fl.writelines("# -----------------------------------\n")
 		results_collection.to_csv("./"+config['save-folder']+"/iterations_collection.dat", sep='\t', na_rep='-', header=True, index=True, mode='a')
 
