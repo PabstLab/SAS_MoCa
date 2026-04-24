@@ -3,8 +3,9 @@
 import math
 import numpy as np
 from scipy import stats
-import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+import matplotlib.cm as cm
 
 ###########################################################################################
 ###########################################################################################
@@ -32,7 +33,7 @@ class PlotData:
 
 	def __init__ ( self, qrange, save ):
 
-		self.fig1, self.axes = plt.subplots(2, 1, figsize=(9.0, 12), facecolor='#2E3436')
+		self.fig1, self.axes = plt.subplots(3, 1, figsize=(9.0, 12), facecolor='#2E3436', gridspec_kw={'height_ratios': [3.5, 3.5, 1]})
 
 		bk_color = '#222222' #'#2E3436'
 		label_color = '#D3D7CF'
@@ -42,7 +43,7 @@ class PlotData:
 
 		for g in range(len(self.axes)):
 			self.axes[g].set_xscale('log', base=10)
-			self.axes[g].set_yscale('log', base=10)
+			if g<2: self.axes[g].set_yscale('log', base=10)
 
 			self.axes[g].grid()		
 			self.axes[g].set_facecolor(bk_color)			
@@ -53,9 +54,10 @@ class PlotData:
 			self.axes[g].set_xlim([qrange[0],qrange[1]])
 			self.axes[g].set_xlabel('$q$ ($\\AA^{-1}$)', fontsize=14, color=label_color)
 			
-		self.axes[0].set_ylabel('$I(q)$ (mm$^{-1}$)', fontsize=14, color=label_color)
-		self.axes[1].set_ylabel('relative deviation $|I(q)-f(q)|/I(q)$', fontsize=14, color=label_color)
-	
+		self.axes[0].set_ylabel('$I(q)$ collection (mm$^{-1}$)', fontsize=14, color=label_color)
+		self.axes[1].set_ylabel('$I(q)$ (mm$^{-1}$)', fontsize=14, color=label_color)
+		self.axes[2].set_ylabel('discrepancy (mm$^{-1}$)', fontsize=14, color=label_color)
+
 		self.save_folder = "./"+str(save)+"/plot.png"
 
 
@@ -73,20 +75,25 @@ class PlotData:
 
 ###########################################################################################
 
-	def plot_fit ( self, data, I_plot ):	
+	def plot_fit ( self, data, I_plot , I_collection, collection_X2):
 
 		point_color = ['orange', 'magenta', 'blue', 'green', 'orange']
 		line_color = ['red', 'violet', 'lightblue', 'lightgreen', 'red']
 
-		#self.axes[0].errorbar(data[:,0], data[:,1], yerr=data[:,2], fmt='o', color=point_color[0], markeredgecolor=self.point_edge, markersize=5, linewidth=1.0, label='SAXS data', zorder=0)		
-		self.axes[0].errorbar(data[:,0], data[:,1], yerr=data[:,2], fmt='o', color=point_color[0], markeredgecolor=self.point_edge, markersize=5, linewidth=1.0, label='SAXS data', alpha=0.33, zorder=0)		
-		self.axes[0].plot(data[:,0], I_plot, linewidth=2.0, color=line_color[0], ls='-', label='Best fit', zorder=10)
+		norm = mpl.colors.Normalize(vmin=collection_X2.min() , vmax=collection_X2.max())
+		cmap = cm.Oranges
 
-		self.axes[1].axhline(y=0, linewidth=2)		
-		self.axes[1].scatter(data[:,0], data[:,2]/data[:,1], marker='o', color=point_color[0], edgecolor=self.point_edge, s=18, linewidth=1.2, label='Exp. error', alpha=0.33, zorder=10)		
-		self.axes[1].plot(data[:,0], np.abs(I_plot-data[:,1])/data[:,1], linewidth=2.0, color=line_color[0], ls='-', label='Best fit', zorder=0)
+		for i, element in enumerate(I_collection):
+			colors = cmap(norm(collection_X2[i]))
+			self.axes[0].plot(data[:,0], element, linewidth=1.0, color=colors, ls='-', label='', zorder=10)
 
-		self.axes[0].set_ylim([0.1*np.min(data[:,1]),10*np.max(data[:,1])])
+		self.axes[1].errorbar(data[:,0], data[:,1], yerr=data[:,2], fmt='o', color=point_color[0], markeredgecolor=self.point_edge, markersize=5, linewidth=1.0, label='SAXS data', alpha=0.33, zorder=0)
+		self.axes[1].plot(data[:,0], I_plot, linewidth=2.0, color=line_color[0], ls='-', label='Best fit', zorder=10)
+
+		self.axes[2].axhline(y=0, linewidth=2)
+		self.axes[2].scatter(data[:,0], data[:,2], marker='o', color=point_color[0], edgecolor=self.point_edge, s=18, linewidth=1.2, label='Exp. error', alpha=0.33, zorder=10)
+		self.axes[2].scatter(data[:,0], -data[:,2], marker='o', color=point_color[0], edgecolor=self.point_edge, s=18, linewidth=1.2, label='', alpha=0.33, zorder=10)
+		self.axes[2].plot(data[:,0], I_plot-data[:,1], linewidth=2.0, color=line_color[0], ls='-', label='Best fit', zorder=0)
 
 		for g in range(len(self.axes)):
 			self.axes[g].legend()
@@ -96,7 +103,6 @@ class PlotData:
         metadata={'Creator': "SAS_MoCa"}, 
 		bbox_inches='tight', facecolor='auto', edgecolor='auto')
 
-		#plt.show()
 		plt.close()
 
 ###########################################################################################
