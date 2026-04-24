@@ -152,11 +152,11 @@ Each of the following files includes a header containing a timestamp, the versio
 
 * **plot_SDP-SLD.dat**  <br> It contains the calculate probability density for each quasi-molecular group of the (p)LUV model (SDP profile), as well as the corresponding SLD contrast profile. The $z$-axis units are $\AA$, and the SLD units are $\AA^{-2}$.
 
-* **results_recap.dat** <br> Summary of the input parameter table (from name to boundaries) that includes two new columns for the results: **mean** and **standard deviation** for each adjustable parameter. Fixed parameters are also included. Additionally, there is the list of calculated values (_marked with *_) such as area per lipid $A_L$, Luzzati thickness $D_B$, phosphate-to-phosphate distance $D_{pp}$ (in the case of SAXS), and estimate of number of water molecules per headgroup $n_W$.
+* **results_recap.dat** <br> Summary of the input parameter table (from name to boundaries) that includes two new columns for the results: **median** and **MAD** (median absolute deviation from the median) for each adjustable parameter. Fixed parameters are also included. Additionally, there is the list of calculated values (_marked with *_) such as area per lipid $A_L$, Luzzati thickness $D_B$, phosphate-to-phosphate distance $D_{pp}$ (in the case of SAXS), and estimate of number of water molecules per headgroup $n_W$.
 
 #### Plots
 
-* **Plot.png** <br> Plot of data and fitted scattering curve, it includes a comparison between relative experimental error and relative deviation from the model.
+* **Plot.png** <br> Plot of data and fitted scattering curve, it includes (i) the collection of all scattering curves relative to each iterations, and (ii) a comparison between experimental error and data to model discrepancy.
 
 * **Plot_histograms.png** <br> Histograms showing the distribution obtained for each single adjustable parameter (only saved if the number of iterations is higher than 10). The plots include a kernel-density visualization of distributions, marks pointing the mean ands standard deviations, and the Gaussian prior profiles when present.
 
