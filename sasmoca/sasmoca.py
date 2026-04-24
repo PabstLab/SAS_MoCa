@@ -230,7 +230,12 @@ if __name__ == "__main__":
 		res_function = function(data[:,0], par_plot, config['state'])	
 		#------ plot data and fitted model
 		I_plot = res_function.intensity()
-		PlotData(config['qrange'], config['save-folder']).plot_fit( data, I_plot )	
+		I_collection= []
+		for instance in range(results_collection.shape[0]):
+			#print(collection[instance]['value'])
+			res_tmp = function(data[:,0], collection[instance]['value'], config['state'])
+			I_collection.append(res_tmp.intensity())
+		PlotData(config['qrange'], config['save-folder']).plot_fit( data, I_plot, I_collection, np.array(collection_X2) )
 		
 		if LUV:
 			#------ calculate extra parameters and real space description
