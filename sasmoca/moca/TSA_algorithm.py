@@ -121,7 +121,7 @@ def SimAnnealing ( input_list ):
 		check_negH2O = intensity_init.negative_water()	
 		I_TEMP = intensity_init.intensity()
 		X2_TEMP = X2function(data[:,0], data[:,1], I_TEMP, data[:,2], N_Free)
-		if check_negH2O : X2_TEMP*= neg_water_scale
+		X2_TEMP*= (1+check_negH2O*neg_water_scale)
 
 		#####################################################
 		#------------------------ Calculate cumulative prior ratio between temporary and best parameter set
