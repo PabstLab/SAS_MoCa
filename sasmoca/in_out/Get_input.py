@@ -9,10 +9,9 @@ import yaml
 ###############
 ############### Miscellaneous
 
-def file_exists(arg, name):
+def file_exists(arg):
 	if os.path.exists(arg):
 		pass
-		#print(name,"\t",arg)
 	else:
 		raise IOError(arg,"The file does not exist")
 ##############
@@ -56,14 +55,19 @@ def is_within_01(val):
 class Load_input:
 	'Read the Options & Parameters file'
 	
-	def __init__ ( self , ARGV ):
+	def __init__ ( self , ARGV, settings_file):
 
 		if len(ARGV)>3:
 			sys.exit("--- Too many arguments")
 		elif len(ARGV)==1:
 			sys.exit("--- Specify the parameters file")
 
-		file_exists(ARGV[1], "\n-- Parameters File")
+		file_exists(ARGV[1])
+		file_exists(settings_file)
+
+		# Reading settings from the YAML file
+		with open(settings_file, 'r', encoding='utf8') as file:
+			self.settings = yaml.safe_load(file)
 
 		# Reading cofigurations from the YAML file
 		with open(ARGV[1], 'r', encoding='utf8') as file:
@@ -75,11 +79,45 @@ class Load_input:
 		self.param = self.param.rename(columns={"index": "name"})
 
 ###########################################################################################
+	def get_settings ( self ):
+		""" Load settings	"""
+
+		# Check numerical or Boolean values
+
+		is_float_positive(self.settings['convergence']['thermo'])
+		is_int_positive(self.settings['convergence']['maxcount'])
+		is_float_positive(self.settings['convergence']['conv_threshold'])
+		is_float_positive(self.settings['convergence']['neg_water_scale'])
+
+		if isinstance(self.settings['statistics']['scale_MAD_to_std'], bool):
+				pass
+		else:
+			raise Exception(self.settings['statistics']['scale_MAD_to_std'], "must be Boolean")
+
+		is_int_positive(self.settings['statistics']['hist_mincount'])
+
+		# print settings  recap
+		print("# Settings")
+		print("convergence:")
+		lmax = max(len(key) for key, value in self.settings['convergence'].items())
+		for key, value in self.settings['convergence'].items():
+			key=key+str(":")
+			print("\t", key.ljust(lmax+1), value)
+		print("statistics:")
+		lmax = max(len(key) for key, value in self.settings['statistics'].items())
+		for key, value in self.settings['statistics'].items():
+			key=key+str(":")
+			print("\t", key.ljust(lmax+1), value)
+		print("-----------------------------------")
+
+		return self.settings
+
+###########################################################################################
 	def get_config ( self ):
 		""" Load configuration	"""
 
 		# Check datafile
-		file_exists(self.cfg['datafile'], "\n- datafile:\t")
+		file_exists(self.cfg['datafile'])
 
 		# Check and create if not existing destination folder
 		self.cfg['save-folder'] = str("RES_")+self.cfg['save-folder']
@@ -94,7 +132,7 @@ class Load_input:
 			raise Exception("q_min must be lower than q_max")
 	
 		is_float_positive(self.cfg['temperature-init'])
-		is_float_positive(self.cfg['temperature-gain'])
+		#is_float_positive(self.cfg['temperature-gain'])
 		is_float_positive(self.cfg['target-X2'])
 
 		is_int_positive(self.cfg['data-binning'])
@@ -119,10 +157,12 @@ class Load_input:
 			pass
 		
 		# print configuration recap
+		print("# Configuration")
 		lmax = max(len(key) for key, value in self.cfg.items())
 		for key, value in self.cfg.items():
 			key=key+str(":")
 			print(key.ljust(lmax+1), value)
+		print("-----------------------------------")
 
 		return self.cfg
 	
