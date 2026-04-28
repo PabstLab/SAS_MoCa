@@ -179,15 +179,14 @@ class LUV_POPE:
 		# Set z arrasy to plt SDP profile...
 		z_array = np.linspace(0., D_B*1.1, int(D_B*1.1)*10, endpoint=False)
 
-		self.check = False
-
 		CG  		= Gauss(z_array, self.V_CG,		self.D_C+self.d_CG,											self.s_CG,		self.A_L)
 		P   		= Gauss(z_array, self.V_P,			self.D_C+self.d_CG+self.d_P,						self.s_P,			self.A_L)
 		ENX		= Gauss(z_array, self.V_ENX,		self.D_C+self.d_CG+self.d_P+self.d_ENX,	self.s_ENX,	self.A_L)
 		BW		= Slab(z_array,	self.D_C+self.d_BW/2., self.d_BW, self.s_CH2)
 		BW		= BW - CG - P - ENX
 
-		if (BW<0).any(): self.check = True
+		self.check = 0
+		self.check = np.sum(np.where(BW<-0.01, 1, 0))
 
 		return self.check
 		
