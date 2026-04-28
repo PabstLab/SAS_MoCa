@@ -3,9 +3,8 @@ config:
    save-folder: "DMPC-example"
    qrange: [0.005, 0.6] 
    model: LUV_DMPC
-   temperature-init: 400
-   temperature-gain: 50 
-   target-X2: 10
+   temperature-init: 40000
+   target-X2: 5
    data-binning: 1
    error-scale: 1
    iterations: 100
