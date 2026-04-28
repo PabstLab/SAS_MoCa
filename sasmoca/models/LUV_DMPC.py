@@ -173,15 +173,14 @@ class LUV_DMPC:
 		# Set z arrasy to plt SDP profile...
 		z_array = np.linspace(0., D_B*1.1, int(D_B*1.1)*10, endpoint=False)
 
-		self.check = 0
+		self.check = False
 
 		CG		= Gauss(z_array, self.V_CG,			self.D_C+self.d_CG,							self.s_CG,		self.A_L)
 		PCN		= Gauss(z_array, self.V_PCN,		self.D_C+self.d_CG+self.d_PCN,				self.s_PCN,		self.A_L)
 		Chol	= Gauss(z_array, self.V_Chol,		self.D_C+self.d_CG+self.d_PCN+self.d_Chol,	self.s_Chol,	self.A_L)
 		BW		= Slab(z_array,	self.D_C+self.d_BW/2., self.d_BW, self.s_CH2) - CG - PCN - Chol
 
-		for i in(BW) : 
-			if i <-0.001 : self.check+= 1   
+		if (BW<0).any(): self.check = True
 
 		return self.check
 		

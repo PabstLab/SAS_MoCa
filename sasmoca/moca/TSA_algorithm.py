@@ -119,8 +119,7 @@ def SimAnnealing ( input_list ):
 		check_negH2O = intensity_init.negative_water()	
 		I_TEMP = intensity_init.intensity()
 		X2_TEMP = X2function(data[:,0], data[:,1], I_TEMP, data[:,2], N_Free)
-		if check_negH2O != 0 :
-			X2_TEMP*= 1+(5*check_negH2O) 
+		if check_negH2O : X2_TEMP*= 1e3
 
 		#####################################################
 		#------------------------ Calculate cumulative prior ratio between temporary and best parameter set
@@ -131,7 +130,6 @@ def SimAnnealing ( input_list ):
 		
 		#------------------------ Calculate Boltzmann-like probability
 		prBol = np.exp(-(X2_TEMP-X2)/T)
-		#prBol*= Min_likelyhood(prior)
 		prBol*= prior
 
 		#####################################################

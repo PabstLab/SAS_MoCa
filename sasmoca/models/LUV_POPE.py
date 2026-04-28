@@ -179,15 +179,15 @@ class LUV_POPE:
 		# Set z arrasy to plt SDP profile...
 		z_array = np.linspace(0., D_B*1.1, int(D_B*1.1)*10, endpoint=False)
 
-		self.check = 0
+		self.check = False
 
-		CG  = Gauss(z_array, self.V_CG,		self.D_C+self.d_CG,						self.s_CG,	self.A_L)
-		P   = Gauss(z_array, self.V_P,		self.D_C+self.d_CG+self.d_P,			self.s_P,	self.A_L)
-		ENX = Gauss(z_array, self.V_ENX,	self.D_C+self.d_CG+self.d_P+self.d_ENX,	self.s_ENX,	self.A_L)
-		BW  = Slab(z_array,	self.D_C+self.d_BW/2., self.d_BW, self.s_CH2) - CG - P - ENX
+		CG  		= Gauss(z_array, self.V_CG,		self.D_C+self.d_CG,											self.s_CG,		self.A_L)
+		P   		= Gauss(z_array, self.V_P,			self.D_C+self.d_CG+self.d_P,						self.s_P,			self.A_L)
+		ENX		= Gauss(z_array, self.V_ENX,		self.D_C+self.d_CG+self.d_P+self.d_ENX,	self.s_ENX,	self.A_L)
+		BW		= Slab(z_array,	self.D_C+self.d_BW/2., self.d_BW, self.s_CH2)
+		BW		= BW - CG - P - ENX
 
-		for i in(BW) : 
-			if i <-0.001 : self.check+= 0   
+		if (BW<0).any(): self.check = True
 
 		return self.check
 		
@@ -207,9 +207,9 @@ class LUV_POPE:
 		CH		= Gauss(z_array, n_CH*self.V_CH, self.d_CH, self.s_CH, self.A_L)
 		CH2		= CH2 - CH3 - CH
 		
-		CG		= Gauss(z_array, self.V_CG,     self.D_C+self.d_CG,                     self.s_CG,  self.A_L)
-		P		= Gauss(z_array, self.V_P,		self.D_C+self.d_CG+self.d_P,			self.s_P,	self.A_L)
-		ENX 	= Gauss(z_array, self.V_ENX,	self.D_C+self.d_CG+self.d_P+self.d_ENX,	self.s_ENX,	self.A_L)
+		CG  		= Gauss(z_array, self.V_CG,		self.D_C+self.d_CG,											self.s_CG,		self.A_L)
+		P   		= Gauss(z_array, self.V_P,			self.D_C+self.d_CG+self.d_P,						self.s_P,			self.A_L)
+		ENX		= Gauss(z_array, self.V_ENX,		self.D_C+self.d_CG+self.d_P+self.d_ENX,	self.s_ENX,	self.A_L)
 		BW		= BW - CG - P - ENX
 		
         # ...and DeltaSLD profile
