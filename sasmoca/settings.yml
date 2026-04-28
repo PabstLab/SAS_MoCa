@@ -1,0 +1,8 @@
+convergence:
+   thermo: 1
+   maxcount: 100000
+   conv_threshold: 4
+   neg_water_scale: 1000
+statistics:
+    scale_MAD_to_std: False
+    hist_mincount: 10

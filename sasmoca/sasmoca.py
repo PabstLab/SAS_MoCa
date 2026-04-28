@@ -40,7 +40,9 @@ if __name__ == "__main__":
 
 	############### Read File & Options
 	# Load configuration and parameter file
-	input = Load_input(sys.argv)
+	input = Load_input(sys.argv, os.path.dirname(__file__)+"/settings.yml")
+	# Load settings
+	settings = input.get_settings()
 	# Load configuration details
 	config = input.get_config()
 	# Load parameter matrix
@@ -94,8 +96,10 @@ if __name__ == "__main__":
 				print("\n---- Iteration N.", it+1,"/", config['iterations'],"-----")
 				# List of inputs for minimization algorighm
 				fit_inputs = [	data,
-								parameters['name'].to_list(), parameters['value'].to_list(), parameters['free'].to_list(), parameters['prior'].to_list(), parameters['low_l'].to_list(), parameters['high_l'].to_list(),
-								function, config['temperature-init'], config['temperature-gain'], config['target-X2'], config['state'], prt_progress]	
+								parameters['name'].to_list(), parameters['value'].to_list(), parameters['free'].to_list(), parameters['prior'].to_list(),
+								parameters['low_l'].to_list(), parameters['high_l'].to_list(),
+								function, config['temperature-init'], settings['convergence']['thermo'], config['target-X2'], config['state'], prt_progress,
+								settings['convergence']['maxcount'], settings['convergence']['conv_threshold'], settings['convergence']['neg_water_scale']]
 
 				# Run the minimization routine		
 				(par_res, X2_min) = SimAnnealing( fit_inputs )	
@@ -123,8 +127,10 @@ if __name__ == "__main__":
 
 			# List of inputs for minimization routine
 			fit_inputs = [	(data,
-							parameters['name'].to_list(), parameters['value'].to_list(), parameters['free'].to_list(), parameters['prior'].to_list(), parameters['low_l'].to_list(), parameters['high_l'].to_list(),
-							function, config['temperature-init'], config['temperature-gain'], config['target-X2'], config['state'], prt_progress)]			
+							parameters['name'].to_list(), parameters['value'].to_list(), parameters['free'].to_list(), parameters['prior'].to_list(),
+							parameters['low_l'].to_list(), parameters['high_l'].to_list(),
+							function, config['temperature-init'], settings['convergence']['thermo'], config['target-X2'], config['state'], prt_progress,
+							settings['convergence']['maxcount'], settings['convergence']['conv_threshold'], settings['convergence']['neg_water_scale'])]
 				
 			# Create a pool of processes with the number of processors
 			pool = multiprocessing.Pool(processes=config['processes'])
@@ -165,6 +171,13 @@ if __name__ == "__main__":
 			file.writelines("# -----------------------------------\n")
 			file.writelines("# SAS_MoCa Version "+ str(__version__)+"\n")
 			file.writelines("# "+ str(localtime)+"\n")
+			file.writelines("# -----------------------------------\n")
+			file.writelines("convergence:\n")
+			for s in range(len(settings['convergence'])):
+				file.writelines( str(list(settings['convergence'].keys())[s]) + ":\t" + str(list(settings['convergence'].values())[s]) + "\n" )
+			file.writelines("statistics:\n")
+			for s in range(len(settings['statistics'])):
+				file.writelines( str(list(settings['statistics'].keys())[s]) + ":\t" + str(list(settings['statistics'].values())[s]) + "\n" )
 			file.writelines("# -----------------------------------\n")
 			for c in range(len(config)):
 				file.writelines( str(list(config.keys())[c]) + ":\t" + str(list(config.values())[c]) + "\n" )		
@@ -209,12 +222,16 @@ if __name__ == "__main__":
 		#------ Get median values and standard deviation for each parameter
 		median = []
 		MAD = []
+		if settings['statistics']['scale_MAD_to_std']:
+			mad_scale = 1/1.4826
+		else:
+			mad_scale = 1.0
 		for p in range(len(parameters['name'])):
 			tmp = []
 			for clt in (collection):
 				tmp.append(clt.iloc[p,1])
 			median.append( np.median(np.array(tmp)) )
-			MAD.append( stats.median_abs_deviation(np.array(tmp), nan_policy='propagate', scale=1.0) )
+			MAD.append( stats.median_abs_deviation(np.array(tmp), nan_policy='propagate', scale=mad_scale) )
 		del tmp
 		parameters['median'] = median
 		parameters['MAD'] = MAD
@@ -260,7 +277,7 @@ if __name__ == "__main__":
 		#------ plot and save statistics 
 		Plots=PlotStat(results_collection, parameters)
 		#------ parameters and chi-squared histograms
-		if config['iterations'] >= 10: 
+		if config['iterations'] >= settings['statistics']['hist_mincount']:
 			Plots.histograms("./"+config['save-folder']+"/plot_histograms.png")
 			Plots.histogram_X2("./"+config['save-folder']+"/plot_histogram_X2.png")
 			Plots.correlations(pearson_correlation, "./"+config['save-folder']+"/plot_correlations.png")

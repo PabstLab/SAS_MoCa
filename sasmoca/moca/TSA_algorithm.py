@@ -44,7 +44,10 @@ def SimAnnealing ( input_list ):
 	'Simulated Annealing Algorithm'
 	
 	# initilize input
-	data, NAME, PAR, FREE, PRIOR, L_LIM, H_LIM, function, T0, thermo, X2_trg, state, prt_progress = input_list
+	(data, NAME, PAR, FREE, PRIOR,
+     L_LIM, H_LIM,
+     function, T0, thermo, X2_trg, state, prt_progress,
+     maxcount, conv_threshold, neg_water_scale) = input_list
 	# initialize parameter dictionary
 	par_dict = {'name': NAME, 'value': PAR, 'free': FREE, 'prior': PRIOR, 'low_l': L_LIM, 'high_l': H_LIM} 
 
@@ -54,7 +57,6 @@ def SimAnnealing ( input_list ):
  	# initialize counters and limits for convergence
 	loop=0
 	good = 0
-	maxcount = 15000
 	stim = 0
 
  	# initialize Boltzmann-like probability
@@ -119,7 +121,7 @@ def SimAnnealing ( input_list ):
 		check_negH2O = intensity_init.negative_water()	
 		I_TEMP = intensity_init.intensity()
 		X2_TEMP = X2function(data[:,0], data[:,1], I_TEMP, data[:,2], N_Free)
-		if check_negH2O : X2_TEMP*= 1e3
+		if check_negH2O : X2_TEMP*= neg_water_scale
 
 		#####################################################
 		#------------------------ Calculate cumulative prior ratio between temporary and best parameter set
@@ -232,12 +234,12 @@ def SimAnnealing ( input_list ):
 		#------------------------ Print Loop Results	
 		if prt_progress == 1 :
 			if loop%50 == 0 :
-				out="T = %0.2f \ a = %0.2f \ min.X²= %0.5s/%0.5s \ N. %0.3d/%0.3d (%0.3f) \ %.3f/1 \ %2d:%2d s \ " %(T, alpha, X2_min, X2_trg, good, loop, success, stim, minutes, seconds)
+				out="T = %0.2f \ a = %0.2f \ min.X²= %0.5s/%0.5s \ N. %0.3d/%0.3d (%0.3f) \ %.2f/%.2f \ %2d:%2d s \ " %(T, alpha, X2_min, X2_trg, good, loop, success, stim, conv_threshold, minutes, seconds)
 				print (out, end='\r')	
 			
 		#####################################################
 		#------------------------ Set end-loop conditions
-		if stim > 1 or loop > maxcount: 
+		if stim > conv_threshold or loop > maxcount:
 				stop="STOP"
 
 	#------------------------ End Loop	
