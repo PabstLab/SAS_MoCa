@@ -37,25 +37,23 @@ The package works without installation. We recommend to run _sasmoca_ on a dedic
 
 ### Setting up the analysis: Input file (*.yml file)
 
-The input file contains all the information needed to configure and initialize data analysis, including the data file path, minimization options, scattering model, and initial parameters.
-This is a *.yml file, so any changes must comply with YAML syntax (e.g., indentation, etc.). You can include/remove comments and descriptions (text preceded by #).<br>
+The input file contains the information needed to configure and initialize data analysis, including the data file path, minimization options, scattering model, and initial parameters.
+As this is a YAML file, any changes must comply with YAML syntax (e.g. indentation). You can include/remove comments and descriptions (text preceded by #).<br>
 This is how it looks like: 
 
 ```
 config:
-   datafile: "/filepath/filename.dat" 
-   save-folder: "MySample"
+   datafile: /filepath/filename.dat
+   save-folder: MySample
    qrange: [0.005,0.6] 
-   model: pLUV_POPC_OmpLA_RecBuf 
+   model: LUV_POPC 
    temperature-init: 400
-   temperature-gain: 50 
    target-X2: 12.0
    data-binning: 10
    error-scale: 1
    iterations: 42
    processes: 24
    plot-only: off 
-   state: monomer
 
 parameters:
     parameter_1: [4.2, off, Null, 1.0, 10.]
@@ -73,15 +71,13 @@ In the _config_ block there are all the configuration options.
 
 **datafile** <br> Path of scattering data. The datafile should not contain text in header and footer sections, but just numbers is 3 columns: an array for $q_i$, one for the scattering intensity $I_i$, and the last for the associated error $\sigma_i$.
 
-**save-folder** <br> String of characters used to create the folder for saving the output (do not uses empty spaces): *RES_"save-folder"*; the position of the folder is the current working directory.
+**save-folder** <br> String of characters used to create the folder for saving the output (do not uses empty spaces): *RES_save-folder*; the position of the folder is the current working directory.
 
 **qrange** <br> Min. and max. _q_-values to define the range of data to fit.
 
 **model** <br> Scattering model to use (chosen among the available ones in Model_list.py).
 
 **temperature-init** <br> Initial temperature of the Simulated Annealing algorithm; ideally it should be about 100 times bigger than the expected best $\chi^2$.
-
-**temperature-gain** <br> Factor that influences the variation of the simulated annealing temperature, the higher the gain the faster the minimum temperature will be reached. To avoid *crystallization* the minimum temperature is dynamically set to $[1 + \log_{10}(\chi^2_{min})]$.
 
 **data-binning:** <br> Reduce the dataset size by a factor *n*, keeping data point with a "frequency" of *n* and discarding the others.
 
@@ -93,7 +89,7 @@ In the _config_ block there are all the configuration options.
 
 **plot-only** <br> on/off entry: only plotting (on) or data fitting (off).
 
-**state** <br> Assume either 'monomer' or 'dimer' state of OmpLA.
+**state** <br> Assume either 'monomer' or 'dimer' state of OmpLA (needed for PLUVs models only).
 
 #### Initialize model parameters
 
@@ -122,7 +118,7 @@ In the second block there is the list of the parameters required by a given scat
   * **low and high hard-boundaries** <br> Set the lower and higher boundaries accessible to the adjustable parameters. The _Null_ option is only valid if the prior information is not _Null_, as the lower and higher boundaries are automatically set to $\pm5\times\sigma_{prioir}$.
 
 > [!NOTE]
-> To simplify the the initial use of _SAS_MoCa_ see the _examples_ folder for working examples and templates.
+> To simplify the the initial use of *SAS_MoCa* see the _examples_ folder for working examples and templates.
 
 ---
 
@@ -142,7 +138,7 @@ The fitting results (or preview) are saved in the configured folder. Here the li
 
 #### Text files
 
-Each of the following files includes a header containing a timestamp, the version used, and a summary of the configuration used to fit the data.
+Each of the following files includes a header containing a timestamp, the version used, and a summary of the configuration used to fit the data (metadata).
 
 * **correlations.dat** <br> It contains a symmetric matrix of Pearson's correlation coefficients for the adjustable parameters. _This file is only created if the number of iterations is greater than 10!_.
 
@@ -156,19 +152,43 @@ Each of the following files includes a header containing a timestamp, the versio
 
 #### Plots
 
-* **Plot.png** <br> Plot of data and fitted scattering curve, it includes (i) the collection of all scattering curves relative to each iterations, and (ii) a comparison between experimental error and data to model discrepancy.
+* **plot.png** <br> The plot of the data and the fitted scattering curves includes: (i) a collection of all the scattering curves relative to each iteration; (ii) a plot of the data alongside the best-fit curve, calculated from the median of each adjustable parameter; and (iii) a comparison of experimental error with data-to-model discrepancy.
 
-* **Plot_histograms.png** <br> Histograms showing the distribution obtained for each single adjustable parameter (only saved if the number of iterations is higher than 10). The plots include a kernel-density visualization of distributions, marks pointing the mean ands standard deviations, and the Gaussian prior profiles when present.
+* **plot_histograms.png** <br> Histograms showing the distribution obtained for each adjustable parameter. These are only saved if the number of iterations is equal to or greater than the default value of 10, which can be modified in the settings.yml file. The plots include kernel density estimation visualisations of distributions, marks indicating the median and mean absolute deviation (MAD) values, and Gaussian prior profiles where applicable.
 
-* **Plot_histogram_X2.png** <br> Histograms showing the distribution obtained for the best $\chi^2$ values. The plot includes a kernel-density visualization of the distribution.
+* **plot_histogram_X2.png** <br> Histograms showing the distribution obtained for the best $\chi^2$ values. The plot includes a kernel density estimation visualization of the distribution.
 
 * **plot_SDP-SLD.png**  <br> Calculated SDP and SLD contrast profiles. The plots include visualizations of acyl-chain thickness ($D_C$) and Luzzati length ($D_B$).
 
+### General settings
+
+A few general settings can be tuned in the _settings.yml_ file. The default settings are:
+
+```
+convergence:
+   thermo: 1
+   maxcount: 100000
+   conv_threshold: 4
+   neg_water_scale: 5
+statistics:
+    scale_MAD_to_std: False
+    hist_mincount: 10
+```
+
+- _thermo_ : gain factor used in the temperature control of the TSA engine;
+- _maxcount_: maximum number of iterations within one TSA run;
+- *conv_threshold*: threshold factor used for the adaptive ending criterion of a single TSA run;
+- *neg_water_scale*: penalty factor used in the negative water check [5];
+- *scale_MAD_to_std*: converts MAD to standard deviation values (factor $\sim$1.48) [5];
+- *hist_mincount*: minimum number of iterations needed to plot histograms of adjustable parameters.
+
+We recommend that beginner users do not change the default settings. Note that such modifications are not saved as metadata.
+As this is a YAML file, any changes must comply with YAML syntax (e.g. indentation).
+
 ## If you use _SAS_MoCa_ repository please cite:
 
-* Semeraro, E. F., & Pabst, G. SAS_MoCa (Version 1.5.0) [Computer software]. https://github.com/PabstLab/SAS_MoCa
-* Semeraro E. F., et al., in preparation 
-* Semeraro E. F., et al., in preparation 
+* Semeraro E. F. & Pabst G. SAS_MoCa (Version 1.5.0) [Computer software]. https://github.com/PabstLab/SAS_MoCa
+* Semeraro E. F. & Pabst G., in submission 
 
 ## License
 
@@ -181,4 +201,5 @@ For the full legal text, see the `LICENSE` file in this repository.
 2. Pencer, J., Krueger, S., Adams, C. P., & Katsaras, J. (2006). Method of separated form factors for polydisperse vesicles. Journal of Applied Crystallography, 39(3), 293–303. https://doi.org/10.1107/S0021889806005255
 3. Frewein, M. P. K., Doktorova, M., Heberle, F. A., Scott, H. L., Semeraro, E. F., Porcar, L., & Pabst, G. (2021). Structure and Interdigitation of Chain-Asymmetric Phosphatidylcholines and Milk Sphingomyelin in the Fluid Phase. Symmetry, 13(8), 1441. https://doi.org/10.3390/sym13081441
 4. de Vicente, J., Lanchares, J., & Hermida, R. (2003). Placement by thermodynamic simulated annealing. Physics Letters A, 317(5–6), 415–423. https://doi.org/10.1016/j.physleta.2003.08.070
-5. Semeraro et al., in submission 
+5. Semeraro E. F. and Pabst G., in submission 
+6. Semeraro E. F. et al., in submission 
