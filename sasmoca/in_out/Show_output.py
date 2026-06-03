@@ -80,12 +80,14 @@ class PlotData:
 		point_color = ['orange', 'magenta', 'blue', 'green', 'orange']
 		line_color = ['red', 'violet', 'lightblue', 'lightgreen', 'red']
 
-		norm = mpl.colors.Normalize(vmin=collection_X2.min() , vmax=collection_X2.max())
-		cmap = cm.Oranges
+		if I_collection is not None:
 
-		for i, element in enumerate(I_collection):
-			colors = cmap(norm(collection_X2[i]))
-			self.axes[0].plot(data[:,0], element, linewidth=1.0, color=colors, ls='-', label='', zorder=10)
+			norm = mpl.colors.Normalize(vmin=collection_X2.min() , vmax=collection_X2.max())
+			cmap = cm.Oranges
+
+			for i, element in enumerate(I_collection):
+				colors = cmap(norm(collection_X2[i]))
+				self.axes[0].plot(data[:,0], element, linewidth=1.0, color=colors, ls='-', label='', zorder=10)
 
 		self.axes[1].errorbar(data[:,0], data[:,1], yerr=data[:,2], fmt='o', color=point_color[0], markeredgecolor=self.point_edge, markersize=5, linewidth=1.0, label='SAXS data', alpha=0.33, zorder=0)
 		self.axes[1].plot(data[:,0], I_plot, linewidth=2.0, color=line_color[0], ls='-', label='Best fit', zorder=10)

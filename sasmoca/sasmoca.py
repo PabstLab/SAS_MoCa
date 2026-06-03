@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
 		I_plot = function(data[:,0], par_plot, config['state']).intensity()
 
-		PlotData(config['qrange'], config['save-folder']).plot_fit(data, I_plot)	
+		PlotData(config['qrange'], config['save-folder']).plot_fit(data, I_plot, None, None)
 
 	#### Fit data
 	#------ run the minimization routine
