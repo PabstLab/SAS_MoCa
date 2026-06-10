@@ -62,10 +62,10 @@ def SimAnnealing ( input_list ):
  	# initialize Boltzmann-like probability
 	prBol = 0 
 	
-	# alpha: amplitude factor for random perturbations
-	alpha		= 0.15 
-	alphamax	= 0.33 
-	alphamin	= 0.02
+	# beta: amplitude factor for random perturbations
+	beta		= 0.15
+	betamax	= 0.33
+	betamin	= 0.02
 
 	# initialize temperature and cumulative entropy and enthalpy variables		
 	T = T0
@@ -108,7 +108,7 @@ def SimAnnealing ( input_list ):
 		
 		for p in range(len(par_dict['value'])):
 			if par_dict['free'][p]:
-				par_check[p]= par_dict['value'][p] + np.random.normal( 0, alpha * ( par_dict['high_l'][p] - par_dict['low_l'][p] )/6. )
+				par_check[p]= par_dict['value'][p] + np.random.normal( 0, beta * ( par_dict['high_l'][p] - par_dict['low_l'][p] )/6. )
 				if par_check[p] < par_dict['low_l'][p] : 
 					par_check[p] = par_dict['value'][p] - (par_dict['value'][p]-par_dict['low_l'][p]) / 10.
 				elif par_check[p] > par_dict['high_l'][p] : 
@@ -203,12 +203,12 @@ def SimAnnealing ( input_list ):
 			if T < T_min : 
 				T = T_min
  
- 		#------------------------ Update alpha value
-		if		(good+1)/(loop+1) <= 0.62 : alpha-= alpha*0.1
-		elif	(good+1)/(loop+1) >= 0.68 : alpha+= alpha*0.1
+ 		#------------------------ Update beta value
+		if		(good+1)/(loop+1) <= 0.62 : beta-= beta*0.1
+		elif	(good+1)/(loop+1) >= 0.68 : beta+= beta*0.1
         
-		if 		alpha < alphamin : alpha = alphamin
-		elif 	alpha > alphamax : alpha = alphamax
+		if 		beta < betamin : beta = betamin
+		elif 	beta > betamax : beta = betamax
 	
 		#####################################################
 		#------------------------ Check for convergence: Plots
@@ -234,7 +234,7 @@ def SimAnnealing ( input_list ):
 		#------------------------ Print Loop Results	
 		if prt_progress == 1 :
 			if loop%50 == 0 :
-				out="T = %0.2f \ a = %0.2f \ min.X²= %0.5s/%0.5s \ N. %0.3d/%0.3d (%0.3f) \ %.2f/%.2f \ %2d:%2d s \ " %(T, alpha, X2_min, X2_trg, good, loop, success, stim, conv_threshold, minutes, seconds)
+				out="T = %0.2f \ beta = %0.2f \ min.X²= %0.5s/%0.5s \ N. %0.3d/%0.3d (%0.3f) \ %.2f/%.2f \ %2d:%2d s \ " %(T, beta, X2_min, X2_trg, good, loop, success, stim, conv_threshold, minutes, seconds)
 				print (out, end='\r')	
 			
 		#####################################################
