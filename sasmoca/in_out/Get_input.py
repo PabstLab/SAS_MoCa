@@ -5,6 +5,7 @@ import sys
 import math
 import pandas as pd
 import yaml
+import numpy as np
 
 ###############
 ############### Miscellaneous
@@ -75,7 +76,9 @@ class Load_input:
 
 		self.cfg = par_file['config']
 	
-		self.param = pd.DataFrame.from_dict(par_file['parameters'], orient='index', columns=['value', 'free', 'prior', 'low_l', 'high_l']).reset_index()
+		self.param = pd.DataFrame.from_dict(par_file['parameters'],
+																			  orient='index',
+																			  columns=['value', 'free', 'prior', 'low_l', 'high_l']).reset_index()
 		self.param = self.param.rename(columns={"index": "name"})
 
 ###########################################################################################
@@ -182,7 +185,11 @@ class Load_input:
 
 			# Check if the prior entry is a number or a nan value
 			if not isinstance(row['prior'], (float)):
-				raise ValueError("The relative sigma of the prior must be either a float value or Null (NAN)")			
+				if row['prior'] is not None:
+						raise ValueError("The relative sigma of the prior must be either a float value or Null (NAN)")
+			# Check if the prior entry is a number or a nan value
+			if row['prior'] is not None and row['prior']<=0:
+				raise ValueError("The relative sigma of the prior must be a positive float value")
 
 			# Check if the parameter initialization is a number
 			if not isinstance(row['high_l'], (int, float)):
@@ -200,6 +207,10 @@ class Load_input:
 			if math.isnan(row['low_l']) and math.isnan(row['high_l']) and math.isnan(row['prior']):
 				raise ValueError("set at least one between prior and low-high bondaries entries")
 
+		# force 'prior' column to numeric in the case of all Null entries
+		self.param['prior'] = pd.to_numeric(self.param['prior'], errors='coerce')
+
+		for index, row in self.param.iterrows():
 			# Overwrite lw and high limits is the prior is set
 			if not math.isnan(row['prior']):
 				self.param.at[index, 'low_l'] =  row['value']*(1-5*row['prior'])
