@@ -188,7 +188,7 @@ As this is a YAML file, any changes must comply with YAML syntax (e.g. indentati
 ## If you use _SAS_MoCa_ repository please cite:
 
 * Semeraro E. F. & Pabst G. (2026).  *SAS_MoCa: a software for small-angle scattering data analysis of large unilamellar vesicles*. **bioRxiv**, https://doi.org/10.64898/2026.06.29.735169
-  Semeraro E. F. & Pabst G. SAS_MoCa (Version 1.5.0) [Computer software]. https://github.com/PabstLab/SAS_MoCa
+* Semeraro E. F. & Pabst G. SAS_MoCa (Version 1.5.0) [Computer software]. https://github.com/PabstLab/SAS_MoCa
 
 ## License
 
