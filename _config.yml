@@ -1,0 +1,12 @@
+remote_theme: just-the-docs/just-the-docs
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+
+title: SAS MoCa documentation
+description: Brief description
+baseurl: "/docs"
+url: "https://pabstlab.github.io"
+
+search_enabled: true
+heading_anchors: true
