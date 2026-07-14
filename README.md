@@ -1,6 +1,10 @@
-# _SAS_MoCa_
+![banner](./docs/imgs/banner_sasmoca_light.png)
+
+# _SAS MoCa_
 
 ## A stochastic analysis tool for studying the structure of lipid membrane systems using small-angle scattering (SAS).
+
+*For the full documentation go to* https://pabstlab.github.io/SAS_MoCa/ (🚧 *work in progress* 🚧)!!!
 
 ### Currently supported models
 
