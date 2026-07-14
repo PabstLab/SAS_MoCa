@@ -3,14 +3,15 @@ title: Home
 layout: home
 nav_order: 0
 description: **SAS MoCa** documentation hub
-
 ---
 
-# Project Name
+![Banner](./imgs/banner_sasmoca_light.png)
 
-<!-- One-sentence elevator pitch -->
+# Documentation
 
 A brief description of what your project does and who it's for.
+
+🚧 Work in progress!!! ⏳
 
 ## Quick Links
 
@@ -18,14 +19,5 @@ A brief description of what your project does and who it's for.
 | ------------------------------------- | -------------------------------- |
 | [Getting Started](getting-started.md) | First-time setup and basics      |
 | [User Guide](user-guide.md)           | Detailed usage instructions      |
-| [Models](models.md)           		| Detailed usage instructions      |
+| [Models](models.md)                   | Detailed usage instructions      |
 | [Contributing](contributing.md)       | How to contribute to the project |
-
-## Installation
-
-```bash
-# Example installation command
-npm install your-package
-# or pip install your-package
-# or cargo add your-crate
-```
