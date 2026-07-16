@@ -1,39 +1,13 @@
-remote_theme: just-the-docs/just-the-docs
-# theme: just-the-docs  # ← Commented out (causes conflicts)
-
-plugins:
-  - jekyll-remote-theme   # ← UNCOMMENT THIS
-  - jekyll-seo-tag
-
-plugins:
-  - jekyll-seo-tag
-
 title: SAS MoCa
 description: >-
-  A Bayesian-constrained analysis software for small-angle scattering (SAS) data of complex membrane systems.
+  A Bayesian-constrained analysis software for small-angle scattering
+  data of complex membrane systems.
 
 baseurl: "/SAS_MoCa"
 url: "https://pabstlab.github.io"
 
-# Theme features
-search_enabled: true
-heading_anchors: true
+# Use built-in Jekyll theme (no remote_theme needed)
+theme: minima
 
-# Logo — appears top-left in sidebar
-logo: "/SAS_MoCa/docs/imgs/logo_sasmoca_dark.png"
-
-# Auxiliary links — appear top-right
-aux_links:
-  "SAS_MoCa on GitHub": "https://github.com/PabstLab/SAS_MoCa"
-
-# Footer content
-footer_content: 'SAS MoCa &copy; Enrico F. Semeraro / Pabst Lab. Licensed under the BSD 3-Clause "New" or "Revised" License.'
-
-# Color scheme
-color_scheme: dark
-
-# Collections
-just_the_docs_collections:
-  - name: pages
-    nav_exclude: false
-    search_exclude: false
+markdown: kramdown
+highlighter: rouge

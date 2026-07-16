@@ -2,23 +2,27 @@
 title: Home
 layout: default
 nav_order: 0
-description: **SAS MoCa** documentation hub
 ---
 
 ![Banner](./imgs/banner_sasmoca_light.png)
 
-# Documentation
+# SAS MoCa Documentation
 
-🚧 Work in progress!!! ⏳
+🚧 Work in progress
 
-## Quick Links
+## Navigation
 
-| Topic                                        | Description                 |
-| -------------------------------------------- | --------------------------- |
-| [Getting Started]({% link getting_started.md %}) | First-time setup and basics |
+<ul>
+{% assign sorted_pages = site.pages | sort: "nav_order" %}
+{% for page in sorted_pages %}
+  {% if page.layout == "default" or page.layout == "home" %}
+    <li><a href="{{ page.url }}">{{ page.title }}</a></li>
+  {% endif %}
+{% endfor %}
+</ul>
 
-<!--
-| [User Guide](user-guide.md)                  | Detailed usage instructions      |
-| [Models](models.md)                          | Detailed usage instructions      |
-| [Contributing](contributing.md)              | How to contribute to the project |
--->
+## Documentation Pages
+
+| Page | Description |
+|------|-------------|
+| [Getting Started](getting_started.md) | Installation and first steps |
