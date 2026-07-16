@@ -1,6 +1,6 @@
 ---
 title: Home
-layout: home
+layout: default
 nav_order: 0
 description: **SAS MoCa** documentation hub
 ---
@@ -15,7 +15,7 @@ description: **SAS MoCa** documentation hub
 
 | Topic                                        | Description                 |
 | -------------------------------------------- | --------------------------- |
-| [Getting Started](docs/getting-started.md) | First-time setup and basics |
+| [Getting Started]({% link getting_started.md %}) | First-time setup and basics |
 
 <!--
 | [User Guide](user-guide.md)                  | Detailed usage instructions      |

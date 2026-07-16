@@ -1,6 +1,11 @@
 remote_theme: just-the-docs/just-the-docs
+# theme: just-the-docs  # ← Commented out (causes conflicts)
+
 plugins:
-  #- jekyll-remote-theme
+  - jekyll-remote-theme   # ← UNCOMMENT THIS
+  - jekyll-seo-tag
+
+plugins:
   - jekyll-seo-tag
 
 title: SAS MoCa
@@ -10,30 +15,25 @@ description: >-
 baseurl: "/SAS_MoCa"
 url: "https://pabstlab.github.io"
 
-# Theme settings
+# Theme features
 search_enabled: true
 heading_anchors: true
 
-# Auxiliary links — appear in top-right corner
+# Logo — appears top-left in sidebar
+logo: "/SAS_MoCa/docs/imgs/logo_sasmoca_dark.png"
+
+# Auxiliary links — appear top-right
 aux_links:
   "SAS_MoCa on GitHub": "https://github.com/PabstLab/SAS_MoCa"
 
 # Footer content
-footer_content: 'SAS MoCa &copy; Enrico F. Semeraro / Pabst Lab. Licensed under the BSD 3‑Clause “New” or “Revised” License.'
+footer_content: 'SAS MoCa &copy; Enrico F. Semeraro / Pabst Lab. Licensed under the BSD 3-Clause "New" or "Revised" License.'
 
-# Color scheme — options: nil (default/light), dark
+# Color scheme
 color_scheme: dark
 
-# Sort pages by nav_order first, then title
+# Collections
 just_the_docs_collections:
   - name: pages
     nav_exclude: false
     search_exclude: false
-
-# add logo
-logo: "/docs/imgs/logo_sasmoca_dark.png"
-# Optional: customize logo height
-logo_width: 64
-logo_height: 64
-# Optional: link logo to homepage
-logo_link: "/"
