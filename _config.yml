@@ -28,9 +28,9 @@ description: >- # this means to ignore newlines until "baseurl:"
 # if you want to force HTTPS, specify the domain without the http at the start, e.g. example.com
 domain: pabstlab.github.io
 # the base hostname and protocol for your site, e.g. http://example.com
-url: https://my-site.github.io/SAS_MoCa
+url: https://my-site.github.io
 # place folder name if the site is served in a subfolder
-baseurl: ""
+baseurl: /SAS_MoCa
 
 github_username:  PabstLab
 
