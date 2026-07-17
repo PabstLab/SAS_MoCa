@@ -1,7 +1,6 @@
-# Jekyll build output
-_site/
-.jekyll-cache/
+_site
+.sass-cache
+.jekyll-cache
 .jekyll-metadata
-
-# Bundler
-vendor/
+vendor
+Gemfile.lock

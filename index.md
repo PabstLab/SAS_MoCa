@@ -4,7 +4,7 @@ layout: default
 nav_order: 0
 ---
 
-![Banner](./imgs/banner_sasmoca_light.png)
+![Banner](./docs/imgs/banner_sasmoca_light.png)
 
 # SAS MoCa Documentation
 
@@ -23,6 +23,6 @@ nav_order: 0
 
 ## Documentation Pages
 
-| Page | Description |
-|------|-------------|
-| [Getting Started](getting_started.md) | Installation and first steps |
+| Page                                       | Description                  |
+| ------------------------------------------ | ---------------------------- |
+| [Getting Started](docs/getting_started.md) | Installation and first steps |
