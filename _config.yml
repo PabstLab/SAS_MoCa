@@ -30,7 +30,7 @@ domain: pabstlab.github.io
 # the base hostname and protocol for your site, e.g. http://example.com
 url: https://pabstlab.github.io
 # place folder name if the site is served in a subfolder
-baseurl: /SAS_MoCa/docs
+baseurl: /SAS_MoCa
 
 github_username:  PabstLab
 
