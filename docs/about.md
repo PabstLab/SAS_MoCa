@@ -1,7 +1,7 @@
 ---
-layout: default
+layout: about
 title: About
-nav_order: 1
+nav_order: 1 
 ---
 
 # About SAS MoCa

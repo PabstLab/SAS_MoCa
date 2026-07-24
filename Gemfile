@@ -9,8 +9,11 @@ source "https://rubygems.org"
 # Happy Jekylling!
 #gem "jekyll", "~> 4.4.1"
 gem "github-pages", "~> 232", group: :jekyll_plugins
+#gem "github-pages", "~> 203", group: :jekyll_plugins
 # This is the default theme for new Jekyll sites. You may change this to anything you like.
-gem "minima", "~> 2.5"
+gem "just-the-docs"
+#gem "minima", "~> 2.5"
+#gem "minima", github: "jekyll/minima", ref: "38a84a9" # commit ref to v 2.5.1
 # If you want to use GitHub Pages, remove the "gem "jekyll"" above and
 # uncomment the line below. To upgrade, run `bundle update github-pages`.
 # gem "github-pages", group: :jekyll_plugins

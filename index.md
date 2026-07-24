@@ -10,19 +10,9 @@ nav_order: 0
 
 🚧 Work in progress
 
-## Navigation
-
-<ul>
-{% assign sorted_pages = site.pages | sort: "nav_order" %}
-{% for page in sorted_pages %}
-  {% if page.layout == "default" or page.layout == "home" %}
-    <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-  {% endif %}
-{% endfor %}
-</ul>
-
 ## Documentation Pages
 
 | Page                                       | Description                  |
 | ------------------------------------------ | ---------------------------- |
+| [About](docs/about.md)                     | About SAS MoCa               |
 | [Getting Started](docs/getting_started.md) | Installation and first steps |

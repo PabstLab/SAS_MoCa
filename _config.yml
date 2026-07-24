@@ -28,16 +28,36 @@ description: >- # this means to ignore newlines until "baseurl:"
 # if you want to force HTTPS, specify the domain without the http at the start, e.g. example.com
 domain: pabstlab.github.io
 # the base hostname and protocol for your site, e.g. http://example.com
-url: https://my-site.github.io
+url: https://pabstlab.github.io
 # place folder name if the site is served in a subfolder
 baseurl: /SAS_MoCa
 
 github_username:  PabstLab
 
 # Build settings
-theme: minima
+#theme: minima
+theme: just-the-docs
 plugins:
   - jekyll-feed
+
+# Set a path/url to a logo that will be displayed instead of the title
+logo: "/docs/imgs/logo_sasmoca_dark.png"
+
+# Aux links for the upper right navigation
+aux_links:
+  "SAS_MoCa on GitHub":
+    - "//github.com/PabstLab/SAS_MoCa"
+
+# Makes Aux links open in a new tab. Default is false
+aux_links_new_tab: true
+
+# Color scheme supports "light" (default) and "dark"
+color_scheme: dark
+
+# Footer last edited timestamp
+last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter
+last_edit_time_format: "%b %e %Y at %I:%M %p" # uses ruby's time format: https://ruby-doc.org/stdlib-2.7.0/libdoc/time/rdoc/Time.html
+
 
 # Exclude from processing.
 # The following items will not be processed, by default.
