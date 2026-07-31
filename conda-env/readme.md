@@ -1,16 +1,21 @@
+---
+layout: default
+nav_exclude: True
+---
 # Use and installation
 
 The package works without installation. Just download the package folder and run the script *sasmoca.py* as described in the documentation.<br>
 
 In order to run the script, you will need to have Python installed (ideally version 3.12), along with the following modules:
-  - pyyaml
-  - scipy
-  - numpy
-  - tqdm
-  - pandas
-  - python
-  - matplotlib
-  - multiprocess (tested on version 0.70)
+
+- pyyaml
+- scipy
+- numpy
+- tqdm
+- pandas
+- python
+- matplotlib
+- multiprocess (tested on version 0.70)
 
 #### Recommended: Use conda environment!
 
@@ -24,9 +29,11 @@ This ensures that the correct Python installation and module dependencies are in
 ```
 conda env create -f <path-to>/environment.yml
 ```
+
 3. Before running *sasmoca.py* script activate the conda environment:
-```
-conda activate SAS-MoCa
-```
+   
+   ```
+   conda activate SAS-MoCa
+   ```
 
 For more information about managing conda environments go to https://conda.io/projects/conda/en/latest/user-guide/tasks/index.html.

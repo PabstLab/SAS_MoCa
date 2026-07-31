@@ -1,10 +1,11 @@
 ---
 layout: default
-title: Large Unilamellar Vesicles (LUVs)
-nav_order: 2
+title: LUV POPC
+parent: LUV model list
+#nav_order: 3
 ---
 
-# Large Unilamellar Vesicles (LUVs)
+# POPC LUVs
 
 Model description and template download will be available.
 

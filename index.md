@@ -9,10 +9,3 @@ nav_order: 0
 # SAS MoCa Documentation
 
 🚧 Work in progress
-
-## Documentation Pages
-
-| Page                                       | Description                  |
-| ------------------------------------------ | ---------------------------- |
-| [About](docs/about.md)                     | About SAS MoCa               |
-| [Getting Started](docs/getting_started.md) | Installation and first steps |
