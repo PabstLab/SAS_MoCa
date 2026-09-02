@@ -8,6 +8,7 @@ from scipy import stats
 import multiprocessing
 from tqdm import tqdm
 import time
+import random
 
 from in_out import (Load_input, Load_data,
 					PlotData, PlotStat, PlotSDP_profile)
@@ -74,14 +75,36 @@ if __name__ == "__main__":
 	#------ show data and simulated model
 	if config['plot-only']:
 
+		# simulate curve from the initial point estimates
 		par_plot = []
-
 		for v in range(len(parameters['value'])):
 			par_plot.append(parameters.iloc[v,1])
-
 		I_plot = function(data[:,0], par_plot, config['state']).intensity()
 
-		PlotData(config['qrange'], config['save-folder']).plot_fit(data, I_plot, None, None)
+		# simulate curves from the randaom variables drawn from the priors
+		I_simulated = []
+		simulated_values = []
+
+		for instance in range(config['iterations']):
+
+			tmp_values = []
+			for p in range(len(parameters['name'])):
+
+				# assign value for not-adjustable parameters
+				if parameters.iloc[p]['free'] == False:
+					tmp_values.append(parameters.iloc[p]['value'])
+
+				# assign value for adjustable parameters as random variables drawn from prior pdfs
+				elif parameters.iloc[p]['free']:
+					if np.isnan(parameters.iloc[p]['prior']):
+						tmp_values.append(random.uniform(parameters.iloc[p]['low_l'], parameters.iloc[p]['high_l']))
+					else:
+						tmp_values.append(random.gauss(parameters.iloc[p]['value'], parameters.iloc[p]['value']*parameters.iloc[p]['prior']))
+
+			I_simulated.append(function(data[:,0], tmp_values, config['state']).intensity())
+
+		# prepare plot
+		PlotData(config['qrange'], config['save-folder']).plot_prior_predictive_check(data, I_plot, I_simulated)
 
 	#### Fit data
 	#------ run the minimization routine
