@@ -81,7 +81,8 @@ if __name__ == "__main__":
 			par_plot.append(parameters.iloc[v,1])
 		I_plot = function(data[:,0], par_plot, config['state']).intensity()
 
-		# simulate curves from the randaom variables drawn from the priors
+		#------ Create prior preddictive check
+		# simulate curves from the random variables drawn from the priors
 		I_simulated = []
 		simulated_values = []
 
@@ -272,11 +273,40 @@ if __name__ == "__main__":
 		I_plot = res_function.intensity()
 		I_collection= []
 		for instance in range(results_collection.shape[0]):
-			#print(collection[instance]['value'])
 			res_tmp = function(data[:,0], collection[instance]['value'], config['state'])
 			I_collection.append(res_tmp.intensity())
-		PlotData(config['qrange'], config['save-folder']).plot_fit( data, I_plot, I_collection, np.array(collection_X2) )
-		
+
+		#------ create posterior predictive check
+		#------ simulate curves from the random variables drawn from the posteriors
+
+		# draw random variables
+		if config['iterations']>1:
+			resampled_values = np.empty((len(parameters['name']), config['iterations']))
+			for p in range(len(parameters['name'])):
+				if parameters.iloc[p]['free'] == False:
+					resampled_values[p] = np.ones(config['iterations'])*parameters.iloc[p]['value']
+				elif parameters.iloc[p]['free']:
+					tmp = []
+					for clt in (collection):
+						tmp.append(clt.iloc[p,1])
+					kde_tmp = stats.gaussian_kde( np.array(tmp) )
+					resampled_values[p] =  kde_tmp.resample(size=config['iterations'])
+			resampled_values = resampled_values.T
+
+			# simulate intensity curves
+			I_post_check = []
+			for it in range(config['iterations']):
+				I_post_check.append(function(data[:,0], resampled_values[it], config['state']).intensity())
+
+		# prepare plot
+		if config['iterations']>1:
+			PlotData(config['qrange'], config['save-folder']).plot_posterior_predictive_check( data, I_plot, I_post_check, I_collection, np.array(collection_X2) )
+		elif config['iterations']==1:
+			PlotData(config['qrange'], config['save-folder']).plot_posterior_predictive_check( data, I_plot, None, I_collection, np.array(collection_X2) )
+
+
+		#-------------------------------------------------------------------------------------
+
 		if LUV:
 			#------ calculate extra parameters and real space description
 			SDP_matrix, n_W, D_pp, D_B, D_C, A_L = res_function.SDP_profile()

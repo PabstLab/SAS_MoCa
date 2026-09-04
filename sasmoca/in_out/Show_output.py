@@ -10,7 +10,7 @@ import matplotlib.cm as cm
 point_color =			 	['#ffaa00', 		'#ee77ee', '#dd4499', 	'#22bb77', 	'orange']
 point_edge_color = 	['white', 		'#ee77ee', '#ff88cc', 		'white', 		'orange']
 line_color = 					['#ff0000',		'violet', 		'#77eeee', 		'#77eeee', 		'red']
-##cc8800 #'#007733
+
 ###########################################################################################
 ###########################################################################################
 
@@ -46,7 +46,7 @@ class PlotData:
 
 		for g in range(len(self.axes)):
 			self.axes[g].set_xscale('log', base=10)
-			if g<2: self.axes[g].set_yscale('log', base=10)
+			if g<3: self.axes[g].set_yscale('log', base=10)
 
 			self.axes[g].grid()		
 			self.axes[g].set_facecolor(bk_color)			
@@ -82,13 +82,14 @@ class PlotData:
 	def plot_prior_predictive_check ( self, data, I_plot , I_collection ):
 
 		palette = 3
+		prior_color = '#4499dd'
 		cmap = cm.Blues
 
+
 		colors = cmap(0)
-		self.axes[0].plot(data[:,0], I_collection[0], linewidth=1.0, color=colors, ls='-', label='Prior predictive check', alpha=0.5, zorder=0)
+		self.axes[0].plot(data[:,0], I_collection[0], linewidth=1.0, color=prior_color, ls='-', label='Prior predictive check', alpha=0.5, zorder=0)
 		for i in range(1, len(I_collection)):
-			colors = cmap(i/len(I_collection))
-			self.axes[0].plot(data[:,0], I_collection[i], linewidth=1.0, color=colors, ls='-', label='', alpha=0.5, zorder=0)
+			self.axes[0].plot(data[:,0], I_collection[i], linewidth=1.0, color=prior_color, ls='-', label='', alpha=0.33, zorder=0)
 
 		self.axes[0].errorbar(data[:,0], data[:,1], yerr=data[:,2], fmt='o', color=point_color[palette], markeredgecolor=point_edge_color[palette], markersize=2, linewidth=1.0, label='SAXS data', alpha=0.80, zorder=10, ecolor=point_edge_color[palette])
 
@@ -97,8 +98,7 @@ class PlotData:
 
 		self.axes[2].axhline(y=0, linewidth=2)
 		self.axes[2].scatter(data[:,0], data[:,2], marker='o', color=point_color[palette], edgecolor=point_edge_color[palette], s=12, linewidth=1.2, label='Exp. error', alpha=0.33, zorder=10)
-		self.axes[2].scatter(data[:,0], -data[:,2], marker='o', color=point_color[palette], edgecolor=point_edge_color[palette], s=12, linewidth=1.2, label='', alpha=0.33, zorder=10)
-		self.axes[2].plot(data[:,0], I_plot-data[:,1], linewidth=2.0, color=line_color[palette], ls='-', label='Initial values', zorder=0)
+		self.axes[2].plot(data[:,0], np.abs(I_plot-data[:,1]), linewidth=2.0, color=line_color[palette], ls='-', label='Initial values', zorder=0)
 
 		for g in range(0, len(self.axes)):
 			self.axes[g].legend(fontsize=12)
@@ -112,6 +112,50 @@ class PlotData:
 
 ###########################################################################################
 
+	def plot_posterior_predictive_check ( self, data, I_plot , I_posterior, I_collection, collection_X2 ):
+
+		palette = 0
+		posterior_color = '#dd7744'
+
+		if I_posterior is not None:
+
+			self.axes[0].plot(data[:,0], I_posterior[0], linewidth=1.0, color=posterior_color, ls='-', label='Posterior predictive check', alpha=0.33, zorder=0)
+			for i in range(1, len(I_collection)):
+				self.axes[0].plot(data[:,0], I_posterior[i], linewidth=1.0, color=posterior_color, ls='-', label='', alpha=0.33, zorder=0)
+
+		self.axes[0].errorbar(data[:,0], data[:,1], yerr=data[:,2], fmt='o', color=point_color[palette], markeredgecolor=point_edge_color[palette], markersize=2, linewidth=1.0, label='SAXS data', alpha=0.80, zorder=10, ecolor=point_edge_color[palette])
+
+		norm = mpl.colors.Normalize(vmin=collection_X2.min() , vmax=collection_X2.max())
+		cmap = cm.Oranges
+
+		self.axes[1].errorbar(data[:,0], data[:,1], yerr=data[:,2], fmt='o', color=point_color[palette], markeredgecolor=point_edge_color[palette], markersize=5, linewidth=1.0, label='SAXS data', alpha=0.33, zorder=0)
+		self.axes[1].plot(data[:,0], I_plot, linewidth=2.0, color=line_color[palette], ls='-', label='Median values', zorder=10)
+		colors = cmap(norm(collection_X2[0]))
+		self.axes[1].plot(data[:,0], I_collection[0], linewidth=1.0, color=colors, ls='-', label='Curve collection', alpha=0.5, zorder=0)
+		for i in range(1, len(I_collection)):
+			colors = cmap(norm(collection_X2[i]))
+			self.axes[1].plot(data[:,0], I_collection[i], linewidth=1.0, color=colors, ls='-', label='', alpha=0.5, zorder=0)
+
+		self.axes[2].axhline(y=0, linewidth=2)
+		self.axes[2].scatter(data[:,0], data[:,2], marker='o', color=point_color[palette], edgecolor=point_edge_color[palette], s=12, linewidth=1.2, label='Exp. error', alpha=0.33, zorder=10)
+		self.axes[2].plot(data[:,0], np.abs(I_collection[0]-data[:,1]), linewidth=1.0, color=line_color[palette], ls='-', label='Curve collection', alpha=0.33, zorder=0)
+		for i in range(1, len(I_collection)):
+			colors = cmap(norm(collection_X2[i]))
+			self.axes[2].plot(data[:,0], np.abs(I_collection[i]-data[:,1]), linewidth=1.0, color=colors, ls='-', label='', alpha=0.33, zorder=0)
+
+		for g in range(len(self.axes)):
+			self.axes[g].legend(fontsize=12)
+		self.fig1.tight_layout()
+
+		plt.savefig(self.save_folder, transparent=False, dpi=150, format='png',
+        metadata={'Creator': "SAS_MoCa"},
+		bbox_inches='tight', facecolor='auto', edgecolor='auto')
+
+		plt.close()
+
+###########################################################################################
+
+	# currently not used - to be removed
 	def plot_fit ( self, data, I_plot , I_collection, collection_X2):
 
 		palette = 0
@@ -122,7 +166,7 @@ class PlotData:
 			cmap = cm.Oranges
 
 			colors = cmap(norm(collection_X2[0]))
-			self.axes[0].plot(data[:,0], I_collection[0], linewidth=1.0, color=colors, ls='-', label='Posterior predictive check', alpha=0.33, zorder=0)
+			self.axes[0].plot(data[:,0], I_collection[0], linewidth=1.0, color=colors, ls='-', label='Curve collection', alpha=0.33, zorder=0)
 			for i in range(1, len(I_collection)):
 				colors = cmap(norm(collection_X2[i]))
 				self.axes[0].plot(data[:,0], I_collection[i], linewidth=1.0, color=colors, ls='-', label='', alpha=0.5, zorder=0)
