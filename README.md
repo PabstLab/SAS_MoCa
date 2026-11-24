@@ -201,9 +201,9 @@ For the full legal text, see the `LICENSE` file in this repository.
 
 ## References
 
-1. Kučerka, N., Nagle, J. F., Sachs, J. N., Feller, S. E., Pencer, J., Jackson, A., & Katsaras, J. (**2008**). _Lipid Bilayer Structure Determined by the Simultaneous Analysis of Neutron and X-Ray Scattering Data_. **Biophysical Journal**, 95(5), 2356–2367. https://doi.org/10.1529/biophysj.108.132662
-2. Pencer, J., Krueger, S., Adams, C. P., & Katsaras, J. (2006). *Method of separated form factors for polydisperse vesicles*. **Journal of Applied Crystallography**, 39(3), 293–303. https://doi.org/10.1107/S0021889806005255
-3. Frewein, M. P. K., Doktorova, M., Heberle, F. A., Scott, H. L., Semeraro, E. F., Porcar, L., & Pabst, G. (2021). *Structure and Interdigitation of Chain-Asymmetric Phosphatidylcholines and Milk Sphingomyelin in the Fluid Phase*. **Symmetry**, 13(8), 1441. https://doi.org/10.3390/sym13081441
-4. de Vicente, J., Lanchares, J., & Hermida, R. (2003). Placement by thermodynamic simulated annealing. **Physics Letters A**, 317(5–6), 415–423. https://doi.org/10.1016/j.physleta.2003.08.070
-5. Semeraro E. F. & Pabst G. (2026). *SAS_MoCa: a software for small-angle scattering data analysis of large unilamellar vesicles*. **bioRxiv**, https://doi.org/10.64898/2026.06.29.735169 
-6. Semeraro E. F. et al., in submission 
+1. Kučerka, N., Nagle, J. F., Sachs, J. N., Feller, S. E., Pencer, J., Jackson, A., & Katsaras, J. (**2008**). _Lipid Bilayer Structure Determined by the Simultaneous Analysis of Neutron and X-Ray Scattering Data_. **Biophysical Journal**, 95(5), 2356–2367.  DOI: [0.1529/biophysj.108.132662](https://doi.org/10.1529/biophysj.108.132662)
+2. Pencer, J., Krueger, S., Adams, C. P., & Katsaras, J. (2006). *Method of separated form factors for polydisperse vesicles*. **Journal of Applied Crystallography**, 39(3), 293–303. DOI: [10.1107/S0021889806005255](https://doi.org/10.1107/S0021889806005255)
+3. Frewein, M. P. K., Doktorova, M., Heberle, F. A., Scott, H. L., Semeraro, E. F., Porcar, L., & Pabst, G. (2021). *Structure and Interdigitation of Chain-Asymmetric Phosphatidylcholines and Milk Sphingomyelin in the Fluid Phase*. **Symmetry**, 13(8), 1441. DOI: [10.3390/sym13081441](https://doi.org/10.3390/sym13081441)
+4. de Vicente, J., Lanchares, J., & Hermida, R. (2003). Placement by thermodynamic simulated annealing. **Physics Letters A**, 317(5–6), 415–423. DOI: [10.1016/j.physleta.2003.08.070](https://doi.org/10.1016/j.physleta.2003.08.070)
+5. Semeraro E. F. & Pabst G. (2026). SAS_MoCa: *a software for small-angle scattering data analysis of large unilamellar vesicles*. **Journal of Applied Crystallography**, 59(6). DOI: [10.1107/S1600576726009180](https://doi.org/10.1107/S1600576726009180)
+6. Semeraro E. F., Bartoš L., Piller P., Deb R., Keller S., Vácha R. & Pabst G., (2026). *Membrane thickness strain from protein inclusions: A multiscale simulation and x-ray scattering study of proteoliposomes*. **The Journal of Chemical Physics**, 165(20), 204903. DOI: [10.1063/5.0351441](https://doi.org/10.1063/5.0351441)
